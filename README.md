@@ -10,7 +10,6 @@ The course began on 22 July 2025. The project component starts on 25 August 2025
 | Nathan Duarte | 217090427 |
 | Ndilimeke Frans | 224041525 |
 | Enzo Jantjies | 216097975 |
-| Eric Lubinda | 222067438 |
 
 ## Project Descriptions
 ## University Timetable Manager 

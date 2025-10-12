@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Timetable - University Timetable Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <h1>University Timetable Manager</h1>
+            </div>
+            <div class="navbar-menu">
+                <span id="userDisplay" class="user-name"></span>
+                <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Available Courses</h2>
+                <input 
+                    type="text" 
+                    id="courseSearch" 
+                    class="search-input" 
+                    placeholder="Search courses..."
+                >
+            </div>
+
+            <div class="sidebar-content">
+                <div id="courseList" class="course-list">
+                    <!-- Courses will be loaded here dynamically -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Toolbar -->
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <select id="scheduleSelector" class="schedule-select">
+                        <option value="">Loading schedules...</option>
+                    </select>
+                    <button id="newScheduleBtn" class="btn btn-primary">
+                        + New Schedule
+                    </button>
+                </div>
+                <div class="toolbar-right">
+                    <button id="exportPdfBtn" class="btn btn-secondary">
+                        Export PDF
+                    </button>
+                    <button id="exportImageBtn" class="btn btn-secondary">
+                        Export Image
+                    </button>
+                    <button id="printBtn" class="btn btn-secondary">
+                        Print
+                    </button>
+                </div>
+            </div>
+
+            <!-- Timetable Grid -->
+            <div class="timetable-wrapper" id="timetableWrapper">
+                <div class="timetable-container" id="timetableContainer">
+                    <!-- Time column -->
+                    <div class="time-column">
+                        <div class="time-header"></div>
+                        <div class="time-slot">7:30 AM</div>
+                        <div class="time-slot">8:30 AM</div>
+                        <div class="time-slot">9:30 AM</div>
+                        <div class="time-slot">10:30 AM</div>
+                        <div class="time-slot">11:30 AM</div>
+                        <div class="time-slot">12:30 PM</div>
+                        <div class="time-slot">1:00 PM</div>
+                        <div class="time-slot">2:00 PM</div>
+                        <div class="time-slot">3:00 PM</div>
+                        <div class="time-slot">4:00 PM</div>
+                        <div class="time-slot">5:15 PM</div>
+                        <div class="time-slot">6:40 PM</div>
+                        <div class="time-slot">8:00 PM</div>
+                    </div>
+
+                    <!-- Day columns -->
+                    <div class="day-column">
+                        <div class="day-header">Monday</div>
+                        <div class="drop-zone" data-day="Monday" data-time="07:30:00"></div>
+                        <div class="drop-zone" data-day="Monday" data-time="08:30:00"></div>
+                        <div class="drop-zone" data-day="Monday" data-time="09:30:00"></div>
+                        <div class="drop-zone" data-day="Monday" data-time="10:30:00"></div>
+                        <div class="drop-zone" data-day="Monday" data-time="11:30:00"></div>
+                        <div class="drop-zone" data-day="Monday" data-time="12:30:00"></div>
+                        <div class="drop-zone" data-day="Monday" data-time="13:00:00"></div>
+                        <div class="drop-zone" data-day="Monday" data-time="14:00:00"></div>
+                        <div class="drop-zone" data-day="Monday" data-time="15:00:00"></div>
+                        <div class="drop-zone" data-day="Monday" data-time="16:00:00"></div>
+                        <div class="drop-zone" data-day="Monday" data-time="17:15:00"></div>
+                        <div class="drop-zone" data-day="Monday" data-time="18:40:00"></div>
+                        <div class="drop-zone" data-day="Monday" data-time="20:00:00"></div>
+                    </div>
+
+                    <div class="day-column">
+                        <div class="day-header">Tuesday</div>
+                        <div class="drop-zone" data-day="Tuesday" data-time="07:30:00"></div>
+                        <div class="drop-zone" data-day="Tuesday" data-time="08:30:00"></div>
+                        <div class="drop-zone" data-day="Tuesday" data-time="09:30:00"></div>
+                        <div class="drop-zone" data-day="Tuesday" data-time="10:30:00"></div>
+                        <div class="drop-zone" data-day="Tuesday" data-time="11:30:00"></div>
+                        <div class="drop-zone" data-day="Tuesday" data-time="12:30:00"></div>
+                        <div class="drop-zone" data-day="Tuesday" data-time="13:00:00"></div>
+                        <div class="drop-zone" data-day="Tuesday" data-time="14:00:00"></div>
+                        <div class="drop-zone" data-day="Tuesday" data-time="15:00:00"></div>
+                        <div class="drop-zone" data-day="Tuesday" data-time="16:00:00"></div>
+                        <div class="drop-zone" data-day="Tuesday" data-time="17:15:00"></div>
+                        <div class="drop-zone" data-day="Tuesday" data-time="18:40:00"></div>
+                        <div class="drop-zone" data-day="Tuesday" data-time="20:00:00"></div>
+                    </div>
+
+                    <div class="day-column">
+                        <div class="day-header">Wednesday</div>
+                        <div class="drop-zone" data-day="Wednesday" data-time="07:30:00"></div>
+                        <div class="drop-zone" data-day="Wednesday" data-time="08:30:00"></div>
+                        <div class="drop-zone" data-day="Wednesday" data-time="09:30:00"></div>
+                        <div class="drop-zone" data-day="Wednesday" data-time="10:30:00"></div>
+                        <div class="drop-zone" data-day="Wednesday" data-time="11:30:00"></div>
+                        <div class="drop-zone" data-day="Wednesday" data-time="12:30:00"></div>
+                        <div class="drop-zone" data-day="Wednesday" data-time="13:00:00"></div>
+                        <div class="drop-zone" data-day="Wednesday" data-time="14:00:00"></div>
+                        <div class="drop-zone" data-day="Wednesday" data-time="15:00:00"></div>
+                        <div class="drop-zone" data-day="Wednesday" data-time="16:00:00"></div>
+                        <div class="drop-zone" data-day="Wednesday" data-time="17:15:00"></div>
+                        <div class="drop-zone" data-day="Wednesday" data-time="18:40:00"></div>
+                        <div class="drop-zone" data-day="Wednesday" data-time="20:00:00"></div>
+                    </div>
+
+                    <div class="day-column">
+                        <div class="day-header">Thursday</div>
+                        <div class="drop-zone" data-day="Thursday" data-time="07:30:00"></div>
+                        <div class="drop-zone" data-day="Thursday" data-time="08:30:00"></div>
+                        <div class="drop-zone" data-day="Thursday" data-time="09:30:00"></div>
+                        <div class="drop-zone" data-day="Thursday" data-time="10:30:00"></div>
+                        <div class="drop-zone" data-day="Thursday" data-time="11:30:00"></div>
+                        <div class="drop-zone" data-day="Thursday" data-time="12:30:00"></div>
+                        <div class="drop-zone" data-day="Thursday" data-time="13:00:00"></div>
+                        <div class="drop-zone" data-day="Thursday" data-time="14:00:00"></div>
+                        <div class="drop-zone" data-day="Thursday" data-time="15:00:00"></div>
+                        <div class="drop-zone" data-day="Thursday" data-time="16:00:00"></div>
+                        <div class="drop-zone" data-day="Thursday" data-time="17:15:00"></div>
+                        <div class="drop-zone" data-day="Thursday" data-time="18:40:00"></div>
+                        <div class="drop-zone" data-day="Thursday" data-time="20:00:00"></div>
+                    </div>
+
+                    <div class="day-column">
+                        <div class="day-header">Friday</div>
+                        <div class="drop-zone" data-day="Friday" data-time="07:30:00"></div>
+                        <div class="drop-zone" data-day="Friday" data-time="08:30:00"></div>
+                        <div class="drop-zone" data-day="Friday" data-time="09:30:00"></div>
+                        <div class="drop-zone" data-day="Friday" data-time="10:30:00"></div>
+                        <div class="drop-zone" data-day="Friday" data-time="11:30:00"></div>
+                        <div class="drop-zone" data-day="Friday" data-time="12:30:00"></div>
+                        <div class="drop-zone" data-day="Friday" data-time="13:00:00"></div>
+                        <div class="drop-zone" data-day="Friday" data-time="14:00:00"></div>
+                        <div class="drop-zone" data-day="Friday" data-time="15:00:00"></div>
+                        <div class="drop-zone" data-day="Friday" data-time="16:00:00"></div>
+                        <div class="drop-zone" data-day="Friday" data-time="17:15:00"></div>
+                        <div class="drop-zone" data-day="Friday" data-time="18:40:00"></div>
+                        <div class="drop-zone" data-day="Friday" data-time="20:00:00"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for New Schedule -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Schedule</h2>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newScheduleName">Schedule Name</label>
+                    <input 
+                        type="text" 
+                        id="newScheduleName" 
+                        placeholder="e.g., Fall 2025 Schedule"
+                        class="form-input"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="newScheduleSemester">Semester</label>
+                    <input 
+                        type="text" 
+                        id="newScheduleSemester" 
+                        placeholder="e.g., Semester 2"
+                        value="Semester 2"
+                        class="form-input"
+                    >
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelScheduleBtn" class="btn btn-secondary">Cancel</button>
+                <button id="saveScheduleBtn" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
