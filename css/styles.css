@@ -13,12 +13,14 @@
     --border-color: #e0e0e0;
     --shadow: 0 2px 4px rgba(0,0,0,0.1);
     --shadow-lg: 0 4px 8px rgba(0,0,0,0.15);
+    --footer-color: #1b2c5d;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif'
 }
 
 body {
@@ -29,6 +31,27 @@ body {
     flex-direction: column;
     min-height: 100vh;
     line-height: 1.6;
+}
+
+header {
+    background-color: var(--footer-color);
+    box-shadow: var(--shadow);
+    padding: 20px 0;
+    margin-bottom: 30px;
+    color: white;
+}
+
+nav a {
+  color: white;
+  margin-left: 1em;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+nav a:hover,
+nav a.active {
+  text-decoration: underline;
 }
 
 /* Authentication Pages */
@@ -131,6 +154,8 @@ body {
 
 /* Buttons */
 .btn {
+    background: #004aad;
+    color: white;
     padding: 12px 24px;
     border: none;
     border-radius: 6px;
@@ -142,6 +167,8 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
+    text-decoration: none;
+    margin-top: 1em;
 }
 
 .btn-primary {
@@ -185,4 +212,66 @@ body {
     font-size: 14px;
 }
 
+main {
+  flex: 1;
+  padding: 2em;
+}
 
+footer {
+  text-align: center;
+  padding: 1em;
+  background: var(--footer-color);
+  color: white;
+}
+
+
+.hero {
+  text-align: center;
+  padding: 3em 1em;
+  background: linear-gradient(to right, #004aad, #0078ff);
+  color: white;
+  border-radius: 10px;
+}
+
+.hero h2 {
+  margin-bottom: 0.5em;
+}
+
+/* Tables and Forms */
+form label {
+  display: block;
+  margin: 1em 0;
+}
+
+input, select, button {
+  padding: 0.5em;
+  margin-top: 0.3em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+button {
+  background: #004aad;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0066ff;
+}
+
+/* Timetable Grid */
+#timetable-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1px;
+  background: #ccc;
+  margin: 2em 0;
+}
+
+#timetable-grid div {
+  background: white;
+  padding: 1em;
+  text-align: center;
+}

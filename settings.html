@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings | University Timetable Manager</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Profile & Settings</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="timetable.html">Timetable</a>
+      <a href="courses.html">Courses</a>
+      <a href="settings.html" class="active">Settings</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Account Information</h2>
+      <form id="accountForm">
+        <label>Name: <input type="text" id="name"></label>
+        <label>Email: <input type="email" id="email"></label>
+        <button type="submit">Save</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Preferences</h2>
+      <label><input type="checkbox" id="darkMode"> Enable Dark Mode</label>
+    </section>
+
+    <section>
+      <h2>Change Password</h2>
+      <form id="passwordForm">
+        <label>Old Password: <input type="password"></label>
+        <label>New Password: <input type="password"></label>
+        <button type="submit">Change</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 University Timetable Manager</p>
+  </footer>
+
+  <script src="js/settings.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Courses | University Timetable Manager</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Course Browser</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="timetable.html">Timetable</a>
+      <a href="courses.html" class="active">Courses</a>
+      <a href="settings.html">Settings</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Search and Filter Courses</h2>
+      <input type="text" id="courseSearch" placeholder="Search for courses...">
+      <select id="departmentFilter">
+        <option value="">All Departments</option>
+        <option value="CS">Computer Science</option>
+        <option value="ENG">Engineering</option>
+        <option value="BUS">Business</option>
+      </select>
+      <button id="searchBtn">Search</button>
+    </section>
+
+    <section id="courseResults">
+      <h3>Results</h3>
+      <ul id="courseList"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 University Timetable Manager</p>
+  </footer>
+
+  <script src="js/courses.js"></script>
+</body>
+</html>
