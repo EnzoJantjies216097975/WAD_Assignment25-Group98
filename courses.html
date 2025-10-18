@@ -1,46 +1,307 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Courses | University Timetable Manager</title>
-  <link rel="stylesheet" href="css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Browser - University Timetable Manager</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/course-browser.css">
+    <link rel="stylesheet" href="css/styles.css"> 
 </head>
 <body>
-  <header>
-    <h1>Course Browser</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="timetable.html">Timetable</a>
-      <a href="courses.html" class="active">Courses</a>
-      <a href="settings.html">Settings</a>
+    <nav class="dashboard-nav">
+        <div class="nav-brand">
+            <a href="dashboard.html">
+                <img src="assets/images/logo.png" alt="UTM Logo" class="logo">
+                <span>UTM</span>
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="my-schedules.html">My Schedules</a></li>
+            <li><a href="course-browser.html" class="active">Courses</a></li>
+            <li><a href="help.html">Help</a></li>
+        </ul>
+        <div class="nav-user">
+            <button class="notification-btn" aria-label="Notifications">
+                <span class="notification-icon">🔔</span>
+            </button>
+            <div class="user-menu">
+                <button class="user-btn" id="userMenuBtn">
+                    <span class="user-avatar">👤</span>
+                    <span class="user-name" id="userName">User</span>
+                    <span class="dropdown-arrow">▼</span>
+                </button>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="profile.html">Profile Settings</a>
+                    <a href="#" id="logoutBtn">Logout</a>
+                </div>
+            </div>
+        </div>
     </nav>
-  </header>
 
-  <main>
-    <section>
-      <h2>Search and Filter Courses</h2>
-      <input type="text" id="courseSearch" placeholder="Search for courses...">
-      <select id="departmentFilter">
-        <option value="">All Departments</option>
-        <option value="CS">Computer Science</option>
-        <option value="ENG">Engineering</option>
-        <option value="BUS">Business</option>
-      </select>
-      <button id="searchBtn">Search</button>
-    </section>
+    <main class="dashboard-main">
+        <div class="container">
+            <header class="page-header">
+                <div>
+                    <h1>Course Browser</h1>
+                    <p>Browse and search available courses</p>
+                </div>
+                <button class="btn btn-primary" id="addCustomCourseBtn">
+                    <span>➕</span> Add Custom Course
+                </button>
+            </header>
 
-    <section id="courseResults">
-      <h3>Results</h3>
-      <ul id="courseList"></ul>
-    </section>
-  </main>
+            <div class="course-filters">
+                <div class="filter-row">
+                    <input type="text" id="courseSearch" placeholder="Search by code, name, or lecturer..." class="search-input">
+                    <select id="departmentFilter" class="filter-select">
+                        <option value="">All Departments</option>
+                        <option value="CS">Computer Science</option>
+                        <option value="ENG">Engineering</option>
+                        <option value="BUS">Business</option>
+                        <option value="SCI">Science</option>
+                    </select>
+                    <select id="creditsFilter" class="filter-select">
+                        <option value="">All Credits</option>
+                        <option value="3">3 Credits</option>
+                        <option value="4">4 Credits</option>
+                    </select>
+                </div>
+            </div>
 
-  <footer>
-    <p>&copy; 2025 University Timetable Manager</p>
-  </footer>
+            <div class="courses-stats">
+                <span id="courseCount">Loading courses...</span>
+            </div>
 
-  <script src="js/courses.js"></script>
+            <div class="courses-grid" id="coursesGrid">
+                <div class="loading-state">
+                    <p>Loading courses...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Course Details Modal -->
+    <div class="modal" id="courseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalCourseCode">Course Details</h3>
+                <button class="modal-close" data-modal="courseModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h2 id="modalCourseName"></h2>
+                <div class="course-detail-grid">
+                    <div class="detail-item">
+                        <strong>Lecturer:</strong>
+                        <span id="modalLecturer"></span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Department:</strong>
+                        <span id="modalDepartment"></span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Credits:</strong>
+                        <span id="modalCredits"></span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Description:</strong>
+                        <p id="modalDescription"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="ModalManager.close('courseModal')">Close</button>
+                <button class="btn btn-primary" id="addToScheduleBtn">Add to Schedule</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Custom Course Modal -->
+    <div class="modal" id="customCourseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Custom Course</h3>
+                <button class="modal-close" data-modal="customCourseModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="customCourseForm">
+                    <div class="form-group">
+                        <label for="customCode">Course Code *</label>
+                        <input type="text" id="customCode" required placeholder="e.g., CS101">
+                    </div>
+                    <div class="form-group">
+                        <label for="customName">Course Name *</label>
+                        <input type="text" id="customName" required placeholder="e.g., Introduction to Programming">
+                    </div>
+                    <div class="form-group">
+                        <label for="customLecturer">Lecturer</label>
+                        <input type="text" id="customLecturer" placeholder="Optional">
+                    </div>
+                    <div class="form-group">
+                        <label for="customDepartment">Department</label>
+                        <select id="customDepartment">
+                            <option value="CS">Computer Science</option>
+                            <option value="ENG">Engineering</option>
+                            <option value="BUS">Business</option>
+                            <option value="SCI">Science</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="customCredits">Credits</label>
+                        <input type="number" id="customCredits" value="3" min="1" max="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="customDescription">Description</label>
+                        <textarea id="customDescription" rows="3" placeholder="Optional course description"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Add Course</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/storage.js"></script>
+    <script>
+        let allCourses = [];
+        let selectedCourse = null;
+
+        // Load courses
+        function loadCourses() {
+            allCourses = CourseManager.getAllCourses();
+            
+            if (allCourses.length === 0) {
+                // Add sample courses if none exist
+                const sampleCourses = [
+                    { id: '1', code: 'WAD621S', name: 'Web Application Development', lecturer: 'Mrs. Muntuumo', department: 'CS', credits: 3, description: 'Full-stack web development' },
+                    { id: '2', code: 'DSA621S', name: 'Data Structures & Algorithms', lecturer: 'Mr. Smith', department: 'CS', credits: 4, description: 'Advanced data structures' },
+                    { id: '3', code: 'DB621S', name: 'Database Systems', lecturer: 'Dr. Johnson', department: 'CS', credits: 3, description: 'Relational databases' },
+                    { id: '4', code: 'SE621S', name: 'Software Engineering', lecturer: 'Prof. Brown', department: 'CS', credits: 3, description: 'Software development methods' },
+                    { id: '5', code: 'NET621S', name: 'Computer Networks', lecturer: 'Mr. Wilson', department: 'CS', credits: 3, description: 'Network protocols' },
+                    { id: '6', code: 'AI621S', name: 'Artificial Intelligence', lecturer: 'Dr. Lee', department: 'CS', credits: 4, description: 'AI fundamentals' },
+                    { id: '7', code: 'ML621S', name: 'Machine Learning', lecturer: 'Prof. Chen', department: 'CS', credits: 4, description: 'ML algorithms' },
+                    { id: '8', code: 'CYB621S', name: 'Cybersecurity', lecturer: 'Mr. Anderson', department: 'CS', credits: 3, description: 'Network security' }
+                ];
+                
+                sampleCourses.forEach(c => CourseManager.addCourse(c));
+                allCourses = CourseManager.getAllCourses();
+            }
+            
+            displayCourses(allCourses);
+        }
+
+        // Display courses
+        function displayCourses(courses) {
+            const grid = document.getElementById('coursesGrid');
+            document.getElementById('courseCount').textContent = `Showing ${courses.length} course${courses.length !== 1 ? 's' : ''}`;
+            
+            if (courses.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">📚</span>
+                        <p>No courses found</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = courses.map(course => `
+                <div class="course-browser-card" onclick="showCourseDetails('${course.id}')">
+                    <div class="course-header">
+                        <h3 class="course-code">${course.code}</h3>
+                        ${course.custom ? '<span class="badge badge-custom">Custom</span>' : ''}
+                    </div>
+                    <h4 class="course-name">${course.name}</h4>
+                    <div class="course-meta">
+                        <span>👤 ${course.lecturer || 'TBA'}</span>
+                        <span>📁 ${course.department || 'N/A'}</span>
+                        <span>⭐ ${course.credits || 3} Credits</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Show course details
+        function showCourseDetails(courseId) {
+            const course = allCourses.find(c => c.id === courseId);
+            if (!course) return;
+            
+            selectedCourse = course;
+            document.getElementById('modalCourseCode').textContent = course.code;
+            document.getElementById('modalCourseName').textContent = course.name;
+            document.getElementById('modalLecturer').textContent = course.lecturer || 'TBA';
+            document.getElementById('modalDepartment').textContent = course.department || 'N/A';
+            document.getElementById('modalCredits').textContent = course.credits || 3;
+            document.getElementById('modalDescription').textContent = course.description || 'No description available';
+            
+            ModalManager.open('courseModal');
+        }
+
+        // Filter courses
+        function filterCourses() {
+            const search = document.getElementById('courseSearch').value.toLowerCase();
+            const department = document.getElementById('departmentFilter').value;
+            const credits = document.getElementById('creditsFilter').value;
+            
+            let filtered = allCourses.filter(course => {
+                const matchesSearch = !search || 
+                    course.code.toLowerCase().includes(search) ||
+                    course.name.toLowerCase().includes(search) ||
+                    (course.lecturer && course.lecturer.toLowerCase().includes(search));
+                
+                const matchesDept = !department || course.department === department;
+                const matchesCredits = !credits || course.credits == credits;
+                
+                return matchesSearch && matchesDept && matchesCredits;
+            });
+            
+            displayCourses(filtered);
+        }
+
+        // Add custom course
+        document.getElementById('customCourseForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const course = {
+                id: UTM.generateId(),
+                code: document.getElementById('customCode').value,
+                name: document.getElementById('customName').value,
+                lecturer: document.getElementById('customLecturer').value,
+                department: document.getElementById('customDepartment').value,
+                credits: parseInt(document.getElementById('customCredits').value),
+                description: document.getElementById('customDescription').value,
+                custom: true
+            };
+            
+            CourseManager.addCourse(course);
+            UTM.showAlert('Custom course added!', 'success');
+            ModalManager.close('customCourseModal');
+            e.target.reset();
+            loadCourses();
+        });
+
+        // Add to schedule button
+        document.getElementById('addToScheduleBtn').addEventListener('click', () => {
+            if (selectedCourse) {
+                UTM.showAlert('Please open the timetable editor to add courses', 'info');
+                setTimeout(() => {
+                    window.location.href = 'timetable-editor.html';
+                }, 1500);
+            }
+        });
+
+        // Event listeners
+        document.getElementById('courseSearch').addEventListener('input', filterCourses);
+        document.getElementById('departmentFilter').addEventListener('change', filterCourses);
+        document.getElementById('creditsFilter').addEventListener('change', filterCourses);
+        document.getElementById('addCustomCourseBtn').addEventListener('click', () => {
+            ModalManager.open('customCourseModal');
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadCourses);
+    </script>
 </body>
 </html>

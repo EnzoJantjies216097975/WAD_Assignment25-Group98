@@ -1,42 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About | University Timetable Manager</title>
-  <link rel="stylesheet" href="css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - University Timetable Manager</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/landing.css">
 </head>
 <body>
-  <header>
-    <h1>About the Project</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html" class="active">About</a>
-      <a href="timetable.html">Timetable</a>
-      <a href="courses.html">Courses</a>
-      <a href="settings.html">Settings</a>
-    </nav>
-  </header>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <img src="assets/images/logo.png" alt="UTM Logo" class="logo">
+                    <span class="brand-name">University Timetable Manager</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="features.html">Features</a></li>
+                    <li><a href="help.html">Help</a></li>
+                    <li><a href="login.html" class="btn-login">Login</a></li>
+                    <li><a href="register.html" class="btn-register">Get Started</a></li>
+                </ul>
+                <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
 
-  <main>
-    <section>
-      <h2>Our Mission</h2>
-      <p>The University Timetable Manager helps students organize their academic schedules effortlessly, reducing conflicts and improving productivity.</p>
-    </section>
+    <main>
+        <section class="page-hero">
+            <div class="container">
+                <h1>Contact Us</h1>
+                <p>Get in touch with our team</p>
+            </div>
+        </section>
 
-    <section>
-      <h2>Features</h2>
-      <ul>
-        <li>Interactive timetable visualization</li>
-        <li>Course search and filtering</li>
-        <li>PDF and Image export options</li>
-        <li>Profile customization</li>
-      </ul>
-    </section>
-  </main>
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h2>Get In Touch</h2>
+                        <p>Have questions or feedback? We'd love to hear from you. Fill out the form and we'll get back to you as soon as possible.</p>
+                        
+                        <div class="contact-methods">
+                            <div class="contact-method">
+                                <div class="method-icon">📧</div>
+                                <div class="method-details">
+                                    <h3>Email</h3>
+                                    <p>support@utm.nust.na</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-method">
+                                <div class="method-icon">🏫</div>
+                                <div class="method-details">
+                                    <h3>Location</h3>
+                                    <p>NUST Main Campus<br>
+                                    13 Jackson Kaujeua Street<br>
+                                    Windhoek, Namibia</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-method">
+                                <div class="method-icon">⏰</div>
+                                <div class="method-details">
+                                    <h3>Office Hours</h3>
+                                    <p>Monday - Friday: 8:00 AM - 5:00 PM<br>
+                                    Saturday - Sunday: Closed</p>
+                                </div>
+                            </div>
+                        </div>
 
-  <footer>
-    <p>&copy; 2025 University Timetable Manager</p>
-  </footer>
+                        <div class="social-links">
+                            <h3>Follow Us</h3>
+                            <div class="social-icons">
+                                <a href="#" class="social-icon">📘 Facebook</a>
+                                <a href="#" class="social-icon">🐦 Twitter</a>
+                                <a href="#" class="social-icon">📷 Instagram</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-form-container">
+                        <form id="contactForm" class="contact-form">
+                            <div class="alert alert-success" id="successMessage" style="display: none;">
+                                Thank you for your message! We'll get back to you soon.
+                            </div>
+                            <div class="alert alert-error" id="errorMessage" style="display: none;"></div>
+                            
+                            <div class="form-group">
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subject">Subject *</label>
+                                <select id="subject" name="subject" required>
+                                    <option value="">Select a subject</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="feature">Feature Request</option>
+                                    <option value="bug">Bug Report</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message">Message *</label>
+                                <textarea id="message" name="message" rows="6" required placeholder="Tell us more about your inquiry..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-preview">
+            <div class="container">
+                <h2>Frequently Asked Questions</h2>
+                <p>Quick answers to common questions</p>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3>Is UTM free to use?</h3>
+                        <p>Yes! UTM is completely free for all students. No hidden fees or premium tiers.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Do I need to download anything?</h3>
+                        <p>No downloads required! UTM works directly in your web browser on any device.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Can I use UTM offline?</h3>
+                        <p>Yes, with our offline mode you can view and edit schedules without internet connection.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>How do I report a bug?</h3>
+                        <p>Use the contact form above or email us directly at support@utm.nust.na</p>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 2rem;">
+                    <a href="faq.html" class="btn btn-secondary">View All FAQs</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>University Timetable Manager</h4>
+                    <p>Smart scheduling for modern students</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="help.html">Help Center</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <p>WAD621S Project 2025</p>
+                    <p>NUST Software Development</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 University Timetable Manager. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Contact form handler
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const successMsg = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+            
+            // Hide previous messages
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            
+            // Simulate form submission
+            setTimeout(() => {
+                successMsg.style.display = 'block';
+                this.reset();
+                
+                // Scroll to success message
+                successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 500);
+        });
+    </script>
 </body>
 </html>
