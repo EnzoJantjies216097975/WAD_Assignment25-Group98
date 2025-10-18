@@ -1,0 +1,440 @@
+/* assets/css/timetable.css - Timetable specific styles for NUST Timetable Manager */
+
+/* Timetable Grid Styles */
+.timetable-wrapper {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.timetable-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, #FF6B3522, #003D7A22);
+    border-radius: 8px;
+}
+
+.timetable-legend {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    font-size: 14px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.legend-color.theory {
+    background: linear-gradient(135deg, #FF6B35, #E55A2B);
+}
+
+.legend-color.practical {
+    background: linear-gradient(135deg, #003D7A, #002855);
+}
+
+.legend-color.lunch {
+    background: repeating-linear-gradient(
+        45deg,
+        #f0f0f0,
+        #f0f0f0 5px,
+        #e0e0e0 5px,
+        #e0e0e0 10px
+    );
+}
+
+/* Enhanced Table Styles */
+.timetable-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px #E0E0E0;
+}
+
+.timetable-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.timetable-table thead th {
+    background: linear-gradient(135deg, #003D7A, #002855);
+    color: white;
+    font-weight: 600;
+    padding: 15px 10px;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.timetable-table thead th:last-child {
+    border-right: none;
+}
+
+.time-header {
+    background: linear-gradient(135deg, #FF6B35, #E55A2B) !important;
+}
+
+/* Time Column Styles */
+.timetable-table tbody .time-cell {
+    background: linear-gradient(to right, #f8f8f8, #f0f0f0);
+    font-weight: 600;
+    color: #333;
+    padding: 12px;
+    text-align: center;
+    border-right: 2px solid #E0E0E0;
+    border-bottom: 1px solid #E0E0E0;
+    position: sticky;
+    left: 0;
+    z-index: 50;
+}
+
+/* Slot Cell Styles */
+.slot-cell {
+    min-height: 70px;
+    padding: 4px;
+    border-right: 1px solid #E0E0E0;
+    border-bottom: 1px solid #E0E0E0;
+    position: relative;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.slot-cell:hover:not(.lunch-break):not(.occupied) {
+    background: #FFF8F0;
+}
+
+.slot-cell.droppable {
+    background: linear-gradient(135deg, #FFE5DC, #FFF8F0);
+    border: 2px dashed #FF6B35;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(255, 107, 53, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0); }
+}
+
+.slot-cell.occupied {
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Lunch Break Styling */
+.slot-cell.lunch-break {
+    background: linear-gradient(
+        45deg,
+        #f5f5f5 25%,
+        transparent 25%,
+        transparent 75%,
+        #f5f5f5 75%,
+        #f5f5f5
+    ),
+    linear-gradient(
+        45deg,
+        #f5f5f5 25%,
+        transparent 25%,
+        transparent 75%,
+        #f5f5f5 75%,
+        #f5f5f5
+    );
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    background-color: #FAFAFA;
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: not-allowed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Part-time Slot Styling */
+.slot-cell.part-time {
+    background: linear-gradient(135deg, #FFFBF0, #FFF8E8);
+    border-left: 3px solid #FFA500;
+}
+
+/* Scheduled Class Styles */
+.scheduled-class {
+    width: 100%;
+    height: 100%;
+    min-height: 70px;
+    padding: 8px;
+    border-radius: 6px;
+    position: relative;
+    cursor: move;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.scheduled-class:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.scheduled-class.theory {
+    background: linear-gradient(135deg, #FF6B35, #E55A2B);
+    color: white;
+}
+
+.scheduled-class.practical {
+    background: linear-gradient(135deg, #003D7A, #002855);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+.scheduled-class .class-code {
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 3px;
+    letter-spacing: 0.5px;
+}
+
+.scheduled-class .class-type {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-size: 10px;
+    background: rgba(0,0,0,0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.scheduled-class .class-room {
+    font-size: 11px;
+    opacity: 0.95;
+    margin-top: 2px;
+}
+
+.scheduled-class .remove-btn {
+    position: absolute;
+    top: 4px;
+    left: 6px;
+    width: 20px;
+    height: 20px;
+    background: rgba(255,255,255,0.95);
+    color: #E74C3C;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+.scheduled-class:hover .remove-btn {
+    display: flex;
+}
+
+.scheduled-class .remove-btn:hover {
+    background: #E74C3C;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Course Card Enhanced Styles */
+.course-card {
+    background: white;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.course-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary-orange);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.course-card:hover::before {
+    transform: scaleY(1);
+}
+
+.course-card.dragging {
+    opacity: 0.4;
+    transform: scale(0.95);
+}
+
+/* Drag Helper Styles */
+.ui-draggable-helper {
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    transform: rotate(-2deg);
+    opacity: 0.9;
+}
+
+/* Conflict Indicator */
+.conflict-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(231, 76, 60, 0.95);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 12px;
+    z-index: 1000;
+    animation: shake 0.5s;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+@keyframes shake {
+    0%, 100% { transform: translate(-50%, -50%) rotate(0); }
+    25% { transform: translate(-52%, -50%) rotate(-2deg); }
+    75% { transform: translate(-48%, -50%) rotate(2deg); }
+}
+
+/* Print Styles */
+@media print {
+    .courses-sidebar,
+    .timetable-header,
+    .nav-bar,
+    .remove-btn {
+        display: none !important;
+    }
+    
+    .timetable-container {
+        padding: 0;
+    }
+    
+    .timetable-grid {
+        box-shadow: none;
+        padding: 10px;
+    }
+    
+    .timetable-table {
+        font-size: 10px;
+    }
+    
+    .scheduled-class {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .courses-sidebar {
+        width: 250px;
+    }
+    
+    .course-card {
+        padding: 10px;
+    }
+    
+    .timetable-table {
+        font-size: 12px;
+    }
+    
+    .slot-cell {
+        min-height: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+    
+    .courses-sidebar {
+        width: 100%;
+        max-height: 200px;
+        border-right: none;
+        border-bottom: 2px solid var(--gray-light);
+    }
+    
+    .course-list {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 10px;
+        padding-bottom: 10px;
+    }
+    
+    .course-card {
+        min-width: 200px;
+    }
+    
+    .timetable-container {
+        padding: 10px;
+    }
+    
+    .timetable-header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .timetable-title {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .schedule-name-input {
+        width: 100%;
+    }
+    
+    .timetable-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+    
+    .action-btn {
+        flex: 1;
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+}
