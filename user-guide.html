@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Guide - NUST Timetable Manager</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        /* Table of contents sidebar */
+        .toc-sidebar {
+            position: sticky;
+            top: 100px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+        
+        .toc-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem 1rem;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .toc-link:hover {
+            color: var(--primary-color);
+            border-left-color: var(--secondary-color);
+            padding-left: 1.25rem;
+        }
+        
+        .toc-link.active {
+            color: var(--primary-color);
+            border-left-color: var(--secondary-color);
+            font-weight: 600;
+        }
+        
+        .guide-section {
+            scroll-margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60" padding="100" margin="1000"> &nbsp; Timetable Manager
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="features.html">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="help.html">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-login ms-lg-3" href="login.html">Login / Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <section class="hero-section text-center py-5">
+        <div class="container">
+            <h1 class="hero-title">User Guide</h1>
+            <p class="hero-subtitle">
+                Complete guide to using the NUST Timetable Manager
+            </p>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <!-- Table of Contents Sidebar -->
+                <div class="col-lg-3 d-none d-lg-block">
+                    <div class="toc-sidebar">
+                        <h5 class="text-primary-custom mb-3">Contents</h5>
+                        <nav class="nav flex-column">
+                            <a class="toc-link" href="#getting-started">Getting Started</a>
+                            <a class="toc-link" href="#account">Creating an Account</a>
+                            <a class="toc-link" href="#login">Logging In</a>
+                            <a class="toc-link" href="#dashboard">Dashboard Overview</a>
+                            <a class="toc-link" href="#schedule">Creating a Schedule</a>
+                            <a class="toc-link" href="#courses">Browsing Courses</a>
+                            <a class="toc-link" href="#conflicts">Managing Conflicts</a>
+                            <a class="toc-link" href="#save">Saving Your Schedule</a>
+                            <a class="toc-link" href="#share">Sharing & Exporting</a>
+                            <a class="toc-link" href="#profile">Profile Settings</a>
+                        </nav>
+                    </div>
+                </div>
+                
+                <!-- Main Guide Content -->
+                <div class="col-lg-9">
+                    <div class="card">
+                        <div class="card-body p-4 p-md-5">
+                            
+                            <!-- Getting Started -->
+                            <div id="getting-started" class="guide-section mb-5">
+                                <h2 class="text-primary-custom mb-4">
+                                    <i class="bi bi-rocket-takeoff me-2"></i>Getting Started
+                                </h2>
+                                <p class="lead">
+                                    Welcome to the NUST Timetable Manager! This comprehensive guide will 
+                                    walk you through all the features and help you create your perfect 
+                                    academic schedule.
+                                </p>
+                                <div class="alert alert-info border-0">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    <strong>Tip:</strong> This guide is organized sequentially. If you're 
+                                    new to the system, we recommend reading from top to bottom.
+                                </div>
+                            </div>
+
+                            <!-- Creating an Account -->
+                            <div id="account" class="guide-section mb-5">
+                                <h2 class="text-primary-custom mb-4">
+                                    <i class="bi bi-person-plus me-2"></i>Creating an Account
+                                </h2>
+                                <p>
+                                    To start using the timetable manager, you'll need to create an account. 
+                                    Follow these simple steps:
+                                </p>
+                                
+                                <ol class="list-group list-group-numbered">
+                                    <li class="list-group-item">
+                                        <strong>Navigate to Registration:</strong> Click on the 
+                                        "Login / Register" button in the navigation bar, then select 
+                                        the "Register" tab.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Fill in Your Details:</strong>
+                                        <ul class="mt-2">
+                                            <li>Enter your full name as it appears in NUST records</li>
+                                            <li>Provide your 9-digit student number</li>
+                                            <li>Use your NUST email address (e.g., youremail@nust.na)</li>
+                                            <li>Select your program from the dropdown menu</li>
+                                        </ul>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Create a Strong Password:</strong> Your password must 
+                                        be at least 8 characters long. Use a combination of letters, 
+                                        numbers, and symbols for better security.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Agree to Terms:</strong> Read and accept the terms 
+                                        and conditions by checking the box.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Submit:</strong> Click the "Create Account" button. 
+                                        You'll be automatically logged in and redirected to your dashboard.
+                                    </li>
+                                </ol>
+                            </div>
+
+                            <!-- Logging In -->
+                            <div id="login" class="guide-section mb-5">
+                                <h2 class="text-primary-custom mb-4">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>Logging In
+                                </h2>
+                                <p>
+                                    Once you have an account, logging in is quick and easy:
+                                </p>
+                                <ol>
+                                    <li>Click "Login / Register" in the navigation bar</li>
+                                    <li>Ensure you're on the "Login" tab</li>
+                                    <li>Enter your NUST email address</li>
+                                    <li>Type your password (click the eye icon to show/hide it)</li>
+                                    <li>Optionally, check "Remember me" to stay logged in</li>
+                                    <li>Click the "Login" button</li>
+                                </ol>
+                                
+                                <div class="alert alert-warning border-0 mt-3">
+                                    <i class="bi bi-shield-lock me-2"></i>
+                                    <strong>Security Tip:</strong> Never share your password with anyone. 
+                                    If you suspect your account has been compromised, change your password 
+                                    immediately in the Profile Settings.
+                                </div>
+                            </div>
+
+                            <!-- Dashboard Overview -->
+                            <div id="dashboard" class="guide-section mb-5">
+                                <h2 class="text-primary-custom mb-4">
+                                    <i class="bi bi-speedometer2 me-2"></i>Dashboard Overview
+                                </h2>
+                                <p>
+                                    After logging in, you'll be taken to your dashboard. This is your 
+                                    central hub for managing timetables. The dashboard includes:
+                                </p>
+                                
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="card bg-light-custom border-0">
+                                            <div class="card-body">
+                                                <h5 class="text-secondary-custom">
+                                                    <i class="bi bi-calendar3 me-2"></i>My Schedules
+                                                </h5>
+                                                <p class="mb-0 small">
+                                                    View all your saved timetables, create new ones, 
+                                                    or manage existing schedules.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card bg-light-custom border-0">
+                                            <div class="card-body">
+                                                <h5 class="text-secondary-custom">
+                                                    <i class="bi bi-journal-text me-2"></i>Course Browser
+                                                </h5>
+                                                <p class="mb-0 small">
+                                                    Search and explore all available NUST courses with 
+                                                    detailed information.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card bg-light-custom border-0">
+                                            <div class="card-body">
+                                                <h5 class="text-secondary-custom">
+                                                    <i class="bi bi-person-circle me-2"></i>Profile Settings
+                                                </h5>
+                                                <p class="mb-0 small">
+                                                    Update your personal information and account settings.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card bg-light-custom border-0">
+                                            <div class="card-body">
+                                                <h5 class="text-secondary-custom">
+                                                    <i class="bi bi-share me-2"></i>Share/Export
+                                                </h5>
+                                                <p class="mb-0 small">
+                                                    Generate shareable links or export your timetable 
+                                                    as PDF or image.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Creating a Schedule -->
+                            <div id="schedule" class="guide-section mb-5">
+                                <h2 class="text-primary-custom mb-4">
+                                    <i class="bi bi-calendar-plus me-2"></i>Creating Your First Schedule
+                                </h2>
+                                <p>
+                                    Creating a timetable is intuitive with our drag-and-drop interface. 
+                                    Here's how:
+                                </p>
+                                
+                                <h5 class="text-secondary-custom mt-4">Step 1: Start a New Schedule</h5>
+                                <ul>
+                                    <li>From your dashboard, click "Create New Schedule"</li>
+                                    <li>Give your schedule a descriptive name (e.g., "Semester 2 2025")</li>
+                                    <li>Select the semester and year</li>
+                                </ul>
+                                
+                                <h5 class="text-secondary-custom mt-4">Step 2: Understanding the Interface</h5>
+                                <p>The timetable editor consists of:</p>
+                                <ul>
+                                    <li><strong>Grid View:</strong> Weekly calendar showing days (Monday-Friday) 
+                                        and time slots (08:00-17:00)</li>
+                                    <li><strong>Course Sidebar:</strong> List of available courses that you 
+                                        can drag onto the grid</li>
+                                    <li><strong>Toolbar:</strong> Quick actions like save, view options, 
+                                        and export</li>
+                                </ul>
+                                
+                                <h5 class="text-secondary-custom mt-4">Step 3: Adding Courses</h5>
+                                <ol>
+                                    <li>Browse or search for a course in the sidebar</li>
+                                    <li>Click and hold on a course card</li>
+                                    <li>Drag the course to the appropriate time slot on the grid</li>
+                                    <li>Release to drop the course into place</li>
+                                    <li>The system will snap the course to the correct time alignment</li>
+                                </ol>
+                                
+                                <div class="alert alert-success border-0 mt-3">
+                                    <i class="bi bi-lightbulb me-2"></i>
+                                    <strong>Pro Tip:</strong> Valid drop zones will highlight in green 
+                                    as you drag. Red zones indicate conflicts or invalid placements.
+                                </div>
+                            </div>
+
+                            <!-- Browsing Courses -->
+                            <div id="courses" class="guide-section mb-5">
+                                <h2 class="text-primary-custom mb-4">
+                                    <i class="bi bi-search me-2"></i>Browsing and Searching Courses
+                                </h2>
+                                <p>
+                                    The course browser makes it easy to find exactly what you need:
+                                </p>
+                                
+                                <h5 class="text-secondary-custom mt-3">Search Options:</h5>
+                                <ul>
+                                    <li><strong>By Course Code:</strong> Enter codes like "WAD621S" 
+                                        or "PRG510S"</li>
+                                    <li><strong>By Course Name:</strong> Search for "Web Application" 
+                                        or "Programming"</li>
+                                    <li><strong>By Department:</strong> Filter by Computer Science, 
+                                        Cyber Security, etc.</li>
+                                </ul>
+                                
+                                <h5 class="text-secondary-custom mt-3">Filter Options:</h5>
+                                <ul>
+                                    <li>Year Level (1st, 2nd, 3rd year)</li>
+                                    <li>Semester (1 or 2)</li>
+                                    <li>Credit Value</li>
+                                    <li>Lecturer</li>
+                                </ul>
+                                
+                                <h5 class="text-secondary-custom mt-3">Course Details Modal:</h5>
+                                <p>
+                                    Click on any course card to view detailed information including 
+                                    lecturer names, venue assignments, prerequisites, credit hours, 
+                                    and course description.
+                                </p>
+                            </div>
+
+                            <!-- Managing Conflicts -->
+                            <div id="conflicts" class="guide-section mb-5">
+                                <h2 class="text-primary-custom mb-4">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>Managing Schedule Conflicts
+                                </h2>
+                                <p>
+                                    The system automatically detects three types of conflicts:
+                                </p>
+                                
+                                <div class="card border-danger mb-3">
+                                    <div class="card-header bg-danger text-white">
+                                        <strong>Time Overlap Conflicts</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>When two courses have overlapping time slots. The system 
+                                        will prevent you from placing a course if it conflicts with 
+                                        an existing one.</p>
+                                        <strong>Resolution:</strong> Choose a different section or 
+                                        time slot for one of the courses.
+                                    </div>
+                                </div>
+                                
+                                <div class="card border-warning mb-3">
+                                    <div class="card-header bg-warning">
+                                        <strong>Venue Conflicts</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>When you're scheduled to be in two different locations 
+                                        at the same time or have insufficient travel time between 
+                                        venues.</p>
+                                        <strong>Resolution:</strong> Adjust one of the courses to 
+                                        allow adequate travel time.
+                                    </div>
+                                </div>
+                                
+                                <div class="card border-info mb-3">
+                                    <div class="card-header bg-info text-white">
+                                        <strong>Prerequisite Warnings</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>When you attempt to add a course without having completed 
+                                        its prerequisites.</p>
+                                        <strong>Resolution:</strong> This is a warning, not a hard 
+                                        block. Review the prerequisites and confirm if you've met them.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Saving Schedule -->
+                            <div id="save" class="guide-section mb-5">
+                                <h2 class="text-primary-custom mb-4">
+                                    <i class="bi bi-save me-2"></i>Saving Your Schedule
+                                </h2>
+                                <p>
+                                    Your schedule is saved in two ways:
+                                </p>
+                                
+                                <h5 class="text-secondary-custom">1. Auto-Save (Local Storage)</h5>
+                                <ul>
+                                    <li>Changes are automatically saved to your browser every few seconds</li>
+                                    <li>Works offline - no internet connection needed</li>
+                                    <li>Data persists even if you close the browser</li>
+                                    <li>Limited to the current device</li>
+                                </ul>
+                                
+                                <h5 class="text-secondary-custom mt-3">2. Cloud Save (Database)</h5>
+                                <ul>
+                                    <li>Click the "Save to Cloud" button in the toolbar</li>
+                                    <li>Requires internet connection</li>
+                                    <li>Synchronized across all your devices</li>
+                                    <li>Permanent storage on NUST servers</li>
+                                    <li>Can create multiple schedule versions</li>
+                                </ul>
+                                
+                                <div class="alert alert-info border-0">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    <strong>Best Practice:</strong> Use cloud save for your final 
+                                    schedules and local storage for experimenting with different 
+                                    combinations.
+                                </div>
+                            </div>
+
+                            <!-- Sharing & Exporting -->
+                            <div id="share" class="guide-section mb-5">
+                                <h2 class="text-primary-custom mb-4">
+                                    <i class="bi bi-share me-2"></i>Sharing and Exporting
+                                </h2>
+                                
+                                <h5 class="text-secondary-custom">Sharing with Classmates:</h5>
+                                <ol>
+                                    <li>Open the schedule you want to share</li>
+                                    <li>Click "Share" in the toolbar</li>
+                                    <li>Click "Generate Share Link"</li>
+                                    <li>Copy the unique URL and send it to your classmates</li>
+                                    <li>Shared schedules are view-only for recipients</li>
+                                </ol>
+                                
+                                <h5 class="text-secondary-custom mt-4">Exporting as PDF:</h5>
+                                <ol>
+                                    <li>Navigate to "Share/Export" section</li>
+                                    <li>Select "Export as PDF"</li>
+                                    <li>Choose your preferred layout (portrait or landscape)</li>
+                                    <li>Click "Generate PDF"</li>
+                                    <li>Download and save or print your timetable</li>
+                                </ol>
+                                
+                                <h5 class="text-secondary-custom mt-4">Exporting as Image:</h5>
+                                <ol>
+                                    <li>Go to "Share/Export"</li>
+                                    <li>Select "Export as Image"</li>
+                                    <li>Choose image format (PNG recommended for quality)</li>
+                                    <li>Download the image file</li>
+                                    <li>Perfect for sharing via messaging apps</li>
+                                </ol>
+                            </div>
+
+                            <!-- Profile Settings -->
+                            <div id="profile" class="guide-section mb-5">
+                                <h2 class="text-primary-custom mb-4">
+                                    <i class="bi bi-gear me-2"></i>Profile Settings
+                                </h2>
+                                <p>
+                                    Manage your account and preferences from the Profile Settings page:
+                                </p>
+                                
+                                <h5 class="text-secondary-custom">Account Information:</h5>
+                                <ul>
+                                    <li>Update your name and contact details</li>
+                                    <li>Change your program if you switch majors</li>
+                                    <li>View your student number (cannot be changed)</li>
+                                </ul>
+                                
+                                <h5 class="text-secondary-custom mt-3">Preferences:</h5>
+                                <ul>
+                                    <li>Set default semester and year</li>
+                                    <li>Choose color scheme for course cards</li>
+                                    <li>Configure notification settings</li>
+                                    <li>Set time zone preferences</li>
+                                </ul>
+                                
+                                <h5 class="text-secondary-custom mt-3">Change Password:</h5>
+                                <ol>
+                                    <li>Navigate to Profile Settings</li>
+                                    <li>Click "Change Password"</li>
+                                    <li>Enter your current password</li>
+                                    <li>Type your new password twice</li>
+                                    <li>Click "Update Password"</li>
+                                </ol>
+                            </div>
+
+                            <!-- Need More Help -->
+                            <div class="alert alert-primary border-0">
+                                <h5><i class="bi bi-question-circle me-2"></i>Need More Help?</h5>
+                                <p class="mb-0">
+                                    If you have questions not covered in this guide, check out our 
+                                    <a href="faq.html" class="alert-link">FAQ page</a> or 
+                                    <a href="contact.html" class="alert-link">contact support</a>.
+                                </p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>About NUST Timetable Manager</h5>
+                    <p style="color: rgba(255, 255, 255, 0.7);">
+                        A comprehensive web-based solution designed to help NUST students 
+                        efficiently create, manage, and optimize their academic schedules.
+                    </p>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <a href="about.html">About Us</a>
+                    <a href="features.html">Features</a>
+                    <a href="user-guide.html">User Guide</a>
+                    <a href="faq.html">FAQ</a>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <h5>Contact & Support</h5>
+                    <a href="contact.html">Contact Support</a>
+                    <a href="help.html">Help Center</a>
+                    <p class="mt-3" style="color: rgba(255, 255, 255, 0.7);">
+                        <i class="bi bi-envelope me-2"></i>support@nusttimetable.na
+                    </p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="mb-0">
+                    &copy; 2025 NUST Timetable Manager | WAD621s Group Project | 
+                    Namibia University of Science and Technology
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Scroll Spy for Table of Contents -->
+    <script>
+        // Highlight active section in TOC
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.guide-section');
+            const tocLinks = document.querySelectorAll('.toc-link');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

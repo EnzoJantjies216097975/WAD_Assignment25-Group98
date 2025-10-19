@@ -1,42 +1,403 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About | University Timetable Manager</title>
-  <link rel="stylesheet" href="css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - NUST Timetable Manager</title>
+    
+    <!-- CSS & Font Awesome -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <header>
-    <h1>About the Project</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html" class="active">About</a>
-      <a href="timetable.html">Timetable</a>
-      <a href="courses.html">Courses</a>
-      <a href="settings.html">Settings</a>
+    
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60" padding="100" margin="1000"> &nbsp; Timetable Manager
+            </a>
+            
+            <button class="navbar-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="navbar-menu" id="navbarMenu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="features.html">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="help.html">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-login" href="login.html">Login / Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
-  </header>
 
-  <main>
-    <section>
-      <h2>Our Mission</h2>
-      <p>The University Timetable Manager helps students organize their academic schedules effortlessly, reducing conflicts and improving productivity.</p>
+    <!-- PAGE HEADER -->
+    <section class="hero-section text-center py-5">
+        <div class="container">
+            <h1 class="hero-title">Help & Documentation</h1>
+            <p class="hero-subtitle">
+                Find answers to your questions and learn how to use the timetable manager
+            </p>
+        </div>
     </section>
 
-    <section>
-      <h2>Features</h2>
-      <ul>
-        <li>Interactive timetable visualization</li>
-        <li>Course search and filtering</li>
-        <li>PDF and Image export options</li>
-        <li>Profile customization</li>
-      </ul>
-    </section>
-  </main>
+    <!-- SEARCH BAR SECTION -->
+    <section class="section">
+        <div class="container">
+            <div class="row" style="justify-content: center; margin-bottom: 3rem;">
+                <div style="flex: 0 0 70%; max-width: 70%; min-width: 300px;">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="text-primary mb-3 text-center">
+                                <i class="fas fa-search"></i> Search for Help
+                            </h4>
+                            <form onsubmit="return false;">
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <input type="text" class="form-control" 
+                                           placeholder="Type your question here..." 
+                                           style="flex: 1;">
+                                    <button class="btn btn-secondary" type="submit">
+                                        <i class="fas fa-search"></i> Search
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-  <footer>
-    <p>&copy; 2025 University Timetable Manager</p>
-  </footer>
+            <!-- HELP CATEGORIES -->
+            <div class="text-center mb-5">
+                <h2 class="section-title">Browse Help Topics</h2>
+                <p class="section-subtitle">Choose a category to learn more</p>
+            </div>
+
+            <div class="row" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+                
+                <!-- User Guide -->
+                <div class="col-md-6 col-lg-4">
+                    <a href="user-guide.html" style="text-decoration: none; color: inherit;">
+                        <div class="card feature-card">
+                            <div class="card-body text-center p-4">
+                                <div class="feature-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <h3 class="card-title">User Guide</h3>
+                                <p class="text-muted">
+                                    Comprehensive step-by-step instructions on how to use all features 
+                                    of the timetable manager, from creating your first schedule to 
+                                    advanced features.
+                                </p>
+                                <span class="badge badge-secondary mt-2">Getting Started</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- FAQ -->
+                <div class="col-md-6 col-lg-4">
+                    <a href="faq.html" style="text-decoration: none; color: inherit;">
+                        <div class="card feature-card">
+                            <div class="card-body text-center p-4">
+                                <div class="feature-icon">
+                                    <i class="fas fa-question-circle"></i>
+                                </div>
+                                <h3 class="card-title">FAQ</h3>
+                                <p class="text-muted">
+                                    Frequently asked questions about account management, schedule 
+                                    creation, troubleshooting common issues, and general platform usage.
+                                </p>
+                                <span class="badge badge-secondary mt-2">Common Questions</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Contact Support -->
+                <div class="col-md-6 col-lg-4">
+                    <a href="contact.html" style="text-decoration: none; color: inherit;">
+                        <div class="card feature-card">
+                            <div class="card-body text-center p-4">
+                                <div class="feature-icon">
+                                    <i class="fas fa-headset"></i>
+                                </div>
+                                <h3 class="card-title">Contact Support</h3>
+                                <p class="text-muted">
+                                    Can't find what you're looking for? Our support team is here to help. 
+                                    Send us a message and we'll get back to you as soon as possible.
+                                </p>
+                                <span class="badge badge-secondary mt-2">Get Help</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- QUICK START GUIDE -->
+    <section class="section bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Quick Start Guide</h2>
+                <p class="section-subtitle">Get up and running in minutes</p>
+            </div>
+            
+            <div class="row" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+                
+                <!-- Step 1 -->
+                <div style="flex: 0 0 22%; min-width: 200px; margin-bottom: 2rem;">
+                    <div class="card" style="height: 100%;">
+                        <div class="card-body text-center">
+                            <div style="width: 60px; height: 60px; background: var(--primary-color); 
+                                        color: white; border-radius: 50%; display: flex; align-items: center; 
+                                        justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; 
+                                        font-weight: bold;">
+                                1
+                            </div>
+                            <h5 class="text-primary">Create Account</h5>
+                            <p class="text-muted">
+                                Register with your NUST email address and student number. Your account 
+                                will be created instantly.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div style="flex: 0 0 22%; min-width: 200px; margin-bottom: 2rem;">
+                    <div class="card" style="height: 100%;">
+                        <div class="card-body text-center">
+                            <div style="width: 60px; height: 60px; background: var(--primary-color); 
+                                        color: white; border-radius: 50%; display: flex; align-items: center; 
+                                        justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; 
+                                        font-weight: bold;">
+                                2
+                            </div>
+                            <h5 class="text-primary">Browse Courses</h5>
+                            <p class="text-muted">
+                                Explore the course catalog using the search and filter features. Find 
+                                courses by code, name, or department.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div style="flex: 0 0 22%; min-width: 200px; margin-bottom: 2rem;">
+                    <div class="card" style="height: 100%;">
+                        <div class="card-body text-center">
+                            <div style="width: 60px; height: 60px; background: var(--primary-color); 
+                                        color: white; border-radius: 50%; display: flex; align-items: center; 
+                                        justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; 
+                                        font-weight: bold;">
+                                3
+                            </div>
+                            <h5 class="text-primary">Build Schedule</h5>
+                            <p class="text-muted">
+                                Drag courses onto your timetable grid. The system will automatically 
+                                check for conflicts and alert you.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div style="flex: 0 0 22%; min-width: 200px; margin-bottom: 2rem;">
+                    <div class="card" style="height: 100%;">
+                        <div class="card-body text-center">
+                            <div style="width: 60px; height: 60px; background: var(--primary-color); 
+                                        color: white; border-radius: 50%; display: flex; align-items: center; 
+                                        justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; 
+                                        font-weight: bold;">
+                                4
+                            </div>
+                            <h5 class="text-primary">Save & Share</h5>
+                            <p class="text-muted">
+                                Save your completed schedule and share it with classmates. Export to PDF 
+                                or image format for offline use.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- POPULAR HELP ARTICLES -->
+    <section class="section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Popular Help Articles</h2>
+                <p class="section-subtitle">Most viewed guides and tutorials</p>
+            </div>
+
+            <div class="row" style="justify-content: center;">
+                <div style="flex: 0 0 70%; max-width: 70%; min-width: 300px;">
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="list-group">
+
+                        <div class="card mb-3" style="cursor: pointer;" onclick="window.location.href='user-guide.html#account'">
+                            <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h5 class="text-primary mb-1">
+                                        <i class="fas fa-user-circle"></i> How to create an account
+                                    </h5>
+                                    <p class="text-muted mb-0">
+                                        Learn how to register and set up your profile
+                                    </p>
+                                </div>
+                                <span class="badge badge-primary">Guide</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-3" style="cursor: pointer;" onclick="window.location.href='user-guide.html#schedule'">
+                            <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h5 class="text-primary mb-1">
+                                        <i class="fas fa-calendar-plus"></i> Creating your first timetable
+                                    </h5>
+                                    <p class="text-muted mb-0">
+                                        Step-by-step tutorial for building your schedule
+                                    </p>
+                                </div>
+                                <span class="badge badge-primary">Guide</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-3" style="cursor: pointer;" onclick="window.location.href='faq.html#conflicts'">
+                            <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h5 class="text-primary mb-1">
+                                        <i class="fas fa-exclamation-triangle"></i> Understanding conflict warnings
+                                    </h5>
+                                    <p class="text-muted mb-0">
+                                        What schedule conflicts mean and how to resolve them
+                                    </p>
+                                </div>
+                                <span class="badge badge-secondary">FAQ</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-3" style="cursor: pointer;" onclick="window.location.href='user-guide.html#share'">
+                            <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h5 class="text-primary mb-1">
+                                        <i class="fas fa-share-alt"></i> Sharing your schedule with others
+                                    </h5>
+                                    <p class="text-muted mb-0">
+                                        How to generate share links and export your timetable
+                                    </p>
+                                </div>
+                                <span class="badge badge-primary">Guide</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="cursor: pointer;" onclick="window.location.href='faq.html#account'">
+                            <div class="card-body" style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h5 class="text-primary mb-1">
+                                        <i class="fas fa-key"></i> Resetting your password
+                                    </h5>
+                                    <p class="text-muted mb-0">
+                                        Steps to recover or change your account password
+                                    </p>
+                                </div>
+                                <span class="badge badge-secondary">FAQ</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STILL NEED HELP -->
+    <section class="section text-center bg-light">
+        <div class="container">
+            <div class="row" style="justify-content: center;">
+                <div style="flex: 0 0 70%; max-width: 70%; min-width: 300px;">
+                    <h2 class="section-title">Still Need Help?</h2>
+                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem;">
+                        If you couldn't find the answer you were looking for, our support team is ready 
+                        to assist you. We typically respond within 24 hours during weekdays.
+                    </p>
+                    <a href="contact.html" class="btn btn-primary btn-lg">
+                        <i class="fas fa-envelope"></i> Contact Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- About Column -->
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
+                    <h5>About NUST Timetable Manager</h5>
+                    <p style="color: rgba(255, 255, 255, 0.7);">
+                        A comprehensive web-based solution designed to help NUST students 
+                        efficiently create, manage, and optimize their academic schedules.
+                    </p>
+                </div>
+                
+                <!-- Quick Links Column -->
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
+                    <h5>Quick Links</h5>
+                    <a href="about.html">About Us</a>
+                    <a href="features.html">Features</a>
+                    <a href="user-guide.html">User Guide</a>
+                    <a href="faq.html">FAQ</a>
+                </div>
+                
+                <!-- Contact Column -->
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
+                    <h5>Contact & Support</h5>
+                    <a href="contact.html">Contact Support</a>
+                    <a href="help.html">Help Center</a>
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-top: 1rem;">
+                        <i class="fas fa-envelope"></i> support@nusttimetable.na
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p>
+                    &copy; 2025 NUST Timetable Manager | WAD621s Group Project | 
+                    Namibia University of Science and Technology
+                </p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Simple JavaScript for Mobile Menu Toggle -->
+    <script>
+        function toggleMenu() {
+            document.getElementById('navbarMenu').classList.toggle('active');
+        }
+    </script>
+
 </body>
 </html>

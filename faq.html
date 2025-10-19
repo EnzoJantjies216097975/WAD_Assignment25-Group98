@@ -3,365 +3,642 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ - University Timetable Manager</title>
-    <!--<link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/landing.css"> -->
-    <link rel="stylesheet" href="css/styles.css"> 
+    <title>FAQ - NUST Timetable Manager</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        .accordion-button:not(.collapsed) {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: var(--secondary-color);
+        }
+        
+        .accordion-button::after {
+            filter: brightness(0) invert(1);
+        }
+        
+        .accordion-button:not(.collapsed)::after {
+            filter: brightness(0) invert(1);
+        }
+        
+        .faq-category {
+            scroll-margin-top: 100px;
+        }
+    </style>
 </head>
 <body>
-    <header class="main-header">
-        <nav class="navbar">
-            <div class="container">
-                <div class="nav-brand">
-                    <img src="assets/images/logo.png" alt="UTM Logo" class="logo">
-                    <span class="brand-name">University Timetable Manager</span>
-                </div>
-                <ul class="nav-menu">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="features.html">Features</a></li>
-                    <li><a href="help.html">Help</a></li>
-                    <li><a href="login.html" class="btn-login">Login</a></li>
-                    <li><a href="register.html" class="btn-register">Get Started</a></li>
-                </ul>
-                <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-        </nav>
-    </header>
-
-    <main>
-        <section class="page-hero">
-            <div class="container">
-                <h1>Frequently Asked Questions</h1>
-                <p>Quick answers to common questions</p>
-            </div>
-        </section>
-
-        <section class="faq-section">
-            <div class="container">
-                <div class="faq-container">
-                    <div class="faq-category">
-                        <h2>General Questions</h2>
-                        
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>What is University Timetable Manager?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>University Timetable Manager (UTM) is a web-based application that helps students create, manage, and optimize their academic schedules. It features an intuitive drag-and-drop interface, automatic conflict detection, and cloud synchronization.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>Is UTM really free?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Yes! UTM is completely free for all students. There are no hidden fees, premium features, or subscription costs. We believe every student should have access to quality scheduling tools.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>Do I need to download anything?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>No! UTM is a web application that runs entirely in your browser. Simply visit the website and start planning. No downloads or installations required.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>Which browsers are supported?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>UTM works best on modern browsers including Google Chrome, Mozilla Firefox, Safari, and Microsoft Edge. We recommend keeping your browser updated to the latest version.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-category">
-                        <h2>Account & Security</h2>
-                        
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>How do I create an account?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Click the "Get Started" or "Register" button, enter your details (username, email, password), agree to the terms, and click "Create Account". You'll be logged in automatically!</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>Is my data secure?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Yes! We take security seriously. Your password is encrypted using industry-standard hashing, and all data transmission is secure. We never share your personal information with third parties.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>Can I use UTM without creating an account?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Yes, with limited functionality. You can use LocalStorage mode to create schedules that are saved only to your browser. However, creating an account enables cloud sync, sharing, and access from multiple devices.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>How do I reset my password?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>On the login page, click "Forgot password?" and enter your email address. You'll receive instructions to reset your password.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-category">
-                        <h2>Using the App</h2>
-                        
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>How do I add courses to my schedule?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Browse or search for courses in the left sidebar, then drag and drop them onto your timetable grid at the desired time slot. The system will automatically snap courses into place.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>What happens if courses conflict?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>UTM automatically detects conflicts and displays visual warnings (red borders, alerts). The conflict indicator in the toolbar shows the number of conflicts. Simply drag one of the conflicting courses to a different time slot to resolve.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>Can I create multiple schedules?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Yes! Create unlimited schedule versions to compare different options. This is perfect for testing different course combinations or planning backup schedules.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>How do I share my schedule?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Open any schedule and click the "Share" button. A unique link will be generated that you can copy and send to anyone. They can view your schedule without creating an account.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>Can I use UTM offline?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Yes! With LocalStorage enabled, you can view and edit previously loaded schedules without an internet connection. Changes will sync when you reconnect.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-category">
-                        <h2>Features & Functionality</h2>
-                        
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>What export formats are available?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>You can export your schedule as PDF (for printing), PNG/JPG images (for sharing), JSON (for backup), or CSV (for spreadsheets).</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>Can I customize course colors?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Yes! When creating custom courses, you can choose any color. For preset courses, colors are automatically assigned but can be customized.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>Does UTM work on mobile devices?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Absolutely! UTM is fully responsive and works seamlessly on smartphones and tablets. The touch-optimized interface makes it easy to manage schedules on the go.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>Can I undo mistakes?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Yes! Use the undo and redo buttons in the toolbar to easily reverse any changes. The system maintains a history of your recent actions.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-category">
-                        <h2>Troubleshooting</h2>
-                        
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>My schedule isn't saving. What should I do?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>First, check your internet connection. Try refreshing the page and attempting to save again. If the problem persists, try clearing your browser cache or using a different browser. Contact support if issues continue.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>Drag and drop isn't working. Help!</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Ensure you're using a supported browser with JavaScript enabled. Try refreshing the page. On touchscreen devices, press and hold to initiate dragging.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>I lost my schedule! Can I recover it?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>If you're logged in, your schedules are saved to the cloud and can be accessed from "My Schedules". If using LocalStorage mode, schedules are tied to your browser - clearing browser data will delete them.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="faq-category">
-                        <h2>Support</h2>
-                        
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>How do I report a bug?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Use the contact form on our Contact page or email support@utm.nust.na. Please include details about the bug, your browser, and steps to reproduce the issue.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>Can I request new features?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Absolutely! We love hearing from users. Submit feature requests through our contact form or email us at support@utm.nust.na. We review all suggestions for future updates.</p>
-                            </div>
-                        </div>
-
-                        <div class="faq-item-expandable">
-                            <button class="faq-question">
-                                <span>Where can I get more help?</span>
-                                <span class="faq-icon">+</span>
-                            </button>
-                            <div class="faq-answer">
-                                <p>Check out our comprehensive Help Center for detailed guides and tutorials. You can also contact our support team through the Contact page.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="help-cta">
-                    <h2>Still Have Questions?</h2>
-                    <p>Can't find the answer you're looking for? We're here to help!</p>
-                    <a href="contact.html" class="btn btn-primary">Contact Support</a>
-                    <a href="help.html" class="btn btn-secondary">Visit Help Center</a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="main-footer">
+    
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>University Timetable Manager</h4>
-                    <p>Smart scheduling for modern students</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="features.html">Features</a></li>
-                        <li><a href="help.html">Help Center</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Connect</h4>
-                    <p>WAD621S Project 2025</p>
-                    <p>NUST Software Development</p>
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-calendar-check me-2"></i>
+                NUST Timetable Manager
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="features.html">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="help.html">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-login ms-lg-3" href="login.html">Login / Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <section class="hero-section text-center py-5">
+        <div class="container">
+            <h1 class="hero-title">Frequently Asked Questions</h1>
+            <p class="hero-subtitle">
+                Find quick answers to common questions about the timetable manager
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ CONTENT -->
+    <section class="section">
+        <div class="container">
+            <!-- Search Bar -->
+            <div class="row mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control" id="faqSearch" 
+                               placeholder="Search FAQs..." aria-label="Search FAQs">
+                        <button class="btn btn-secondary-custom" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
+
+            <!-- Category Quick Links -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card bg-light-custom">
+                        <div class="card-body">
+                            <h5 class="text-primary-custom mb-3">
+                                <i class="bi bi-list-ul me-2"></i>Jump to Category:
+                            </h5>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="#account" class="btn btn-sm btn-outline-primary">Account & Login</a>
+                                <a href="#schedule" class="btn btn-sm btn-outline-primary">Creating Schedules</a>
+                                <a href="#courses" class="btn btn-sm btn-outline-primary">Courses</a>
+                                <a href="#conflicts" class="btn btn-sm btn-outline-primary">Conflicts</a>
+                                <a href="#sharing" class="btn btn-sm btn-outline-primary">Sharing & Export</a>
+                                <a href="#technical" class="btn btn-sm btn-outline-primary">Technical</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    
+                    <!-- ACCOUNT & LOGIN QUESTIONS -->
+                    <div id="account" class="faq-category mb-5">
+                        <h2 class="section-title mb-4">
+                            <i class="bi bi-person-circle me-2"></i>Account & Login
+                        </h2>
+                        
+                        <div class="accordion" id="accountAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#account1">
+                                        How do I create an account?
+                                    </button>
+                                </h2>
+                                <div id="account1" class="accordion-collapse collapse show" 
+                                     data-bs-parent="#accountAccordion">
+                                    <div class="accordion-body">
+                                        Click on "Login / Register" in the navigation bar, select the 
+                                        "Register" tab, and fill in your details including your NUST 
+                                        email address, student number, and chosen password. Make sure 
+                                        to use your official NUST email (ending in @nust.na).
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#account2">
+                                        I forgot my password. How can I reset it?
+                                    </button>
+                                </h2>
+                                <div id="account2" class="accordion-collapse collapse" 
+                                     data-bs-parent="#accountAccordion">
+                                    <div class="accordion-body">
+                                        On the login page, click "Forgot Password?" below the password 
+                                        field. Enter your registered email address, and you'll receive 
+                                        instructions to reset your password. If you don't receive an 
+                                        email within 10 minutes, check your spam folder or contact support.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#account3">
+                                        Can I use a non-NUST email address?
+                                    </button>
+                                </h2>
+                                <div id="account3" class="accordion-collapse collapse" 
+                                     data-bs-parent="#accountAccordion">
+                                    <div class="accordion-body">
+                                        No, you must use your official NUST email address (@nust.na) 
+                                        to register. This ensures only NUST students can access the 
+                                        system and helps maintain data security and integrity.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#account4">
+                                        How do I change my password?
+                                    </button>
+                                </h2>
+                                <div id="account4" class="accordion-collapse collapse" 
+                                     data-bs-parent="#accountAccordion">
+                                    <div class="accordion-body">
+                                        After logging in, go to Profile Settings, click on "Change Password," 
+                                        enter your current password and your new password twice, then click 
+                                        "Update Password." For security reasons, you'll need to log in again 
+                                        after changing your password.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CREATING SCHEDULES QUESTIONS -->
+                    <div id="schedule" class="faq-category mb-5">
+                        <h2 class="section-title mb-4">
+                            <i class="bi bi-calendar-plus me-2"></i>Creating Schedules
+                        </h2>
+                        
+                        <div class="accordion" id="scheduleAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#schedule1">
+                                        How do I create a new timetable?
+                                    </button>
+                                </h2>
+                                <div id="schedule1" class="accordion-collapse collapse" 
+                                     data-bs-parent="#scheduleAccordion">
+                                    <div class="accordion-body">
+                                        From your dashboard, click "Create New Schedule." Give your 
+                                        timetable a name, select the semester and year, then click 
+                                        "Create." You'll be taken to the timetable editor where you 
+                                        can start adding courses by dragging them from the sidebar onto 
+                                        the weekly grid.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#schedule2">
+                                        Can I create multiple versions of my timetable?
+                                    </button>
+                                </h2>
+                                <div id="schedule2" class="accordion-collapse collapse" 
+                                     data-bs-parent="#scheduleAccordion">
+                                    <div class="accordion-body">
+                                        Yes! You can create as many schedule versions as you like. This 
+                                        is useful for comparing different course combinations or planning 
+                                        for different scenarios. Each schedule is saved separately and 
+                                        can be easily accessed from your dashboard.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#schedule3">
+                                        How do I delete a schedule I no longer need?
+                                    </button>
+                                </h2>
+                                <div id="schedule3" class="accordion-collapse collapse" 
+                                     data-bs-parent="#scheduleAccordion">
+                                    <div class="accordion-body">
+                                        Go to "My Schedules" on your dashboard, find the schedule you 
+                                        want to delete, click the three-dot menu icon, and select "Delete." 
+                                        You'll be asked to confirm before the schedule is permanently 
+                                        removed. Note: This action cannot be undone.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#schedule4">
+                                        Is my schedule automatically saved?
+                                    </button>
+                                </h2>
+                                <div id="schedule4" class="accordion-collapse collapse" 
+                                     data-bs-parent="#scheduleAccordion">
+                                    <div class="accordion-body">
+                                        Yes, your changes are automatically saved to local storage every 
+                                        few seconds. However, to sync your schedule across devices and 
+                                        ensure permanent cloud storage, click the "Save to Cloud" button. 
+                                        We recommend doing this regularly, especially after major changes.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COURSES QUESTIONS -->
+                    <div id="courses" class="faq-category mb-5">
+                        <h2 class="section-title mb-4">
+                            <i class="bi bi-journal-text me-2"></i>Courses
+                        </h2>
+                        
+                        <div class="accordion" id="coursesAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#courses1">
+                                        How do I find a specific course?
+                                    </button>
+                                </h2>
+                                <div id="courses1" class="accordion-collapse collapse" 
+                                     data-bs-parent="#coursesAccordion">
+                                    <div class="accordion-body">
+                                        Use the search bar in the Course Browser. You can search by 
+                                        course code (e.g., "WAD621S"), course name (e.g., "Web Application"), 
+                                        or lecturer name. You can also use filters to narrow down results 
+                                        by department, year level, or semester.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#courses2">
+                                        What if a course I need isn't listed?
+                                    </button>
+                                </h2>
+                                <div id="courses2" class="accordion-collapse collapse" 
+                                     data-bs-parent="#coursesAccordion">
+                                    <div class="accordion-body">
+                                        The course database is updated at the start of each semester with 
+                                        official NUST course offerings. If you can't find a course, it may 
+                                        not be offered in the current semester, or there may be a data 
+                                        synchronization delay. Contact support with the specific course 
+                                        code for assistance.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#courses3">
+                                        How do I see course details like lecturer and venue?
+                                    </button>
+                                </h2>
+                                <div id="courses3" class="accordion-collapse collapse" 
+                                     data-bs-parent="#coursesAccordion">
+                                    <div class="accordion-body">
+                                        Click on any course card in the Course Browser to open a detailed 
+                                        modal window. This shows complete information including course 
+                                        description, credit hours, prerequisites, lecturer(s), venue 
+                                        assignment, and scheduled time slots.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CONFLICTS QUESTIONS -->
+                    <div id="conflicts" class="faq-category mb-5">
+                        <h2 class="section-title mb-4">
+                            <i class="bi bi-exclamation-triangle me-2"></i>Handling Conflicts
+                        </h2>
+                        
+                        <div class="accordion" id="conflictsAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#conflicts1">
+                                        What does a scheduling conflict mean?
+                                    </button>
+                                </h2>
+                                <div id="conflicts1" class="accordion-collapse collapse" 
+                                     data-bs-parent="#conflictsAccordion">
+                                    <div class="accordion-body">
+                                        A scheduling conflict occurs when two courses overlap in time, 
+                                        making it impossible to attend both. The system detects three 
+                                        types: time overlaps, venue conflicts (being in two places at once), 
+                                        and prerequisite warnings (missing required prior courses).
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#conflicts2">
+                                        How do I resolve a time conflict?
+                                    </button>
+                                </h2>
+                                <div id="conflicts2" class="accordion-collapse collapse" 
+                                     data-bs-parent="#conflictsAccordion">
+                                    <div class="accordion-body">
+                                        You have several options: choose a different section of one course 
+                                        (if available), select an alternative time slot, or replace one of 
+                                        the conflicting courses with a different course that fits your 
+                                        schedule. The system will suggest alternatives when possible.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#conflicts3">
+                                        Can I override a prerequisite warning?
+                                    </button>
+                                </h2>
+                                <div id="conflicts3" class="accordion-collapse collapse" 
+                                     data-bs-parent="#conflictsAccordion">
+                                    <div class="accordion-body">
+                                        Prerequisite warnings are informational only - the system won't 
+                                        prevent you from adding the course to your timetable. However, 
+                                        you should verify with your academic advisor whether you've met 
+                                        the requirements or can get special permission to take the course.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SHARING & EXPORT QUESTIONS -->
+                    <div id="sharing" class="faq-category mb-5">
+                        <h2 class="section-title mb-4">
+                            <i class="bi bi-share me-2"></i>Sharing & Export
+                        </h2>
+                        
+                        <div class="accordion" id="sharingAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#sharing1">
+                                        How do I share my timetable with classmates?
+                                    </button>
+                                </h2>
+                                <div id="sharing1" class="accordion-collapse collapse" 
+                                     data-bs-parent="#sharingAccordion">
+                                    <div class="accordion-body">
+                                        Open the schedule you want to share, click "Share" in the toolbar, 
+                                        then "Generate Share Link." Copy the unique URL and send it to your 
+                                        classmates via email, messaging, or social media. The link provides 
+                                        view-only access - they can't edit your schedule.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#sharing2">
+                                        Can someone edit my schedule if I share it?
+                                    </button>
+                                </h2>
+                                <div id="sharing2" class="accordion-collapse collapse" 
+                                     data-bs-parent="#sharingAccordion">
+                                    <div class="accordion-body">
+                                        No, shared links are read-only. Recipients can view your timetable 
+                                        but cannot make any changes. Your schedule remains secure and only 
+                                        you can edit it when logged into your account.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#sharing3">
+                                        What's the difference between PDF and image export?
+                                    </button>
+                                </h2>
+                                <div id="sharing3" class="accordion-collapse collapse" 
+                                     data-bs-parent="#sharingAccordion">
+                                    <div class="accordion-body">
+                                        PDF format is better for printing and maintains high quality at any 
+                                        size. It's ideal for official documentation. Image format (PNG/JPG) 
+                                        is better for quick sharing on social media or messaging apps, and 
+                                        has smaller file sizes. Choose based on your intended use.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TECHNICAL QUESTIONS -->
+                    <div id="technical" class="faq-category mb-5">
+                        <h2 class="section-title mb-4">
+                            <i class="bi bi-gear me-2"></i>Technical Issues
+                        </h2>
+                        
+                        <div class="accordion" id="technicalAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#technical1">
+                                        Which browsers are supported?
+                                    </button>
+                                </h2>
+                                <div id="technical1" class="accordion-collapse collapse" 
+                                     data-bs-parent="#technicalAccordion">
+                                    <div class="accordion-body">
+                                        The timetable manager works best on modern browsers: Google Chrome 
+                                        (version 90+), Mozilla Firefox (version 88+), Microsoft Edge (version 
+                                        90+), and Safari (version 14+). For the best experience, keep your 
+                                        browser updated to the latest version.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#technical2">
+                                        Can I use this on my mobile phone?
+                                    </button>
+                                </h2>
+                                <div id="technical2" class="accordion-collapse collapse" 
+                                     data-bs-parent="#technicalAccordion">
+                                    <div class="accordion-body">
+                                        Yes! The application is fully responsive and optimized for mobile 
+                                        devices. You can create and edit timetables on smartphones and tablets. 
+                                        The mobile interface uses touch-friendly controls instead of drag-and-drop.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#technical3">
+                                        What if I lose my internet connection while editing?
+                                    </button>
+                                </h2>
+                                <div id="technical3" class="accordion-collapse collapse" 
+                                     data-bs-parent="#technicalAccordion">
+                                    <div class="accordion-body">
+                                        Don't worry! Your changes are automatically saved to local storage 
+                                        on your device, so you won't lose any work. When your connection is 
+                                        restored, click "Save to Cloud" to sync your changes to the server.
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" 
+                                            data-bs-toggle="collapse" data-bs-target="#technical4">
+                                        Why is the drag-and-drop not working?
+                                    </button>
+                                </h2>
+                                <div id="technical4" class="accordion-collapse collapse" 
+                                     data-bs-parent="#technicalAccordion">
+                                    <div class="accordion-body">
+                                        Try these solutions: 1) Refresh the page (F5 or Cmd+R), 2) Clear 
+                                        your browser cache, 3) Check if JavaScript is enabled in your browser 
+                                        settings, 4) Try a different browser, or 5) Disable browser extensions 
+                                        that might interfere. If problems persist, contact support.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Still Have Questions -->
+            <div class="row mt-5">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card bg-light-custom border-0">
+                        <div class="card-body text-center p-5">
+                            <i class="bi bi-question-circle" style="font-size: 4rem; color: var(--secondary-color);"></i>
+                            <h3 class="text-primary-custom mt-3">Still Have Questions?</h3>
+                            <p class="text-muted mb-4">
+                                If you couldn't find the answer you were looking for, we're here to help!
+                            </p>
+                            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                                <a href="user-guide.html" class="btn btn-primary-custom">
+                                    <i class="bi bi-book me-2"></i>Read User Guide
+                                </a>
+                                <a href="contact.html" class="btn btn-secondary-custom">
+                                    <i class="bi bi-envelope me-2"></i>Contact Support
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>About NUST Timetable Manager</h5>
+                    <p style="color: rgba(255, 255, 255, 0.7);">
+                        A comprehensive web-based solution designed to help NUST students 
+                        efficiently create, manage, and optimize their academic schedules.
+                    </p>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <a href="about.html">About Us</a>
+                    <a href="features.html">Features</a>
+                    <a href="user-guide.html">User Guide</a>
+                    <a href="faq.html">FAQ</a>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <h5>Contact & Support</h5>
+                    <a href="contact.html">Contact Support</a>
+                    <a href="help.html">Help Center</a>
+                    <p class="mt-3" style="color: rgba(255, 255, 255, 0.7);">
+                        <i class="bi bi-envelope me-2"></i>support@nusttimetable.na
+                    </p>
+                </div>
+            </div>
+            
             <div class="footer-bottom">
-                <p>&copy; 2025 University Timetable Manager. All rights reserved.</p>
+                <p class="mb-0">
+                    &copy; 2025 NUST Timetable Manager | WAD621s Group Project | 
+                    Namibia University of Science and Technology
+                </p>
             </div>
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <!-- Bootstrap 5 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Search Functionality -->
     <script>
-        // FAQ accordion functionality
-        document.querySelectorAll('.faq-question').forEach(button => {
-            button.addEventListener('click', () => {
-                const faqItem = button.parentElement;
-                const isActive = faqItem.classList.contains('active');
+        document.getElementById('faqSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            
+            accordionItems.forEach(item => {
+                const button = item.querySelector('.accordion-button');
+                const body = item.querySelector('.accordion-body');
+                const text = (button.textContent + body.textContent).toLowerCase();
                 
-                // Close all other items
-                document.querySelectorAll('.faq-item-expandable').forEach(item => {
-                    item.classList.remove('active');
-                    item.querySelector('.faq-icon').textContent = '+';
-                });
-                
-                // Toggle current item
-                if (!isActive) {
-                    faqItem.classList.add('active');
-                    button.querySelector('.faq-icon').textContent = '−';
+                if (text.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
                 }
             });
         });
