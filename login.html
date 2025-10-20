@@ -125,13 +125,7 @@
 
                 <!-- LOGIN FORM -->
                 <div class="tab-content active" id="loginTab">
-                  <form
-                    id="loginForm"
-                    action="dashboard.html"
-                    method="POST"
-                    data-autosave="true"
-                    novalidate
-                  >
+                  <form id="loginForm" onsubmit="handleLogin(event)">
                     <div class="form-group">
                       <label for="loginEmail" class="form-label">
                         <i class="fas fa-envelope"></i> Email Address
@@ -142,32 +136,22 @@
                         id="loginEmail"
                         name="email"
                         required
-                        data-validate="required|email|nust"
                         placeholder="your.email@nust.na"
                       />
-                      <div class="error-message" data-field="email"></div>
                     </div>
 
-                    <div class="form-group password-field">
-                      <label for="password" class="form-label">
+                    <div class="form-group">
+                      <label for="loginPassword" class="form-label">
                         <i class="fas fa-lock"></i> Password
                       </label>
                       <input
                         type="password"
                         class="form-control"
-                        id="password"
+                        id="loginPassword"
                         name="password"
                         required
-                        data-validate="required|min:8"
                         placeholder="Enter your password"
                       />
-                      <div class="error-message" data-field="password"></div>
-                      <span
-                        class="password-toggle"
-                        onclick="togglePassword('loginPassword', this)"
-                      >
-                        <i class="fas fa-eye-slash"></i>
-                      </span>
                     </div>
 
                     <div
@@ -184,9 +168,9 @@
                           type="checkbox"
                           id="rememberMe"
                         />
-                        <label class="form-check-label" for="rememberMe">
-                          Remember me
-                        </label>
+                        <label class="form-check-label" for="rememberMe"
+                          >Remember me</label
+                        >
                       </div>
                       <a href="#" class="text-secondary">Forgot Password?</a>
                     </div>
@@ -197,23 +181,12 @@
                     >
                       <i class="fas fa-sign-in-alt"></i> Login
                     </button>
-
-                    <p class="text-center text-muted">
-                      Don't have an account?
-                      <a
-                        href="#"
-                        class="text-secondary"
-                        onclick="showTab('register'); return false;"
-                      >
-                        Create one here
-                      </a>
-                    </p>
                   </form>
                 </div>
 
                 <!-- REGISTRATION FORM -->
                 <div class="tab-content" id="registerTab">
-                  <form id="registerForm" action="dashboard.html" method="POST">
+                  <form id="registerForm" onsubmit="handleRegistration(event)">
                     <div class="form-group">
                       <label for="registerName" class="form-label">
                         <i class="fa-solid fa-user"></i> Full Name
@@ -291,7 +264,7 @@
                       </select>
                     </div>
 
-                    <div class="form-group password-field">
+                    <div class="form-group">
                       <label for="registerPassword" class="form-label">
                         <i class="fas fa-lock"></i> Password
                       </label>
@@ -304,16 +277,10 @@
                         minlength="8"
                         required
                       />
-                      <span
-                        class="password-toggle"
-                        onclick="togglePassword('registerPassword', this)"
-                      >
-                        <i class="fas fa-eye"></i>
-                      </span>
                       <small class="form-text">Minimum 8 characters</small>
                     </div>
 
-                    <div class="form-group password-field">
+                    <div class="form-group">
                       <label for="registerConfirmPassword" class="form-label">
                         <i class="fas fa-lock"></i> Confirm Password
                       </label>
@@ -325,12 +292,6 @@
                         placeholder="Re-enter your password"
                         required
                       />
-                      <span
-                        class="password-toggle"
-                        onclick="togglePassword('registerConfirmPassword', this)"
-                      >
-                        <i class="fas fa-eye"></i>
-                      </span>
                     </div>
 
                     <div class="form-check mb-4">
@@ -354,28 +315,12 @@
                     >
                       <i class="fas fa-user-plus"></i> Create Account
                     </button>
-
-                    <p class="text-center text-muted">
-                      Already have an account?
-                      <a
-                        href="#"
-                        class="text-secondary"
-                        onclick="showTab('login'); return false;"
-                      >
-                        Login here
-                      </a>
-                    </p>
                   </form>
                 </div>
-              </div>
-            </div>
 
-            <!-- Help Text -->
-            <div class="text-center mt-4">
-              <p class="text-muted">
-                <i class="fas fa-info-circle"></i> Need help? Visit our
-                <a href="help.html" class="text-secondary">Help Center</a>
-              </p>
+                <!-- Success/Error Messages -->
+                <div id="messageContainer" style="margin-top: 1rem"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -425,26 +370,15 @@
       </div>
     </footer>
 
-    <!-- JAVASCRIPT FOR TABS AND PASSWORD TOGGLE -->
     <script>
-      // Mobile menu toggle
-      function toggleMenu() {
-        document.getElementById("navbarMenu").classList.toggle("active");
-      }
-
       // Tab switching function
       function showTab(tabName) {
-        // Get all tab contents and buttons
         const contents = document.querySelectorAll(".tab-content");
         const buttons = document.querySelectorAll(".tab-button");
 
-        // Hide all tab contents
         contents.forEach((content) => content.classList.remove("active"));
-
-        // Remove active class from all buttons
         buttons.forEach((btn) => btn.classList.remove("active"));
 
-        // Show selected tab
         if (tabName === "login") {
           document.getElementById("loginTab").classList.add("active");
           buttons[0].classList.add("active");
@@ -454,37 +388,104 @@
         }
       }
 
-      // Password visibility toggle
-      function togglePassword(inputId, iconContainer) {
-        const input = document.getElementById(inputId);
-        const icon = iconContainer.querySelector("i");
+      // Handle login form submission
+      function handleLogin(event) {
+        event.preventDefault();
 
-        if (input.type === "password") {
-          input.type = "text";
-          icon.classList.remove("fa-eye");
-          icon.classList.add("fa-eye-slash");
-        } else {
-          input.type = "password";
-          icon.classList.remove("fa-eye-slash");
-          icon.classList.add("fa-eye");
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        // Basic validation
+        if (!email.endsWith("@nust.na")) {
+          showMessage("Please use your NUST email address", "error");
+          return;
         }
+
+        // Simulate login success (replace with actual API call when backend is ready)
+        showMessage("Login successful! Redirecting...", "success");
+
+        // Store user data in localStorage for demo purposes
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({
+            email: email,
+            name: email.split("@")[0].replace(".", " "),
+            loggedIn: true,
+          })
+        );
+
+        // Redirect to dashboard after 2 seconds
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 2000);
       }
 
-      // Form validation for matching passwords
-      document
-        .getElementById("registerForm")
-        .addEventListener("submit", function (e) {
-          const password = document.getElementById("registerPassword").value;
-          const confirmPassword = document.getElementById(
-            "registerConfirmPassword"
-          ).value;
+      // Handle registration form submission
+      function handleRegistration(event) {
+        event.preventDefault();
 
-          if (password !== confirmPassword) {
-            e.preventDefault();
-            alert("Passwords do not match. Please try again.");
-            return false;
-          }
-        });
+        const formData = new FormData(event.target);
+        const password = formData.get("password");
+        const confirmPassword = formData.get("confirm_password");
+        const email = formData.get("email");
+
+        // Validation
+        if (password !== confirmPassword) {
+          showMessage("Passwords do not match!", "error");
+          return;
+        }
+
+        if (!email.endsWith("@nust.na")) {
+          showMessage("Please use your NUST email address", "error");
+          return;
+        }
+
+        if (password.length < 8) {
+          showMessage("Password must be at least 8 characters long", "error");
+          return;
+        }
+
+        // Simulate registration success
+        showMessage("Account created successfully! Redirecting...", "success");
+
+        // Store user data
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({
+            email: email,
+            name: formData.get("fullname"),
+            studentNumber: formData.get("student_number"),
+            program: formData.get("program"),
+            loggedIn: true,
+          })
+        );
+
+        // Redirect to dashboard
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 2000);
+      }
+
+      // Show success/error messages
+      function showMessage(message, type) {
+        const container = document.getElementById("messageContainer");
+        const alertClass =
+          type === "success" ? "alert-success" : "alert-danger";
+
+        container.innerHTML = `
+                <div class="alert ${alertClass}">
+                    <i class="fas fa-${
+                      type === "success" ? "check-circle" : "exclamation-circle"
+                    }"></i>
+                    ${message}
+                </div>
+            `;
+
+        // Clear message after 5 seconds
+        setTimeout(() => {
+          container.innerHTML = "";
+        }, 5000);
+      }
     </script>
 
     <script src="scripts/app.js"></script>
