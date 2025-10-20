@@ -136,434 +136,502 @@
 
     <!-- JAVASCRIPT -->
     <script>
-      /**
-       * Schedule Editor JavaScript
-       * Implements drag-and-drop timetable building with conflict detection
-       */
+          /**
+           * Schedule Editor JavaScript
+           * Implements drag-and-drop timetable building with conflict detection
+           */
 
-      // Time slots for the timetable (08:00 - 17:00)
-      const timeSlots = [
-        "07:30",
-        "08:30",
-        "09:30",
-        "10:30",
-        "11:30",
-        "12:30",
-        "14:00",
-        "15:00",
-        "16:00",
-        "17:15",
-        "18:40",
-        "20:00",
-      ];
+          // Time slots for the timetable (08:00 - 17:00)
+          const timeSlots = [
+            "07:30",
+            "08:30",
+            "09:30",
+            "10:30",
+            "11:30",
+            "12:30",
+            "14:00",
+            "15:00",
+            "16:00",
+            "17:15",
+            "18:40",
+            "20:00",
+          ];
 
-      const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+          const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
-      // Available courses - in production, fetch from PHP/MySQL
-      const availableCourses = [
-        {
-          code: "WAD621S",
-          name: "Web Application Development",
-          credits: 12,
-          lecturer: "Dr. S. Muchinenyika",
-          color: "#3b82f6",
-        },
-        {
-          code: "DTA621S",
-          name: "Data Analytics",
-          credits: 12,
-          lecturer: "Prof. G. Iyawa",
-          color: "#10b981",
-        },
-        {
-          code: "ITD621S",
-          name: "Interaction Design",
-          credits: 12,
-          lecturer: "Dr. G. Koch Kapuire",
-          color: "#8b5cf6",
-        },
-        {
-          code: "DSA612S",
-          name: "Distributed Systems",
-          credits: 12,
-          lecturer: "Prof. D. S. Jat",
-          color: "#f59e0b",
-        },
-        {
-          code: "SDN621S",
-          name: "Software Design",
-          credits: 12,
-          lecturer: "Mrs. S. Chivuno-Kuria",
-          color: "#ef4444",
-        },
-        {
-          code: "EFC621S",
-          name: "Ethics for Computing",
-          credits: 10,
-          lecturer: "Cross-departmental",
-          color: "#6366f1",
-        },
-      ];
+          // Available courses - in production, fetch from PHP/MySQL
+          const availableCourses = [
+            {
+              code: "WAD621S",
+              name: "Web Application Development",
+              credits: 12,
+              lecturer: "Dr. S. Muchinenyika",
+              color: "#3b82f6",
+            },
+            {
+              code: "DTA621S",
+              name: "Data Analytics",
+              credits: 12,
+              lecturer: "Prof. G. Iyawa",
+              color: "#10b981",
+            },
+            {
+              code: "ITD621S",
+              name: "Interaction Design",
+              credits: 12,
+              lecturer: "Dr. G. Koch Kapuire",
+              color: "#8b5cf6",
+            },
+            {
+              code: "DSA612S",
+              name: "Distributed Systems",
+              credits: 12,
+              lecturer: "Prof. D. S. Jat",
+              color: "#f59e0b",
+            },
+            {
+              code: "SDN621S",
+              name: "Software Design",
+              credits: 12,
+              lecturer: "Mrs. S. Chivuno-Kuria",
+              color: "#ef4444",
+            },
+            {
+              code: "EFC621S",
+              name: "Ethics for Computing",
+              credits: 10,
+              lecturer: "Cross-departmental",
+              color: "#6366f1",
+            },
+          ];
 
-      // Current schedule state - stores courses placed on the grid
-      let schedule = {};
+          let scheduleId = new URLSearchParams(window.location.search).get("id");
 
-      // Undo stack for undo functionality
-      let undoStack = [];
+          // Current schedule state - stores courses placed on the grid
+          let schedule = {};
 
-      // Currently dragging course
-      let draggedCourse = null;
+          // Undo stack for undo functionality
+          let undoStack = [];
 
-      /**
-       * Initialize the editor on page load
-       */
-      document.addEventListener("DOMContentLoaded", function () {
-        generateTimetableGrid();
-        populateCoursesList();
-        updateStats();
-      });
+          // Currently dragging course
+          let draggedCourse = null;
 
-      /**
-       * Generate the timetable grid structure
-       */
-      function generateTimetableGrid() {
-        const grid = document.getElementById("timetableGrid");
-        grid.innerHTML = "";
-
-        // Top-left corner cell (empty)
-        const corner = document.createElement("div");
-        corner.className = "time-label";
-        corner.textContent = "Time";
-        grid.appendChild(corner);
-
-        // Day headers
-        days.forEach((day) => {
-          const header = document.createElement("div");
-          header.className = "day-header";
-          header.textContent = day;
-          grid.appendChild(header);
-        });
-
-        // Time slots and cells
-        timeSlots.forEach((time) => {
-          // Time label
-          const timeLabel = document.createElement("div");
-          timeLabel.className = "time-label";
-          timeLabel.textContent = time;
-          grid.appendChild(timeLabel);
-
-          // Day cells for this time slot
-          days.forEach((day) => {
-            const cell = document.createElement("div");
-            cell.className = "time-slot";
-            cell.dataset.day = day;
-            cell.dataset.time = time;
-
-            // Make cells drop targets
-            cell.addEventListener("dragover", handleDragOver);
-            cell.addEventListener("drop", handleDrop);
-            cell.addEventListener("dragleave", handleDragLeave);
-
-            grid.appendChild(cell);
+          /**
+           * Initialize the editor on page load
+           */
+          document.addEventListener("DOMContentLoaded", async () => {
+            if (scheduleId) {
+              await loadSchedule(scheduleId);
+            }
+            await loadCourses(); // Assume separate course API
+            generateTimetableGrid();
+            // Render from schedule.courses_data
           });
-        });
-      }
 
-      /**
-       * Populate the courses sidebar
-       */
-      function populateCoursesList() {
-        const list = document.getElementById("coursesList");
-        list.innerHTML = "";
-
-        availableCourses.forEach((course) => {
-          const item = createCourseItem(course);
-          list.appendChild(item);
-        });
-      }
-
-      /**
-       * Create a draggable course item
-       */
-      function createCourseItem(course) {
-        const item = document.createElement("div");
-        item.className = "course-item";
-        item.draggable = true;
-        item.dataset.courseCode = course.code;
-
-        item.innerHTML = `
-                <div class="course-code">${course.code}</div>
-                <div class="course-name">${course.name}</div>
-                <div class="course-meta">
-                    <i class="fas fa-star"></i> ${course.credits} credits &nbsp;
-                    <i class="fas fa-user"></i> ${course.lecturer}
-                </div>
-            `;
-
-        // Drag event listeners
-        item.addEventListener("dragstart", handleDragStart);
-        item.addEventListener("dragend", handleDragEnd);
-
-        return item;
-      }
-
-      /**
-       * Handle drag start
-       */
-      function handleDragStart(e) {
-        this.classList.add("dragging");
-        const courseCode = this.dataset.courseCode;
-        draggedCourse = availableCourses.find((c) => c.code === courseCode);
-        e.dataTransfer.effectAllowed = "copy";
-      }
-
-      /**
-       * Handle drag end
-       */
-      function handleDragEnd(e) {
-        this.classList.remove("dragging");
-      }
-
-      /**
-       * Handle drag over drop zone
-       */
-      function handleDragOver(e) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = "copy";
-
-        // Visual feedback
-        if (!this.querySelector(".scheduled-course")) {
-          this.classList.add("valid-drop");
-        } else {
-          this.classList.add("invalid-drop");
-        }
-      }
-
-      /**
-       * Handle drag leave
-       */
-      function handleDragLeave(e) {
-        this.classList.remove("valid-drop", "invalid-drop");
-      }
-
-      /**
-       * Handle drop on time slot
-       */
-      function handleDrop(e) {
-        e.preventDefault();
-        this.classList.remove("valid-drop", "invalid-drop");
-
-        if (!draggedCourse) return;
-
-        const day = this.dataset.day;
-        const time = this.dataset.time;
-
-        // Check if slot is empty
-        if (this.querySelector(".scheduled-course")) {
-          alert("This time slot is already occupied!");
-          return;
-        }
-
-        // Add to schedule
-        const slotKey = `${day}-${time}`;
-        schedule[slotKey] = { ...draggedCourse, day, time };
-
-        // Save to undo stack
-        undoStack.push(JSON.parse(JSON.stringify(schedule)));
-        if (undoStack.length > 20) undoStack.shift(); // Keep last 20 actions
-
-        // Render the course in the grid
-        renderScheduledCourse(this, draggedCourse);
-
-        // Update statistics
-        updateStats();
-
-        // Check for conflicts
-        checkConflicts();
-
-        draggedCourse = null;
-      }
-
-      /**
-       * Render a course in a time slot
-       */
-      function renderScheduledCourse(cell, course) {
-        const block = document.createElement("div");
-        block.className = "scheduled-course";
-        block.style.background = `linear-gradient(135deg, ${course.color}, ${course.color}dd)`;
-        block.draggable = true;
-
-        block.innerHTML = `
-                <button class="remove-course" onclick="removeCourse(this)">
-                    <i class="fas fa-times"></i>
-                </button>
-                <div class="scheduled-course-code">${course.code}</div>
-                <div class="scheduled-course-name">${course.name}</div>
-                <div class="scheduled-course-info">
-                    <i class="fas fa-user"></i> ${course.lecturer}
-                </div>
-            `;
-
-        cell.appendChild(block);
-      }
-
-      /**
-       * Remove a course from the schedule
-       */
-      function removeCourse(button) {
-        const block = button.closest(".scheduled-course");
-        const cell = block.closest(".time-slot");
-        const day = cell.dataset.day;
-        const time = cell.dataset.time;
-        const slotKey = `${day}-${time}`;
-
-        // Save to undo stack
-        undoStack.push(JSON.parse(JSON.stringify(schedule)));
-
-        // Remove from schedule
-        delete schedule[slotKey];
-
-        // Remove from DOM
-        block.remove();
-
-        // Update stats
-        updateStats();
-        checkConflicts();
-      }
-
-      /**
-       * Update statistics display
-       */
-      function updateStats() {
-        const courses = Object.values(schedule);
-        const totalCourses = new Set(courses.map((c) => c.code)).size;
-        const totalCredits = courses.reduce((sum, c) => {
-          // Only count each unique course once
-          return sum;
-        }, 0);
-
-        // Calculate unique courses and their credits
-        const uniqueCourses = {};
-        courses.forEach((c) => {
-          uniqueCourses[c.code] = c.credits;
-        });
-        const credits = Object.values(uniqueCourses).reduce((a, b) => a + b, 0);
-
-        document.getElementById("totalCourses").textContent = totalCourses;
-        document.getElementById("totalCredits").textContent = credits;
-        document.getElementById("totalHours").textContent = courses.length;
-      }
-
-      /**
-       * Check for scheduling conflicts
-       */
-      function checkConflicts() {
-        // Reset conflict indicators
-        document.querySelectorAll(".scheduled-course").forEach((block) => {
-          block.classList.remove("conflict");
-        });
-
-        let conflictCount = 0;
-
-        // Check for time overlaps (simplified - just checks if multiple courses same time)
-        // In production, this would be more sophisticated
-
-        document.getElementById("conflictCount").textContent = conflictCount;
-      }
-
-      /**
-       * Filter courses in sidebar
-       */
-      function filterCourses() {
-        const searchTerm = document
-          .getElementById("courseSearchInput")
-          .value.toLowerCase();
-        const items = document.querySelectorAll(".course-item");
-
-        items.forEach((item) => {
-          const text = item.textContent.toLowerCase();
-          item.style.display = text.includes(searchTerm) ? "block" : "none";
-        });
-      }
-
-      /**
-       * Clear entire schedule
-       */
-      function clearSchedule() {
-        if (!confirm("Are you sure you want to clear the entire schedule?"))
-          return;
-
-        undoStack.push(JSON.parse(JSON.stringify(schedule)));
-        schedule = {};
-
-        document
-          .querySelectorAll(".scheduled-course")
-          .forEach((block) => block.remove());
-        updateStats();
-      }
-
-      /**
-       * Undo last action
-       */
-      function undoLastAction() {
-        if (undoStack.length === 0) {
-          alert("Nothing to undo");
-          return;
-        }
-
-        schedule = undoStack.pop();
-
-        // Re-render grid
-        document
-          .querySelectorAll(".scheduled-course")
-          .forEach((block) => block.remove());
-
-        Object.entries(schedule).forEach(([key, course]) => {
-          const [day, time] = key.split("-");
-          const cell = document.querySelector(
-            `[data-day="${day}"][data-time="${time}"]`
-          );
-          if (cell) {
-            renderScheduledCourse(cell, course);
+          async function loadSchedule(id) {
+        try {
+          const response = await fetch(`/api/schedules/get.php?id=${id}`, {
+            method: 'GET',
+            credentials: 'include'
+          });
+          const data = await response.json();
+          if (data.success) {
+            schedule = data.schedule;
+            document.getElementById("scheduleTitle").textContent = `${schedule.semester} - ${schedule.name}`;
+            // Populate grid from schedule.courses_data
+            // Update stats from schedule.statistics
           }
-        });
-
-        updateStats();
+        } catch (error) {
+          // Handle
+        }
       }
 
-      /**
-       * Save schedule
-       */
-      function saveSchedule() {
-        // In production, send to PHP backend
-        console.log("Saving schedule:", schedule);
-
-        // Simulate save
-        const scheduleName =
-          document.getElementById("scheduleTitle").textContent;
-        localStorage.setItem(
-          "currentSchedule",
-          JSON.stringify({
-            name: scheduleName,
-            courses: schedule,
-            lastSaved: new Date(),
-          })
-        );
-
-        alert("Schedule saved successfully!");
+      async function saveSchedule() {
+        const payload = {
+          name: document.getElementById("scheduleTitle").textContent.split(' - ')[1], // Parse
+          semester: /* from UI */,
+          year: /* from UI */,
+          description: /* from UI */,
+          status: /* from UI */,
+          courses: /* from global schedule object */
+        };
+        try {
+          let response;
+          if (scheduleId) {
+            payload.id = scheduleId;
+            response = await fetch('/api/schedules/update.php', {
+              method: 'PUT',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+          } else {
+            response = await fetch('/api/schedules/create.php', {
+              method: 'POST',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            const data = await response.json();
+            if (data.success) scheduleId = data.schedule.id; // Set for future updates
+          }
+          const data = await response.json();
+          if (data.success) {
+            NUSTApp.showNotification("Schedule saved!", "success");
+          }
+        } catch (error) {
+          // Handle
+        }
       }
 
-      /**
-       * View schedule preview
-       */
-      function viewSchedule() {
-        alert("Preview mode - Schedule would be displayed in read-only format");
+      async function clearSchedule() {
+        if (scheduleId && confirm("Delete?")) {
+          await fetch(`/api/schedules/delete.php?id=${scheduleId}`, { method: 'DELETE', credentials: 'include' });
+          // Reset UI
+        }
       }
 
-      // Navigation functions
-      function toggleMobileMenu() {
-        document.getElementById("navbarMenu").classList.toggle("active");
-      }
+          /**
+           * Generate the timetable grid structure
+           */
+          function generateTimetableGrid() {
+            const grid = document.getElementById("timetableGrid");
+            grid.innerHTML = "";
+
+            // Top-left corner cell (empty)
+            const corner = document.createElement("div");
+            corner.className = "time-label";
+            corner.textContent = "Time";
+            grid.appendChild(corner);
+
+            // Day headers
+            days.forEach((day) => {
+              const header = document.createElement("div");
+              header.className = "day-header";
+              header.textContent = day;
+              grid.appendChild(header);
+            });
+
+            // Time slots and cells
+            timeSlots.forEach((time) => {
+              // Time label
+              const timeLabel = document.createElement("div");
+              timeLabel.className = "time-label";
+              timeLabel.textContent = time;
+              grid.appendChild(timeLabel);
+
+              // Day cells for this time slot
+              days.forEach((day) => {
+                const cell = document.createElement("div");
+                cell.className = "time-slot";
+                cell.dataset.day = day;
+                cell.dataset.time = time;
+
+                // Make cells drop targets
+                cell.addEventListener("dragover", handleDragOver);
+                cell.addEventListener("drop", handleDrop);
+                cell.addEventListener("dragleave", handleDragLeave);
+
+                grid.appendChild(cell);
+              });
+            });
+          }
+
+          /**
+           * Populate the courses sidebar
+           */
+          function populateCoursesList() {
+            const list = document.getElementById("coursesList");
+            list.innerHTML = "";
+
+            availableCourses.forEach((course) => {
+              const item = createCourseItem(course);
+              list.appendChild(item);
+            });
+          }
+
+          /**
+           * Create a draggable course item
+           */
+          function createCourseItem(course) {
+            const item = document.createElement("div");
+            item.className = "course-item";
+            item.draggable = true;
+            item.dataset.courseCode = course.code;
+
+            item.innerHTML = `
+                    <div class="course-code">${course.code}</div>
+                    <div class="course-name">${course.name}</div>
+                    <div class="course-meta">
+                        <i class="fas fa-star"></i> ${course.credits} credits &nbsp;
+                        <i class="fas fa-user"></i> ${course.lecturer}
+                    </div>
+                `;
+
+            // Drag event listeners
+            item.addEventListener("dragstart", handleDragStart);
+            item.addEventListener("dragend", handleDragEnd);
+
+            return item;
+          }
+
+          /**
+           * Handle drag start
+           */
+          function handleDragStart(e) {
+            this.classList.add("dragging");
+            const courseCode = this.dataset.courseCode;
+            draggedCourse = availableCourses.find((c) => c.code === courseCode);
+            e.dataTransfer.effectAllowed = "copy";
+          }
+
+          /**
+           * Handle drag end
+           */
+          function handleDragEnd(e) {
+            this.classList.remove("dragging");
+          }
+
+          /**
+           * Handle drag over drop zone
+           */
+          function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "copy";
+
+            // Visual feedback
+            if (!this.querySelector(".scheduled-course")) {
+              this.classList.add("valid-drop");
+            } else {
+              this.classList.add("invalid-drop");
+            }
+          }
+
+          /**
+           * Handle drag leave
+           */
+          function handleDragLeave(e) {
+            this.classList.remove("valid-drop", "invalid-drop");
+          }
+
+          /**
+           * Handle drop on time slot
+           */
+          function handleDrop(e) {
+            e.preventDefault();
+            this.classList.remove("valid-drop", "invalid-drop");
+
+            if (!draggedCourse) return;
+
+            const day = this.dataset.day;
+            const time = this.dataset.time;
+
+            // Check if slot is empty
+            if (this.querySelector(".scheduled-course")) {
+              alert("This time slot is already occupied!");
+              return;
+            }
+
+            // Add to schedule
+            const slotKey = `${day}-${time}`;
+            schedule[slotKey] = { ...draggedCourse, day, time };
+
+            // Save to undo stack
+            undoStack.push(JSON.parse(JSON.stringify(schedule)));
+            if (undoStack.length > 20) undoStack.shift(); // Keep last 20 actions
+
+            // Render the course in the grid
+            renderScheduledCourse(this, draggedCourse);
+
+            // Update statistics
+            updateStats();
+
+            // Check for conflicts
+            checkConflicts();
+
+            draggedCourse = null;
+          }
+
+          /**
+           * Render a course in a time slot
+           */
+          function renderScheduledCourse(cell, course) {
+            const block = document.createElement("div");
+            block.className = "scheduled-course";
+            block.style.background = `linear-gradient(135deg, ${course.color}, ${course.color}dd)`;
+            block.draggable = true;
+
+            block.innerHTML = `
+                    <button class="remove-course" onclick="removeCourse(this)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <div class="scheduled-course-code">${course.code}</div>
+                    <div class="scheduled-course-name">${course.name}</div>
+                    <div class="scheduled-course-info">
+                        <i class="fas fa-user"></i> ${course.lecturer}
+                    </div>
+                `;
+
+            cell.appendChild(block);
+          }
+
+          /**
+           * Remove a course from the schedule
+           */
+          function removeCourse(button) {
+            const block = button.closest(".scheduled-course");
+            const cell = block.closest(".time-slot");
+            const day = cell.dataset.day;
+            const time = cell.dataset.time;
+            const slotKey = `${day}-${time}`;
+
+            // Save to undo stack
+            undoStack.push(JSON.parse(JSON.stringify(schedule)));
+
+            // Remove from schedule
+            delete schedule[slotKey];
+
+            // Remove from DOM
+            block.remove();
+
+            // Update stats
+            updateStats();
+            checkConflicts();
+          }
+
+          /**
+           * Update statistics display
+           */
+          function updateStats() {
+            const courses = Object.values(schedule);
+            const totalCourses = new Set(courses.map((c) => c.code)).size;
+            const totalCredits = courses.reduce((sum, c) => {
+              // Only count each unique course once
+              return sum;
+            }, 0);
+
+            // Calculate unique courses and their credits
+            const uniqueCourses = {};
+            courses.forEach((c) => {
+              uniqueCourses[c.code] = c.credits;
+            });
+            const credits = Object.values(uniqueCourses).reduce((a, b) => a + b, 0);
+
+            document.getElementById("totalCourses").textContent = totalCourses;
+            document.getElementById("totalCredits").textContent = credits;
+            document.getElementById("totalHours").textContent = courses.length;
+          }
+
+          /**
+           * Check for scheduling conflicts
+           */
+          function checkConflicts() {
+            // Reset conflict indicators
+            document.querySelectorAll(".scheduled-course").forEach((block) => {
+              block.classList.remove("conflict");
+            });
+
+            let conflictCount = 0;
+
+            // Check for time overlaps (simplified - just checks if multiple courses same time)
+            // In production, this would be more sophisticated
+
+            document.getElementById("conflictCount").textContent = conflictCount;
+          }
+
+          /**
+           * Filter courses in sidebar
+           */
+          function filterCourses() {
+            const searchTerm = document
+              .getElementById("courseSearchInput")
+              .value.toLowerCase();
+            const items = document.querySelectorAll(".course-item");
+
+            items.forEach((item) => {
+              const text = item.textContent.toLowerCase();
+              item.style.display = text.includes(searchTerm) ? "block" : "none";
+            });
+          }
+
+          /**
+           * Clear entire schedule
+           */
+          function clearSchedule() {
+            if (!confirm("Are you sure you want to clear the entire schedule?"))
+              return;
+
+            undoStack.push(JSON.parse(JSON.stringify(schedule)));
+            schedule = {};
+
+            document
+              .querySelectorAll(".scheduled-course")
+              .forEach((block) => block.remove());
+            updateStats();
+          }
+
+          /**
+           * Undo last action
+           */
+          function undoLastAction() {
+            if (undoStack.length === 0) {
+              alert("Nothing to undo");
+              return;
+            }
+
+            schedule = undoStack.pop();
+
+            // Re-render grid
+            document
+              .querySelectorAll(".scheduled-course")
+              .forEach((block) => block.remove());
+
+            Object.entries(schedule).forEach(([key, course]) => {
+              const [day, time] = key.split("-");
+              const cell = document.querySelector(
+                `[data-day="${day}"][data-time="${time}"]`
+              );
+              if (cell) {
+                renderScheduledCourse(cell, course);
+              }
+            });
+
+            updateStats();
+          }
+
+          /**
+           * Save schedule
+           */
+          function saveSchedule() {
+            // In production, send to PHP backend
+            console.log("Saving schedule:", schedule);
+
+            // Simulate save
+            const scheduleName =
+              document.getElementById("scheduleTitle").textContent;
+            localStorage.setItem(
+              "currentSchedule",
+              JSON.stringify({
+                name: scheduleName,
+                courses: schedule,
+                lastSaved: new Date(),
+              })
+            );
+
+            alert("Schedule saved successfully!");
+          }
+
+          /**
+           * View schedule preview
+           */
+          function viewSchedule() {
+            alert("Preview mode - Schedule would be displayed in read-only format");
+          }
+
+          // Navigation functions
+          function toggleMobileMenu() {
+            document.getElementById("navbarMenu").classList.toggle("active");
+          }
     </script>
 
     <script>

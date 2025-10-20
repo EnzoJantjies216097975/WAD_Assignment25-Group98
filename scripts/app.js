@@ -1002,24 +1002,21 @@ function formatTime(time) {
 // USER SESSION MANAGEMENT
 async function loadUserSession() {
   try {
-    const response = await dataLoader.loadData("/auth/session.php");
-    if (response.success && response.user) {
-      AppState.currentUser = response.user;
-      updateUIForLoggedInUser();
+    const response = await fetch("/api/auth/session-check.php", {
+      method: "GET",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    if (data.success && data.authenticated) {
+      AppState.currentUser = data.user; // { id, full_name, email, program, year_level, initials }
+      // Update global UI if needed
     } else {
-      // Redirect to login if on protected page
-      const protectedPages = [
-        "dashboard.html",
-        "my-schedules.html",
-        "schedule-editor.html",
-      ];
-      const currentPage = window.location.pathname.split("/").pop();
-      if (protectedPages.includes(currentPage)) {
-        window.location.href = "login.html";
-      }
+      redirectToLogin();
     }
   } catch (error) {
-    console.error("Session loading error:", error);
+    console.error("Session check error:", error);
+    redirectToLogin();
   }
 }
 

@@ -404,6 +404,14 @@
         document.getElementById("generateLinkBtn").disabled = false;
       }
 
+      async function loadSchedules() {
+        const response = await fetch("/api/schedules/list.php");
+        const data = await response.json();
+        if (data.success) {
+          schedules = data.data;
+        }
+      }
+
       /**
        * Generate shareable link
        */

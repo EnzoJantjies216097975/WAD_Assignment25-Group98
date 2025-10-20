@@ -322,6 +322,70 @@
         },
       ];
 
+      async function loadSchedules() {
+        try {
+          const response = await fetch(
+            "/api/schedules/list.php?sort=updated_at&order=DESC",
+            {
+              method: "GET",
+              credentials: "include",
+            }
+          );
+          const data = await response.json();
+          if (data.success) {
+            schedules = data.data;
+            displaySchedules();
+          }
+        } catch (error) {
+          // Handle
+        }
+      }
+
+      async function duplicateSchedule(id) {
+        const original = schedules.find((s) => s.id === id);
+        const payload = {
+          name: original.name + " (Copy)",
+          semester: original.semester,
+          year: original.year,
+          description: original.description,
+          courses: original.courses_data,
+          status: "draft",
+        };
+        try {
+          const response = await fetch("/api/schedules/create.php", {
+            method: "POST",
+            body: JSON.stringify(payload),
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+          });
+          const data = await response.json();
+          if (data.success) {
+            await loadSchedules(); // Refresh
+          }
+        } catch (error) {
+          // Handle
+        }
+      }
+
+      async function confirmDelete() {
+        try {
+          const response = await fetch(
+            `/api/schedules/delete.php?id=${currentDeleteId}`,
+            {
+              method: "DELETE",
+              credentials: "include",
+            }
+          );
+          const data = await response.json();
+          if (data.success) {
+            await loadSchedules();
+            closeDeleteModal();
+          }
+        } catch (error) {
+          // Handle
+        }
+      }
+
       let currentDeleteId = null;
 
       // Initialize on page load

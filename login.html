@@ -484,6 +484,57 @@
         });
       });
 
+      async function login(event) {
+        event.preventDefault();
+        const payload = {
+          email: document.getElementById("email").value,
+          password: document.getElementById("password").value,
+          remember_me: document.getElementById("rememberMe").checked,
+        };
+        try {
+          const response = await fetch("/api/auth/login.php", {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const data = await response.json();
+          if (data.success) {
+            window.location.href = data.redirect; // dashboard.html
+          } else {
+            NUSTApp.showNotification("Login failed", "error");
+          }
+        } catch (error) {
+          // Handle
+        }
+      }
+
+      async function register(event) {
+        event.preventDefault();
+        const payload = {
+          fullname: document.getElementById("fullname").value,
+          student_number: document.getElementById("studentNumber").value,
+          email: document.getElementById("email").value,
+          password: document.getElementById("password").value,
+          program: document.getElementById("program").value,
+          year_level: parseInt(document.getElementById("yearLevel").value),
+        };
+        try {
+          const response = await fetch("/api/auth/register.php", {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const data = await response.json();
+          if (data.success) {
+            window.location.href = data.redirect; // dashboard.html
+          }
+        } catch (error) {
+          // Handle
+        }
+      }
+
       function loadPageData() {
         NUSTApp.showGlobalLoading();
 

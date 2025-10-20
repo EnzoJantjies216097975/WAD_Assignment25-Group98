@@ -304,114 +304,196 @@
 
     <!-- JAVASCRIPT -->
     <script>
-      /**
-       * Dashboard JavaScript
-       * Handles user interface interactions and data management
-       */
+          /**
+           * Dashboard JavaScript
+           * Handles user interface interactions and data management
+           */
 
-      // Initialize dashboard when page loads
-      document.addEventListener("DOMContentLoaded", function () {
-        loadUserData();
-        loadDashboardStats();
-        loadRecentSchedules();
-      });
+          // Initialize dashboard when page loads
+          document.addEventListener("DOMContentLoaded", function () {
+            loadUserData();
+            loadDashboardStats();
+            loadRecentSchedules();
+          });
 
-      /**
-       * Load user data from localStorage or session
-       * In a real application, this would fetch from your PHP backend
-       */
-      function loadUserData() {
-        // For demonstration, we'll use mock data
-        // Replace this with actual API call in production
-        const userData = {
-          name: "Nathan Duarte",
-          studentNumber: "217090427",
-          program: "Computer Science - Software Development",
-          email: "nathan.duarte@nust.na",
-        };
-
-        // Update UI with user data
-        const firstName = userData.name.split(" ")[0];
-        const initials = userData.name
-          .split(" ")
-          .map((n) => n[0])
-          .join("");
-
-        document.getElementById("userName").textContent = userData.name;
-        document.getElementById("welcomeName").textContent = firstName;
-        document.getElementById("userInitials").textContent = initials;
-        document.getElementById("userProgram").textContent = userData.program;
-      }
-
-      /**
-       * Load dashboard statistics
-       * These numbers would come from your database via PHP API
-       */
-      function loadDashboardStats() {
-        // Mock data - replace with API call
-        const stats = {
-          totalSchedules: 3,
-          activeSchedules: 1,
-          totalCourses: 6,
-          sharedSchedules: 1,
-        };
-
-        document.getElementById("totalSchedules").textContent =
-          stats.totalSchedules;
-        document.getElementById("activeSchedules").textContent =
-          stats.activeSchedules;
-        document.getElementById("totalCourses").textContent =
-          stats.totalCourses;
-        document.getElementById("sharedSchedules").textContent =
-          stats.sharedSchedules;
-      }
-
-      /**
-       * Load recent schedules from database
-       * This would query your MySQL database through PHP
-       */
-      function loadRecentSchedules() {
-        // Schedule data would come from your backend
-        // For now, it's hardcoded in the HTML
-        console.log("Recent schedules loaded");
-      }
-
-      /**
-       * Open a specific schedule in the editor
-       * @param {string} scheduleId - The ID of the schedule to open
-       */
-      function openSchedule(scheduleId) {
-        window.location.href = `schedule-editor.html?id=${scheduleId}`;
-      }
-
-      /**
-       * Toggle mobile menu visibility
-       */
-      function toggleMobileMenu() {
-        document.getElementById("navbarMenu").classList.toggle("active");
-      }
-
-      /**
-       * Show notifications (placeholder for future feature)
-       */
-      function showNotifications() {
-        alert("Notifications feature coming soon!");
-      }
-
-      /**
-       * Logout function
-       * Clears session data and redirects to login
-       */
-      function logout() {
-        if (confirm("Are you sure you want to logout?")) {
-          // Clear any stored session data
-          localStorage.removeItem("userSession");
-          sessionStorage.clear();
-
-          // Redirect to login page
-          window.location.href = "login.html";
+          /**
+           * Load user data from localStorage or session
+           * In a real application, this would fetch from your PHP backend
+           */
+          async function loadUserData() {
+        try {
+          const response = await fetch('/api/users/get.php', {
+            method: 'GET',
+            credentials: 'include'
+          });
+          const data = await response.json();
+          if (data.success) {
+            const user = data.profile;
+            document.getElementById("userName").textContent = user.full_name;
+            document.getElementById("welcomeName").textContent = user.full_name.split(" ")[0];
+            document.getElementById("userInitials").textContent = user.initials;
+            document.getElementById("userProgram").textContent = user.program;
+            // Apply preferences, e.g., theme
+            if (user.preferences.theme === 'dark') document.body.classList.add('dark-theme');
+          } else {
+            NUSTApp.showNotification("Failed to load user data", "error");
+          }
+        } catch (error) {
+          NUSTApp.showNotification("Network error", "error");
         }
       }
+
+      async function loadDashboardStats() {
+        try {
+          const response = await fetch('/api/dashboard/stats.php', {
+            method: 'GET',
+            credentials: 'include'
+          });
+          const data = await response.json();
+          if (data.success) {
+            const stats = data.dashboard_data.user_statistics.schedules; // e.g., total_schedules, active_schedules
+            document.getElementById("totalSchedules").textContent = stats.total_schedules;
+            document.getElementById("activeSchedules").textContent = stats.active_schedules;
+            document.getElementById("totalCourses").textContent = data.dashboard_data.user_statistics.courses.total_courses_enrolled; // From course_stats
+            document.getElementById("sharedSchedules").textContent = stats.shared_schedules; // If extended
+            // Display recent_activity in UI
+            const recentContainer = document.getElementById("recentActivityContainer");
+            recentContainer.innerHTML = data.dashboard_data.recent_activity.map(act => `
+              <div>${act.name} (${act.status}) - ${timeAgo(new Date(act.updated_at))}</div>
+            `).join('');
+          } else {
+            showFallbackStats();
+          }
+        } catch (error) {
+          showFallbackStats();
+        }
+      }
+
+            // Update UI with user data
+            const firstName = userData.name.split(" ")[0];
+            const initials = userData.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("");
+
+            document.getElementById("userName").textContent = userData.name;
+            document.getElementById("welcomeName").textContent = firstName;
+            document.getElementById("userInitials").textContent = initials;
+            document.getElementById("userProgram").textContent = userData.program;
+          }
+
+          /**
+           * Load dashboard statistics
+           * These numbers would come from your database via PHP API
+           */
+          async function loadDashboardStats() {
+            try {
+              const response = await fetch("/api/schedules/list.php", {
+                method: "GET",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+              });
+              const data = await response.json();
+              if (data.success) {
+                const stats = data.statistics;
+                document.getElementById("totalSchedules").textContent =
+                  stats.total || 0;
+                document.getElementById("activeSchedules").textContent =
+                  stats.active || 0;
+                // Derive totalCourses and sharedSchedules if needed (query courses separately or extend backend)
+                document.getElementById("totalCourses").textContent =
+                  data.data.reduce((sum, s) => sum + s.course_count, 0) || 0;
+                document.getElementById("sharedSchedules").textContent =
+                  data.data.filter((s) => s.share_token).length || 0;
+              } else {
+                showFallbackStats();
+              }
+            } catch (error) {
+              showFallbackStats();
+            }
+          }
+          /**
+           * Load recent schedules from database
+           * This would query your MySQL database through PHP
+           */
+          async function loadRecentSchedules() {
+            try {
+              const response = await fetch(
+                "/api/schedules/list.php?sort=updated_at&order=DESC",
+                {
+                  // Get latest
+                  method: "GET",
+                  credentials: "include",
+                }
+              );
+              const data = await response.json();
+              if (data.success) {
+                const recent = data.data.slice(0, 3); // Last 3 updated
+                const container = document.getElementById(
+                  "recentSchedulesContainer"
+                );
+                container.innerHTML = "";
+                recent.forEach((schedule) => {
+                  const item = document.createElement("div");
+                  item.className = "schedule-item";
+                  item.onclick = () => openSchedule(schedule.id);
+                  // Build HTML using schedule.name, schedule.status, schedule.course_count, schedule.updated_ago
+                  item.innerHTML = `
+                <div class="schedule-header">
+                  <div class="schedule-name">
+                    <i class="fas fa-calendar"></i> ${schedule.name}
+                  </div>
+                  <span class="badge badge-${schedule.status_info.color}">${schedule.status_info.label}</span>
+                </div>
+                <div class="schedule-meta">
+                  <i class="fas fa-book"></i> ${schedule.course_count} courses &nbsp;|&nbsp;
+                  <i class="fas fa-clock"></i> ${schedule.updated_ago}
+                </div>
+              `;
+                  container.appendChild(item);
+                });
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          }
+
+          /**
+           * Open a specific schedule in the editor
+           * @param {string} scheduleId - The ID of the schedule to open
+           */
+          function openSchedule(scheduleId) {
+            window.location.href = `schedule-editor.html?id=${scheduleId}`;
+          }
+
+          /**
+           * Toggle mobile menu visibility
+           */
+          function toggleMobileMenu() {
+            document.getElementById("navbarMenu").classList.toggle("active");
+          }
+
+          /**
+           * Show notifications (placeholder for future feature)
+           */
+          function showNotifications() {
+            alert("Notifications feature coming soon!");
+          }
+
+          /**
+           * Logout function
+           * Clears session data and redirects to login
+           */
+          function logout() {
+            if (confirm("Are you sure you want to logout?")) {
+              // Clear any stored session data
+              localStorage.removeItem("userSession");
+              sessionStorage.clear();
+
+              // Redirect to login page
+              window.location.href = "login.html";
+            }
+          }
     </script>
 
     <script>

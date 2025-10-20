@@ -651,6 +651,108 @@
         });
       });
 
+      async function loadUserProfile() {
+        try {
+          const response = await fetch("/api/users/get.php", {
+            method: "GET",
+            credentials: "include",
+          });
+          const data = await response.json();
+          if (data.success) {
+            const user = data.profile;
+            document.getElementById("fullName").value = user.full_name;
+            document.getElementById("email").value = user.email;
+            document.getElementById("program").value = user.program;
+            document.getElementById("yearLevel").value = user.year_level;
+            // Populate preferences checkboxes/selects from user.preferences
+            document.getElementById("themeSelect").value =
+              user.preferences.theme;
+            // Display current picture
+            if (user.profile_picture) {
+              document.getElementById("currentAvatar").src =
+                "/" + user.profile_picture;
+            }
+            // Show stats
+            const stats = user.statistics;
+            document.getElementById("totalSchedulesStat").textContent =
+              stats.total_schedules;
+          }
+        } catch (error) {
+          // Handle
+        }
+      }
+
+      async function savePersonalInfo(event) {
+        event.preventDefault();
+        const payload = {
+          full_name: document.getElementById("fullName").value,
+          email: document.getElementById("email").value,
+          program: document.getElementById("program").value,
+          year_level: parseInt(document.getElementById("yearLevel").value),
+        };
+        try {
+          const response = await fetch("/api/users/update.php", {
+            method: "PUT",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const data = await response.json();
+          if (data.success) {
+            NUSTApp.showNotification("Profile updated!", "success");
+            loadUserProfile(); // Refresh
+          }
+        } catch (error) {
+          NUSTApp.showNotification("Update failed", "error");
+        }
+      }
+
+      async function savePreferences(event) {
+        event.preventDefault();
+        const payload = {
+          preferences: {
+            theme: document.getElementById("themeSelect").value,
+            notifications: {
+              email_notifications:
+                document.getElementById("emailNotifications").checked,
+              // ... other prefs
+            },
+            // ... collect all
+          },
+        };
+        // Similar fetch PUT to /api/users/update.php
+      }
+
+      async function changePassword(event) {
+        event.preventDefault();
+        const payload = {
+          current_password: document.getElementById("currentPassword").value,
+          new_password: document.getElementById("newPassword").value,
+        };
+        // Similar fetch PUT
+      }
+
+      async function uploadProfilePicture() {
+        const fileInput = document.getElementById("profilePictureInput");
+        if (!fileInput.files[0]) return;
+        const formData = new FormData();
+        formData.append("profile_picture", fileInput.files[0]);
+        try {
+          const response = await fetch("/api/users/profile-picture.php", {
+            method: "POST",
+            credentials: "include",
+            body: formData,
+          });
+          const data = await response.json();
+          if (data.success) {
+            document.getElementById("currentAvatar").src =
+              data.profile_picture_url; // From response
+          }
+        } catch (error) {
+          // Handle
+        }
+      }
+
       function loadPageData() {
         NUSTApp.showGlobalLoading();
 
