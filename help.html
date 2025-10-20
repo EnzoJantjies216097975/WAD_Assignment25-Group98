@@ -399,5 +399,74 @@
         }
     </script>
 
+    <script src="scripts/app.js"></script>
+
+    <script>
+      // Page-specific JavaScript can use the global NUSTApp object
+      $(document).ready(function () {
+        // Show a welcome notification
+        NUSTApp.showNotification(
+          "Welcome to the enhanced timetable manager!",
+          "success"
+        );
+
+        // Load initial data
+        loadPageData();
+
+        // Custom form handling
+        $("#customForm").on("submit", function (e) {
+          e.preventDefault();
+
+          if (NUSTApp.validateForm(this)) {
+            submitCustomForm();
+          }
+        });
+      });
+
+      function loadPageData() {
+        NUSTApp.showGlobalLoading();
+
+        NUSTApp.dataLoader
+          .loadData("/dashboard/stats.php")
+          .then((data) => {
+            displayDashboardData(data);
+            NUSTApp.hideGlobalLoading();
+          })
+          .catch((error) => {
+            NUSTApp.showNotification("Failed to load data", "error");
+            NUSTApp.hideGlobalLoading();
+          });
+      }
+
+      function displayDashboardData(data) {
+        $("#statsContainer")
+          .html(
+            `
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">${data.totalSchedules}</div>
+                <div class="stat-label">Total Schedules</div>
+            </div>
+            <!-- More stats... -->
+        </div>
+    `
+          )
+          .addClass("fade-in");
+      }
+
+      // Custom notification examples
+      function showSuccessMessage() {
+        NUSTApp.showNotification("Schedule saved successfully!", "success");
+      }
+
+      function showErrorMessage() {
+        NUSTApp.showNotification("An error occurred while saving", "error");
+      }
+
+      function showInfoMessage() {
+        NUSTApp.showNotification("Auto-save enabled", "info");
+      }
+    </script>
+
 </body>
 </html>

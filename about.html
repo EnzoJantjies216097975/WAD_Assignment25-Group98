@@ -1,28 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - NUST Timetable Manager</title>
-    
+
     <!-- CSS & Font Awesome -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .team-member-card {
+            transition: var(--transition);
+        }
+
+        .team-member-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .team-member-card .card {
+            height: 100%;
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .team-member-card:hover .card {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .lecturer-card {
+            transition: var(--transition);
+        }
+
+        .lecturer-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .lecturer-card .card {
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        .lecturer-card:hover .card {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .project-info-card .card {
+            border: none;
+            box-shadow: var(--shadow-md);
+        }
+
+        @media (max-width: 768px) {
+            .team-members-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .lecturers-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .project-info-details {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+
 </head>
+
 <body>
-    
+
     <!-- NAVIGATION BAR -->
     <nav class="navbar">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60" padding="100" margin="1000"> &nbsp; Timetable Manager
+                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60" padding="100"
+                    margin="1000"> &nbsp; Timetable Manager
             </a>
-            
+
             <!-- Mobile Toggle Button -->
             <button class="navbar-toggle" onclick="toggleMenu()" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
+                <i class="fas fa-bars"></i>
             </button>
-            
+
             <div class="navbar-menu" id="navbarMenu">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -47,10 +107,10 @@
 
     <!-- PAGE HEADER -->
     <section class="hero-section text-center py-5">
-            <h1 class="hero-title">About Our Project</h1>
-            <p class="hero-subtitle">
-                Transforming academic scheduling for NUST students
-            </p>
+        <h1 class="hero-title">About Our Project</h1>
+        <p class="hero-subtitle">
+            Transforming academic scheduling for NUST students
+        </p>
         </div>
     </section>
 
@@ -62,15 +122,23 @@
                 <div class="col-lg-8 col-12" style="margin: 0 auto;">
                     <h2 class="section-title">Introduction & Background</h2>
                     <p style="font-size: 1.2rem; line-height: 1.5;">
-                        The NUST Timetable Manager is a comprehensive web-based application developed to help Namibia University of Science and
+                        The NUST Timetable Manager is a comprehensive web-based application developed to help Namibia
+                        University of Science and
                         Technology students with their scheduling issues. <br><br>
-                        Students now face more complicated scheduling issues as they navigate their new educational environment. Creating the perfect 
-                        timetable has become a significant administrative burden for students due to the wide range of courses, elective options, campus
-                        locations, and competing time slots. Spreadsheets, paper planners, and screenshot collections are examples of manual procedures that
-                        many students now employ, which leads to inefficiencies, schedule conflicts, and lost possibilities for better time management.<br><br>
-                        The University Timetable Manager addresses this pressing need by providing a centralized, interactive web application that simplifies the 
-                        whole scheduling procedure. These days, having a reliable digital solution for organizing timetables is crucial in our quickly digitizing 
-                        educational world. By reducing the administrative load of scheduling, students can now focus more on their studies, since this project
+                        Students now face more complicated scheduling issues as they navigate their new educational
+                        environment. Creating the perfect
+                        timetable has become a significant administrative burden for students due to the wide range of
+                        courses, elective options, campus
+                        locations, and competing time slots. Spreadsheets, paper planners, and screenshot collections
+                        are examples of manual procedures that
+                        many students now employ, which leads to inefficiencies, schedule conflicts, and lost
+                        possibilities for better time management.<br><br>
+                        The University Timetable Manager addresses this pressing need by providing a centralized,
+                        interactive web application that simplifies the
+                        whole scheduling procedure. These days, having a reliable digital solution for organizing
+                        timetables is crucial in our quickly digitizing
+                        educational world. By reducing the administrative load of scheduling, students can now focus
+                        more on their studies, since this project
                         understands the apparent link between academic achievement and effective time management.
                     </p>
                 </div>
@@ -81,9 +149,12 @@
                 <div class="col-lg-8 col-12" style="margin: 0 auto;">
                     <h2 class="section-title">Problem Statement</h2>
                     <p style="font-size: 1.2rem; line-height: 1.5;">
-                        There are currently very few integrated, user-friendly tools available to students for efficiently creating, visualizing, and managing their
-                        university timetables. The current manual methods are prone to mistakes, difficult to modify, and don't provide features for conflict
-                        detection or schedule optimization. In addition, students can't easily share timetables with their peers for coordination or save multiple
+                        There are currently very few integrated, user-friendly tools available to students for
+                        efficiently creating, visualizing, and managing their
+                        university timetables. The current manual methods are prone to mistakes, difficult to modify,
+                        and don't provide features for conflict
+                        detection or schedule optimization. In addition, students can't easily share timetables with
+                        their peers for coordination or save multiple
                         schedule variations for comparison and cooperation.<br>
                     </p>
                 </div>
@@ -96,163 +167,228 @@
                 <div class="row mb-5">
                     <div class="col-lg-8 col-12" style="margin: 0 auto;">
                         <h2 class="section-title">Our Solution</h2>
-                            <p style="font-size: 1.2rem; line-height: 1.5;">
-                                <br>The NUST University Timetable Manager is a fully functioning web application that transforms how students manage their 
-                                academic timetables. The application features a visually appealing grid-based interface representing the weekly calendar, where 
-                                each cell corresponds to a specific time slot and day combination.<br><br>
-                            </p>
-                            
-                            <h3 class="text-primary mt-4 mb-3">Core Features and Functionality<br><br></h3>
-                            
-                            <h3 class="text-secondary">Interactive Schedule Builder</h3>
-                            <p style="font-size: 1.2rem; line-height: 1.5;">
-                                The main component of the application is a drag-and-drop interface where students can browse available courses from a sidebar 
-                                panel and drag them directly onto their timetable grid. Instant visual feedback is provided by the system, which also automatically 
-                                avoids conflicts and identifies acceptable drop zones.<br><br>
-                            </p>
-                            
-                            <h3 class="text-secondary">Intelligent Conflict Management</h3>
-                            <p style="font-size: 1.2rem; line-height: 1.5;">
-                                The application implements conflict detection that checks for time overlaps, venue conflicts, and prerequisites. When conflicts are 
-                                detected, the system provides clear visual indicators and suggests alternative time slots or sections where available.<br><br>
-                            </p>
-                            
-                            <h3 class="text-secondary">Multilayered Data Storage</h3>
-                            <p style="font-size: 1.2rem; line-height: 1.5;">
-                                The solution employs a dual storage strategy. Local Storage provides immediate, offline-capable storage for quick access and 
-                                temporary saves. For permanent storage and cross-device synchronization, the backend utilizes PHP with MySQL database, 
-                                implementing secure API endpoints for CRUD operations on schedule data.
-                            </p>
-                        </div>
+                        <p style="font-size: 1.2rem; line-height: 1.5;">
+                            <br>The NUST University Timetable Manager is a fully functioning web application that
+                            transforms how students manage their
+                            academic timetables. The application features a visually appealing grid-based interface
+                            representing the weekly calendar, where
+                            each cell corresponds to a specific time slot and day combination.<br><br>
+                        </p>
+
+                        <h3 class="text-primary mt-4 mb-3">Core Features and Functionality<br><br></h3>
+
+                        <h3 class="text-secondary">Interactive Schedule Builder</h3>
+                        <p style="font-size: 1.2rem; line-height: 1.5;">
+                            The main component of the application is a drag-and-drop interface where students can browse
+                            available courses from a sidebar
+                            panel and drag them directly onto their timetable grid. Instant visual feedback is provided
+                            by the system, which also automatically
+                            avoids conflicts and identifies acceptable drop zones.<br><br>
+                        </p>
+
+                        <h3 class="text-secondary">Intelligent Conflict Management</h3>
+                        <p style="font-size: 1.2rem; line-height: 1.5;">
+                            The application implements conflict detection that checks for time overlaps, venue
+                            conflicts, and prerequisites. When conflicts are
+                            detected, the system provides clear visual indicators and suggests alternative time slots or
+                            sections where available.<br><br>
+                        </p>
+
+                        <h3 class="text-secondary">Multilayered Data Storage</h3>
+                        <p style="font-size: 1.2rem; line-height: 1.5;">
+                            The solution employs a dual storage strategy. Local Storage provides immediate,
+                            offline-capable storage for quick access and
+                            temporary saves. For permanent storage and cross-device synchronization, the backend
+                            utilizes PHP with MySQL database,
+                            implementing secure API endpoints for CRUD operations on schedule data.
+                        </p>
                     </div>
                 </div>
-            </div> 
-        </section>
+            </div>
+        </div>
+    </section>
 
-        <!-- Development Team -->
-        <section class="section">
-            <div class="container">
-                <div class="col-lg-8 col-12" style="margin: 0 auto;">
-                    <div class="row">
-                        <div class="col-12 text-center mb-5">
-                            <h2 class="section-title"><br>Our Development Team</h2>
-                            <p class="section-subtitle">
-                                Full-Time Software Development Group - WAD621s
-                            </p>
-                        </div>
-                
-                <!-- Team Members -->
-                <div class="row gap-4 mb-5">
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <div class="feature-icon" style="margin: 0 auto;"><i class="fas fa-user-circle"></i></div>
-                                <h5 class="text-primary">Nathan Duarte</h5>
-                                <p class="text-muted mb-0">Student Number: 217090427</p>
-                                <span class="badge badge-secondary mt-2">Developer</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <div class="feature-icon" style="margin: 0 auto;"><i class="fas fa-user-circle"></i></div>
-                                <h5 class="text-primary">Ndilimeke Frans</h5>
-                                <p class="text-muted mb-0">Student Number: 224041525</p>
-                                <span class="badge badge-secondary mt-2">Developer</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <div class="feature-icon" style="margin: 0 auto;"><i class="fas fa-user-circle"></i></div>
-                                <h5 class="text-primary">Enzo Jantjies</h5>
-                                <p class="text-muted mb-0">Student Number: 216097975</p>
-                                <span class="badge badge-secondary mt-2">Developer</span>
-                            </div>
-                        </div>
-                    </div>
+    <!-- Development Team -->
+    <section class="section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Our Development Team</h2>
+                <p class="section-subtitle">
+                    Full-Time Software Development Group - WAD621s
+                </p>
+            </div>
 
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <div class="feature-icon" style="margin: 0 auto;"><i class="fas fa-user-circle"></i></div>
-                                <h5 class="text-primary">Eric Lubinda</h5>
-                                <p class="text-muted mb-0">Student Number: 222067438</p>
-                                <span class="badge badge-secondary mt-2">Developer</span>
+            <!-- Team Members Grid -->
+            <div class="team-members-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                <!-- Team Member 1 -->
+                <div class="team-member-card">
+                    <div class="card text-center">
+                        <div class="card-body" style="padding: 2rem;">
+                            <div class="team-member-avatar">
+                                <div class="feature-icon" style="margin: 0 auto; margin-bottom: 1.5rem;">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                            </div>
+                            <h5 class="text-primary" style="font-weight: 700; margin-bottom: 0.5rem;">Nathan Duarte</h5>
+                            <p class="text-muted mb-2" style="font-size: 0.9rem;">Student Number: 217090427</p>
+                            <span class="badge badge-secondary mt-2" style="padding: 0.5rem 1rem;">Backend
+                                Developer</span>
+                            <div class="team-member-skills" style="margin-top: 1rem;">
+                                <small class="text-muted">PHP Development, API Design</small>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Lecturers -->
-                <div class="col-12 text-center mb-4">
-                    <h4 class="text-primary">Course Lecturers</h4>
-                </div>
-                
-                <div class="row gap-3 justify-center">
-                    <div class="col-lg-5 col-md-6 col-12">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <div style="font-size: 2rem; color: var(--secondary-color);"><i class="fas fa-graduation-cap"></i></div>
-                                <h5 class="text-primary mt-2 mb-0">Mrs. Josephina Muntuumo</h5>
-                                <p class="text-muted">Lecturer - WAD621s</p>
+                <!-- Team Member 2 -->
+                <div class="team-member-card">
+                    <div class="card text-center">
+                        <div class="card-body" style="padding: 2rem;">
+                            <div class="team-member-avatar">
+                                <div class="feature-icon" style="margin: 0 auto; margin-bottom: 1.5rem;">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                            </div>
+                            <h5 class="text-primary" style="font-weight: 700; margin-bottom: 0.5rem;">Ndilimeke Frans
+                            </h5>
+                            <p class="text-muted mb-2" style="font-size: 0.9rem;">Student Number: 224041525</p>
+                            <span class="badge badge-secondary mt-2" style="padding: 0.5rem 1rem;">UI/UX
+                                Developer</span>
+                            <div class="team-member-skills" style="margin-top: 1rem;">
+                                <small class="text-muted">Interface Design, User Experience</small>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="col-lg-5 col-md-6 col-12">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <div style="font-size: 2rem; color: var(--secondary-color);"><i class="fas fa-graduation-cap"></i></div>
-                                <h5 class="text-primary mt-2 mb-0">Mr. Wilfred Kongolo</h5>
-                                <p class="text-muted">Lecturer - WAD621s</p>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="team-member-card">
+                    <div class="card text-center">
+                        <div class="card-body" style="padding: 2rem;">
+                            <div class="team-member-avatar">
+                                <div class="feature-icon" style="margin: 0 auto; margin-bottom: 1.5rem;">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                            </div>
+                            <h5 class="text-primary" style="font-weight: 700; margin-bottom: 0.5rem;">Enzo Jantjies</h5>
+                            <p class="text-muted mb-2" style="font-size: 0.9rem;">Student Number: 216097975</p>
+                            <span class="badge badge-secondary mt-2" style="padding: 0.5rem 1rem;">Frontend
+                                Development</span>
+                            <div class="team-member-skills" style="margin-top: 1rem;">
+                                <small class="text-muted">Frontend Development, JavaScript</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Member 4 -->
+                <div class="team-member-card">
+                    <div class="card text-center">
+                        <div class="card-body" style="padding: 2rem;">
+                            <div class="team-member-avatar">
+                                <div class="feature-icon" style="margin: 0 auto; margin-bottom: 1.5rem;">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                            </div>
+                            <h5 class="text-primary" style="font-weight: 700; margin-bottom: 0.5rem;">Eric Lubinda</h5>
+                            <p class="text-muted mb-2" style="font-size: 0.9rem;">Student Number: 222067438</p>
+                            <span class="badge badge-secondary mt-2" style="padding: 0.5rem 1rem;">Full-Stack
+                                Developer</span>
+                            <div class="team-member-skills" style="margin-top: 1rem;">
+                                <small class="text-muted">JavaScript, Database Integration</small>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Project Timeline -->
-            <div class="row" style="margin-top: 4rem;">
-                <div class="col-lg-10 col-12" style="margin: 0 auto;">
-                    <h2 class="section-title text-center">Project Timeline</h2>
-                    <p class="text-center text-muted mb-5">
-                        Semester 2, 2025 - 14-day development sprint
-                    </p>
-                    
+            <!-- Lecturers Section -->
+            <div class="text-center mb-4">
+                <h4 class="text-primary">Course Lecturers</h4>
+            </div>
+
+            <div class="lecturers-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; justify-items: center;">
+                <div class="lecturer-card" style="max-width: 350px; width: 100%;">
                     <div class="card">
-                        <div class="card-body">
-                            <ul class="list-unstyled">
-                                <li class="mb-3">
-                                    <strong class="text-primary">Course:</strong> 
-                                    WAD621s - Web Application Development
-                                </li>
-                                <li class="mb-3">
-                                    <strong class="text-primary">Semester:</strong> 
-                                    Semester 2, 2025
-                                </li>
-                                <li class="mb-3">
-                                    <strong class="text-primary">Method:</strong> 
-                                    Group Work (98)
-                                </li>
-                                <li class="mb-3">
-                                    <strong class="text-primary">Due Date:</strong> 
-                                    26 September 2025
-                                </li>
-                                <li>
-                                    <strong class="text-primary">Format:</strong> 
-                                    Documentation & Live Application
-                                </li>
-                            </ul>
+                        <div class="card-body text-center" style="padding: 1.5rem;">
+                            <div style="font-size: 2.5rem; color: var(--secondary-color); margin-bottom: 1rem;">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h5 class="text-primary mb-2">Mrs. Josephina Muntuumo</h5>
+                            <p class="text-muted" style="margin-bottom: 0.5rem;">Lecturer - WAD621s</p>
+                            <small class="text-muted">Web Application Development</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lecturer-card" style="max-width: 350px; width: 100%;">
+                    <div class="card">
+                        <div class="card-body text-center" style="padding: 1.5rem;">
+                            <div style="font-size: 2.5rem; color: var(--secondary-color); margin-bottom: 1rem;">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h5 class="text-primary mb-2">Mr. Wilfred Kongolo</h5>
+                            <p class="text-muted" style="margin-bottom: 0.5rem;">Lecturer - WAD621s</p>
+                            <small class="text-muted">Web Application Development</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Information -->
+            <div class="project-info-section" style="margin-top: 3rem;">
+                <div class="project-info-card" style="max-width: 700px; margin: 0 auto;">
+                    <div class="card">
+                        <div class="card-body" style="padding: 2rem;">
+                            <h5 class="text-primary text-center mb-4">Project Information</h5>
+                            <div class="project-info-details"
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                                <div class="project-info-item"
+                                    style="padding: 0.75rem; border-bottom: 1px solid var(--border-color);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span class="project-info-label"
+                                            style="font-weight: 600; color: var(--primary-color);">Course:</span>
+                                        <span class="project-info-value" style="color: var(--text-dark);">WAD621s - Web
+                                            Application Development</span>
+                                    </div>
+                                </div>
+                                <div class="project-info-item"
+                                    style="padding: 0.75rem; border-bottom: 1px solid var(--border-color);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span class="project-info-label"
+                                            style="font-weight: 600; color: var(--primary-color);">Semester:</span>
+                                        <span class="project-info-value" style="color: var(--text-dark);">Semester 2,
+                                            2025</span>
+                                    </div>
+                                </div>
+                                <div class="project-info-item"
+                                    style="padding: 0.75rem; border-bottom: 1px solid var(--border-color);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span class="project-info-label"
+                                            style="font-weight: 600; color: var(--primary-color);">Method:</span>
+                                        <span class="project-info-value" style="color: var(--text-dark);">Group Work
+                                            (98)</span>
+                                    </div>
+                                </div>
+                                <div class="project-info-item" style="padding: 0.75rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span class="project-info-label"
+                                            style="font-weight: 600; color: var(--primary-color);">Format:</span>
+                                        <span class="project-info-value" style="color: var(--text-dark);">Documentation
+                                            & Live Application</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+
+    </div>
     </section>
 
     <!-- FOOTER -->
@@ -263,11 +399,11 @@
                 <div class="col-lg-4 col-md-6 col-12 mb-4">
                     <h5>About NUST Timetable Manager</h5>
                     <p style="color: rgba(255, 255, 255, 0.7);">
-                        A comprehensive web-based solution designed to help NUST students 
+                        A comprehensive web-based solution designed to help NUST students
                         efficiently create, manage, and optimize their academic schedules.
                     </p>
                 </div>
-                
+
                 <!-- Quick Links Column -->
                 <div class="col-lg-4 col-md-6 col-12 mb-4">
                     <h5>Quick Links</h5>
@@ -276,7 +412,7 @@
                     <a href="user-guide.html">User Guide</a>
                     <a href="faq.html">FAQ</a>
                 </div>
-                
+
                 <!-- Contact Column -->
                 <div class="col-lg-4 col-md-6 col-12 mb-4">
                     <h5>Contact & Support</h5>
@@ -287,11 +423,11 @@
                     </p>
                 </div>
             </div>
-            
+
             <!-- Footer Bottom -->
             <div class="footer-bottom">
                 <p>
-                    &copy; 2025 NUST Timetable Manager | WAD621s Group Project | 
+                    &copy; 2025 NUST Timetable Manager | WAD621s Group Project |
                     Namibia University of Science and Technology
                 </p>
             </div>
@@ -311,17 +447,87 @@
             const menu = document.getElementById('navbarMenu');
             menu.classList.toggle('active');
         }
-        
+
         // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const navbar = document.querySelector('.navbar');
             const menu = document.getElementById('navbarMenu');
             const toggle = document.querySelector('.navbar-toggle');
-            
+
             if (!navbar.contains(event.target) && menu.classList.contains('active')) {
                 menu.classList.remove('active');
             }
         });
     </script>
+
+    <script src="scripts/app.js"></script>
+
+    <script>
+      // Page-specific JavaScript can use the global NUSTApp object
+      $(document).ready(function () {
+        // Show a welcome notification
+        NUSTApp.showNotification(
+          "Welcome to the enhanced timetable manager!",
+          "success"
+        );
+
+        // Load initial data
+        loadPageData();
+
+        // Custom form handling
+        $("#customForm").on("submit", function (e) {
+          e.preventDefault();
+
+          if (NUSTApp.validateForm(this)) {
+            submitCustomForm();
+          }
+        });
+      });
+
+      function loadPageData() {
+        NUSTApp.showGlobalLoading();
+
+        NUSTApp.dataLoader
+          .loadData("/dashboard/stats.php")
+          .then((data) => {
+            displayDashboardData(data);
+            NUSTApp.hideGlobalLoading();
+          })
+          .catch((error) => {
+            NUSTApp.showNotification("Failed to load data", "error");
+            NUSTApp.hideGlobalLoading();
+          });
+      }
+
+      function displayDashboardData(data) {
+        $("#statsContainer")
+          .html(
+            `
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">${data.totalSchedules}</div>
+                <div class="stat-label">Total Schedules</div>
+            </div>
+            <!-- More stats... -->
+        </div>
+    `
+          )
+          .addClass("fade-in");
+      }
+
+      // Custom notification examples
+      function showSuccessMessage() {
+        NUSTApp.showNotification("Schedule saved successfully!", "success");
+      }
+
+      function showErrorMessage() {
+        NUSTApp.showNotification("An error occurred while saving", "error");
+      }
+
+      function showInfoMessage() {
+        NUSTApp.showNotification("Auto-save enabled", "info");
+      }
+    </script>
 </body>
+
 </html>

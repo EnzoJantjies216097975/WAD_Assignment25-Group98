@@ -1,265 +1,372 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NUST Timetable Manager - Home</title>
-    
+
     <!-- CSS & Font Awesome -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-    
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
     <!-- NAVIGATION BAR -->
     <nav class="navbar">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60" padding="100" margin="1000"> &nbsp; Timetable Manager
-            </a>
-            
-            <!-- Mobile Toggle Button -->
-            <button class="navbar-toggle" onclick="toggleMenu()" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-            </button>
-            
-            <!-- Navigation Menu -->
-            <div class="navbar-menu" id="navbarMenu">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="features.html">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="help.html">Help</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-login" href="login.html">Login / Register</a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img
+            src="logo.png"
+            alt="NUST Logo"
+            class="navbar-logo"
+            width="140"
+            height="60"
+            padding="100"
+            margin="1000"
+          />
+          &nbsp; Timetable Manager
+        </a>
+
+        <!-- Mobile Toggle Button -->
+        <button
+          class="navbar-toggle"
+          onclick="toggleMenu()"
+          aria-label="Toggle navigation"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Navigation Menu -->
+        <div class="navbar-menu" id="navbarMenu">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="features.html">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="help.html">Help</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-login" href="login.html">Login / Register</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <!-- HERO SECTION -->
     <section class="hero-section text-center py-5">
-        <div class="container">
-            <div class="hero-grid">
-            
-            <!-- Left Column: Text and Buttons -->
-            <div class="hero-content">
-                <h1 class="hero-title">Plan Your Academic Success</h1>
-                <p class="hero-subtitle">
-                    Easily create, manage, and make the most of your university timetable, and share it with your peers.
-                </p>
-                <div class="hero-buttons">
-                    <a href="login.html" class="btn btn-secondary btn-lg">
-                        Get Started <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="features.html" class="btn btn-outline btn-lg" 
-                       style="color: white; border-color: white;">
-                        Learn More <i class="fas fa-info-circle"></i>
-                    </a>
-                </div>
+      <div class="container">
+        <div class="hero-grid">
+          <!-- Left Column: Text and Buttons -->
+          <div class="hero-content">
+            <h1 class="hero-title">Plan Your Academic Success</h1>
+            <p class="hero-subtitle">
+              Easily create, manage, and make the most of your university
+              timetable, and share it with your peers.
+            </p>
+            <div class="hero-buttons">
+              <a href="login.html" class="btn btn-secondary btn-lg">
+                Get Started <i class="fas fa-arrow-right"></i>
+              </a>
+              <a
+                href="features.html"
+                class="btn btn-outline btn-lg"
+                style="color: white; border-color: white"
+              >
+                Learn More <i class="fas fa-info-circle"></i>
+              </a>
             </div>
-            
-            <!-- Right Column: Calendar Icon -->
-            <div class="hero-visual">
-                <i class="fas fa-calendar-alt"></i>
-            </div>
-            
+          </div>
+
+          <!-- Right Column: Calendar Icon -->
+          <div class="hero-visual">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
     <!-- KEY FEATURES SECTION -->
     <section class="section">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="section-title">Key Features</h2>
-                <p class="section-subtitle">Everything you need to manage your academic schedule</p>
-            </div>
-            
-            <div class="row" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-                
-                <!-- Feature 1 -->
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="card feature-card">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon"><i class="fas fa-hand-pointer"></i></div>
-                            <h3 class="card-title">Drag & Drop Interface</h3>
-                            <p class="text-muted">
-                                Drag courses into your weekly schedule to create your timetable automatically. Planning is made simple with visual feedback.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Feature 2 -->
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="card feature-card">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon"><i class="fas fa-exclamation-triangle"></i></div>
-                            <h3 class="card-title">Smart Conflict Detection</h3>
-                            <p class="text-muted">
-                                To guarantee a legitimate schedule, it automatically looks for scheduling issues, overlapping classes, and venue clashes.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Feature 3 -->
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="card feature-card">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                            <h3 class="card-title">Cloud Synchronization</h3>
-                            <p class="text-muted">
-                                With safe cloud storage and offline access via local storage, you can view your schedule from any device.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center mt-5">
-                <a href="features.html" class="btn btn-primary">
-                    View All Features <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="section-title">Key Features</h2>
+          <p class="section-subtitle">
+            Everything you need to manage your academic schedule
+          </p>
         </div>
+
+        <div
+          class="row"
+          style="display: flex; flex-wrap: wrap; justify-content: space-between"
+        >
+          <!-- Feature 1 -->
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="card feature-card">
+              <div class="card-body text-center p-4">
+                <div class="feature-icon">
+                  <i class="fas fa-hand-pointer"></i>
+                </div>
+                <h3 class="card-title">Drag & Drop Interface</h3>
+                <p class="text-muted">
+                  Drag courses into your weekly schedule to create your
+                  timetable automatically. Planning is made simple with visual
+                  feedback.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="card feature-card">
+              <div class="card-body text-center p-4">
+                <div class="feature-icon">
+                  <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 class="card-title">Smart Conflict Detection</h3>
+                <p class="text-muted">
+                  To guarantee a legitimate schedule, it automatically looks for
+                  scheduling issues, overlapping classes, and venue clashes.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="card feature-card">
+              <div class="card-body text-center p-4">
+                <div class="feature-icon">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h3 class="card-title">Cloud Synchronization</h3>
+                <p class="text-muted">
+                  With safe cloud storage and offline access via local storage,
+                  you can view your schedule from any device.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-5">
+          <a href="features.html" class="btn btn-primary">
+            View All Features <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
     </section>
 
     <!-- HOW IT WORKS SECTION -->
     <section class="section bg-light">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="section-title">How It Works</h2>
-                <p class="section-subtitle">Get started in three simple steps</p>
-            </div>
-            
-            <div class="row" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-            
-                <!-- Step 1 -->
-                <div style="flex: 0 0 30%; max-width: 30%; margin-bottom: 2rem;">
-                    <div class="text-center">
-                        <div class="feature-icon" style="margin: 0 auto;">
-                            <span style="font-size: 2rem; font-weight: bold;">1</span>
-                        </div>
-                        <h4 class="text-primary mt-3">Create Account</h4>
-                        <p class="text-muted">
-                            Create a profile and sign up using your NUST email address. Easy and safe registration procedure.
-                        </p>
-                    </div>
-                </div>
-                
-                <!-- Step 2 -->
-                <div style="flex: 0 0 30%; max-width: 30%; margin-bottom: 2rem;">
-                    <div class="text-center">
-                        <div class="feature-icon" style="margin: 0 auto;">
-                            <span style="font-size: 2rem; font-weight: bold;">2</span>
-                        </div>
-                        <h4 class="text-primary mt-3">Build Schedule</h4>
-                        <p class="text-muted">
-                            Browse available courses and drag them onto your timetable. The system checks for conflicts automatically.
-                        </p>
-                    </div>
-                </div>
-                
-                <!-- Step 3 -->
-                <div style="flex: 0 0 30%; max-width: 30%; margin-bottom: 2rem;">
-                    <div class="text-center">
-                        <div class="feature-icon" style="margin: 0 auto;">
-                            <span style="font-size: 2rem; font-weight: bold;">3</span>
-                        </div>
-                        <h4 class="text-primary mt-3">Save & Share</h4>
-                        <p class="text-muted">
-                            Share your schedule with your peers by saving it & exporting it.
-                        </p>
-                    </div>
-                </div>
-            </div>
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="section-title">How It Works</h2>
+          <p class="section-subtitle">Get started in three simple steps</p>
         </div>
+
+        <div
+          class="row"
+          style="display: flex; flex-wrap: wrap; justify-content: space-between"
+        >
+          <!-- Step 1 -->
+          <div style="flex: 0 0 30%; max-width: 30%; margin-bottom: 2rem">
+            <div class="text-center">
+              <div class="feature-icon" style="margin: 0 auto">
+                <span style="font-size: 2rem; font-weight: bold">1</span>
+              </div>
+              <h4 class="text-primary mt-3">Create Account</h4>
+              <p class="text-muted">
+                Create a profile and sign up using your NUST email address. Easy
+                and safe registration procedure.
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div style="flex: 0 0 30%; max-width: 30%; margin-bottom: 2rem">
+            <div class="text-center">
+              <div class="feature-icon" style="margin: 0 auto">
+                <span style="font-size: 2rem; font-weight: bold">2</span>
+              </div>
+              <h4 class="text-primary mt-3">Build Schedule</h4>
+              <p class="text-muted">
+                Browse available courses and drag them onto your timetable. The
+                system checks for conflicts automatically.
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div style="flex: 0 0 30%; max-width: 30%; margin-bottom: 2rem">
+            <div class="text-center">
+              <div class="feature-icon" style="margin: 0 auto">
+                <span style="font-size: 2rem; font-weight: bold">3</span>
+              </div>
+              <h4 class="text-primary mt-3">Save & Share</h4>
+              <p class="text-muted">
+                Share your schedule with your peers by saving it & exporting it.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- CALL TO ACTION SECTION -->
     <section class="section text-center">
-        <div class="container">
-            <h2 class="section-title">Ready to Optimize Your Schedule?</h2>
-            <p class="section-subtitle">
-                Lets get started with making your timetables fast &efficiently
-            </p>
-            <a href="login.html" class="btn btn-primary btn-lg">
-                Create Your Timetable Now  <i class="fas fa-calendar-alt"></i>
-            </a>
-        </div>
+      <div class="container">
+        <h2 class="section-title">Ready to Optimize Your Schedule?</h2>
+        <p class="section-subtitle">
+          Lets get started with making your timetables fast &efficiently
+        </p>
+        <a href="login.html" class="btn btn-primary btn-lg">
+          Create Your Timetable Now <i class="fas fa-calendar-alt"></i>
+        </a>
+      </div>
     </section>
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <!-- About Column -->
-                <div class="col-lg-4 col-md-6 col-12 mb-4">
-                    <h5>About NUST Timetable Manager</h5>
-                    <p style="color: rgba(255, 255, 255, 0.7);">
-                        A comprehensive web-based solution designed to help NUST students 
-                        efficiently create, manage, and optimize their academic schedules.
-                    </p>
-                </div>
-                
-                <!-- Quick Links Column -->
-                <div class="col-lg-4 col-md-6 col-12 mb-4">
-                    <h5>Quick Links</h5>
-                    <a href="about.html">About Us</a>
-                    <a href="features.html">Features</a>
-                    <a href="user-guide.html">User Guide</a>
-                    <a href="faq.html">FAQ</a>
-                </div>
-                
-                <!-- Contact Column -->
-                <div class="col-lg-4 col-md-6 col-12 mb-4">
-                    <h5>Contact & Support</h5>
-                    <a href="contact.html">Contact Support</a>
-                    <a href="help.html">Help Center</a>
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-top: 1rem;">
-                        <i class="fas fa-envelope"></i> support@nusttimetable.na
-                    </p>
-                </div>
-            </div>
-            
-            <!-- Footer Bottom -->
-            <div class="footer-bottom">
-                <p>
-                    &copy; 2025 NUST Timetable Manager | WAD621s Group Project | 
-                    Namibia University of Science and Technology
-                </p>
-            </div>
+      <div class="container">
+        <div class="row">
+          <!-- About Column -->
+          <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <h5>About NUST Timetable Manager</h5>
+            <p style="color: rgba(255, 255, 255, 0.7)">
+              A comprehensive web-based solution designed to help NUST students
+              efficiently create, manage, and optimize their academic schedules.
+            </p>
+          </div>
+
+          <!-- Quick Links Column -->
+          <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <h5>Quick Links</h5>
+            <a href="about.html">About Us</a>
+            <a href="features.html">Features</a>
+            <a href="user-guide.html">User Guide</a>
+            <a href="faq.html">FAQ</a>
+          </div>
+
+          <!-- Contact Column -->
+          <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <h5>Contact & Support</h5>
+            <a href="contact.html">Contact Support</a>
+            <a href="help.html">Help Center</a>
+            <p style="color: rgba(255, 255, 255, 0.7); margin-top: 1rem">
+              <i class="fas fa-envelope"></i> support@nusttimetable.na
+            </p>
+          </div>
         </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+          <p>
+            &copy; 2025 NUST Timetable Manager | WAD621s Group Project | Namibia
+            University of Science and Technology
+          </p>
+        </div>
+      </div>
     </footer>
 
     <!-- Simple JavaScript for Mobile Menu Toggle -->
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById('navbarMenu');
-            menu.classList.toggle('active');
+      function toggleMenu() {
+        const menu = document.getElementById("navbarMenu");
+        menu.classList.toggle("active");
+      }
+
+      // Close mobile menu when clicking outside
+      document.addEventListener("click", function (event) {
+        const navbar = document.querySelector(".navbar");
+        const menu = document.getElementById("navbarMenu");
+        const toggle = document.querySelector(".navbar-toggle");
+
+        if (
+          !navbar.contains(event.target) &&
+          menu.classList.contains("active")
+        ) {
+          menu.classList.remove("active");
         }
-        
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const navbar = document.querySelector('.navbar');
-            const menu = document.getElementById('navbarMenu');
-            const toggle = document.querySelector('.navbar-toggle');
-            
-            if (!navbar.contains(event.target) && menu.classList.contains('active')) {
-                menu.classList.remove('active');
-            }
-        });
+      });
     </script>
-</body>
+
+    <script src="scripts/app.js"></script>
+
+    <script>
+      // Page-specific JavaScript can use the global NUSTApp object
+      $(document).ready(function () {
+        // Show a welcome notification
+        NUSTApp.showNotification(
+          "Welcome to the enhanced timetable manager!",
+          "success"
+        );
+
+        // Load initial data
+        loadPageData();
+
+        // Custom form handling
+        $("#customForm").on("submit", function (e) {
+          e.preventDefault();
+
+          if (NUSTApp.validateForm(this)) {
+            submitCustomForm();
+          }
+        });
+      });
+
+      function loadPageData() {
+        NUSTApp.showGlobalLoading();
+
+        NUSTApp.dataLoader
+          .loadData("/dashboard/stats.php")
+          .then((data) => {
+            displayDashboardData(data);
+            NUSTApp.hideGlobalLoading();
+          })
+          .catch((error) => {
+            NUSTApp.showNotification("Failed to load data", "error");
+            NUSTApp.hideGlobalLoading();
+          });
+      }
+
+      function displayDashboardData(data) {
+        $("#statsContainer")
+          .html(
+            `
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">${data.totalSchedules}</div>
+                <div class="stat-label">Total Schedules</div>
+            </div>
+            <!-- More stats... -->
+        </div>
+    `
+          )
+          .addClass("fade-in");
+      }
+
+      // Custom notification examples
+      function showSuccessMessage() {
+        NUSTApp.showNotification("Schedule saved successfully!", "success");
+      }
+
+      function showErrorMessage() {
+        NUSTApp.showNotification("An error occurred while saving", "error");
+      }
+
+      function showInfoMessage() {
+        NUSTApp.showNotification("Auto-save enabled", "info");
+      }
+    </script>
+  </body>
 </html>

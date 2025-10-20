@@ -1,600 +1,628 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Schedule Editor - NUST Timetable Manager</title>
-    
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
     <style>
-        /* Schedule Editor Specific Styles */
-        body {
-            overflow: hidden; /* Prevent double scrollbars */
+      /* Schedule Editor Specific Styles */
+      body {
+        overflow: hidden; /* Prevent double scrollbars */
+      }
+
+      .editor-container {
+        display: flex;
+        height: calc(100vh - 80px);
+        background-color: var(--light-bg);
+      }
+
+      /* Course Sidebar - Left panel with draggable courses */
+      .courses-sidebar {
+        width: 320px;
+        background: var(--white);
+        box-shadow: var(--shadow-md);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .sidebar-header {
+        background: linear-gradient(135deg, var(--primary-color), #2a3f6f);
+        color: var(--white);
+        padding: 1.5rem;
+      }
+
+      .sidebar-search {
+        margin-top: 1rem;
+        position: relative;
+      }
+
+      .sidebar-search input {
+        width: 100%;
+        padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+      }
+
+      .sidebar-search i {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+      }
+
+      .courses-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+      }
+
+      /* Draggable Course Card */
+      .course-item {
+        background: var(--white);
+        border: 2px solid var(--border-color);
+        border-left: 4px solid var(--secondary-color);
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        border-radius: 8px;
+        cursor: grab;
+        transition: var(--transition);
+      }
+
+      .course-item:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateX(5px);
+      }
+
+      .course-item:active {
+        cursor: grabbing;
+      }
+
+      .course-item.dragging {
+        opacity: 0.5;
+        transform: rotate(2deg);
+      }
+
+      .course-code {
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 0.25rem;
+      }
+
+      .course-name {
+        font-size: 0.9rem;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+      }
+
+      .course-meta {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+
+      /* Main Editor Area */
+      .editor-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* Toolbar */
+      .editor-toolbar {
+        background: var(--white);
+        padding: 1rem 1.5rem;
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .schedule-title-display {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--primary-color);
+      }
+
+      .toolbar-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      /* Timetable Grid */
+      .timetable-container {
+        flex: 1;
+        overflow: auto;
+        padding: 1.5rem;
+      }
+
+      .timetable-grid {
+        display: grid;
+        grid-template-columns: 80px repeat(5, 1fr);
+        grid-template-rows: 50px repeat(9, 80px);
+        gap: 2px;
+        background-color: var(--border-color);
+        border-radius: 12px;
+        overflow: hidden;
+        min-width: 900px;
+      }
+
+      /* Time Labels Column */
+      .time-label {
+        background: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: var(--primary-color);
+        font-size: 0.9rem;
+      }
+
+      /* Day Headers */
+      .day-header {
+        background: linear-gradient(135deg, var(--primary-color), #2a3f6f);
+        color: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1rem;
+      }
+
+      /* Time Slot Cells */
+      .time-slot {
+        background: var(--white);
+        position: relative;
+        transition: var(--transition);
+        min-height: 80px;
+      }
+
+      .time-slot:hover {
+        background: rgba(252, 175, 23, 0.05);
+      }
+
+      .time-slot.valid-drop {
+        background: rgba(16, 185, 129, 0.1);
+        border: 2px dashed #10b981;
+      }
+
+      .time-slot.invalid-drop {
+        background: rgba(220, 38, 38, 0.1);
+        border: 2px dashed #dc2626;
+      }
+
+      /* Course Block in Grid */
+      .scheduled-course {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        right: 4px;
+        bottom: 4px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: var(--white);
+        border-radius: 6px;
+        padding: 0.5rem;
+        cursor: move;
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .scheduled-course:hover {
+        box-shadow: var(--shadow-md);
+        z-index: 10;
+      }
+
+      .scheduled-course-code {
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .scheduled-course-name {
+        font-size: 0.75rem;
+        opacity: 0.9;
+        margin-bottom: 0.25rem;
+      }
+
+      .scheduled-course-info {
+        font-size: 0.7rem;
+        opacity: 0.8;
+        margin-top: auto;
+      }
+
+      .remove-course {
+        position: absolute;
+        top: 0.25rem;
+        right: 0.25rem;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: var(--white);
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: var(--transition);
+      }
+
+      .scheduled-course:hover .remove-course {
+        opacity: 1;
+      }
+
+      .remove-course:hover {
+        background: rgba(220, 38, 38, 0.9);
+      }
+
+      /* Conflict Indicator */
+      .scheduled-course.conflict {
+        background: linear-gradient(135deg, #dc2626, #ef4444);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
         }
-        
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      /* Stats Bar */
+      .stats-bar {
+        background: var(--white);
+        padding: 1rem 1.5rem;
+        border-top: 2px solid var(--border-color);
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+      }
+
+      .stat-label {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+      }
+
+      /* Mobile Responsiveness */
+      @media (max-width: 1024px) {
         .editor-container {
-            display: flex;
-            height: calc(100vh - 80px);
-            background-color: var(--light-bg);
+          flex-direction: column;
         }
-        
-        /* Course Sidebar - Left panel with draggable courses */
+
         .courses-sidebar {
-            width: 320px;
-            background: var(--white);
-            box-shadow: var(--shadow-md);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+          width: 100%;
+          max-height: 300px;
         }
-        
-        .sidebar-header {
-            background: linear-gradient(135deg, var(--primary-color), #2a3f6f);
-            color: var(--white);
-            padding: 1.5rem;
-        }
-        
-        .sidebar-search {
-            margin-top: 1rem;
-            position: relative;
-        }
-        
-        .sidebar-search input {
-            width: 100%;
-            padding: 0.75rem 0.75rem 0.75rem 2.5rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.9rem;
-        }
-        
-        .sidebar-search i {
-            position: absolute;
-            left: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
-        
-        .courses-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-        }
-        
-        /* Draggable Course Card */
-        .course-item {
-            background: var(--white);
-            border: 2px solid var(--border-color);
-            border-left: 4px solid var(--secondary-color);
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            border-radius: 8px;
-            cursor: grab;
-            transition: var(--transition);
-        }
-        
-        .course-item:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateX(5px);
-        }
-        
-        .course-item:active {
-            cursor: grabbing;
-        }
-        
-        .course-item.dragging {
-            opacity: 0.5;
-            transform: rotate(2deg);
-        }
-        
-        .course-code {
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 0.25rem;
-        }
-        
-        .course-name {
-            font-size: 0.9rem;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-        }
-        
-        .course-meta {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-        
-        /* Main Editor Area */
-        .editor-main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
-        /* Toolbar */
-        .editor-toolbar {
-            background: var(--white);
-            padding: 1rem 1.5rem;
-            box-shadow: var(--shadow-sm);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        
-        .schedule-title-display {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        
-        .toolbar-actions {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        
-        /* Timetable Grid */
-        .timetable-container {
-            flex: 1;
-            overflow: auto;
-            padding: 1.5rem;
-        }
-        
+
         .timetable-grid {
-            display: grid;
-            grid-template-columns: 80px repeat(5, 1fr);
-            grid-template-rows: 50px repeat(9, 80px);
-            gap: 2px;
-            background-color: var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            min-width: 900px;
+          font-size: 0.85rem;
         }
-        
-        /* Time Labels Column */
-        .time-label {
-            background: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: var(--primary-color);
-            font-size: 0.9rem;
-        }
-        
-        /* Day Headers */
-        .day-header {
-            background: linear-gradient(135deg, var(--primary-color), #2a3f6f);
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1rem;
-        }
-        
-        /* Time Slot Cells */
-        .time-slot {
-            background: var(--white);
-            position: relative;
-            transition: var(--transition);
-            min-height: 80px;
-        }
-        
-        .time-slot:hover {
-            background: rgba(252, 175, 23, 0.05);
-        }
-        
-        .time-slot.valid-drop {
-            background: rgba(16, 185, 129, 0.1);
-            border: 2px dashed #10b981;
-        }
-        
-        .time-slot.invalid-drop {
-            background: rgba(220, 38, 38, 0.1);
-            border: 2px dashed #dc2626;
-        }
-        
-        /* Course Block in Grid */
-        .scheduled-course {
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            right: 4px;
-            bottom: 4px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: var(--white);
-            border-radius: 6px;
-            padding: 0.5rem;
-            cursor: move;
-            box-shadow: var(--shadow-sm);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
-        .scheduled-course:hover {
-            box-shadow: var(--shadow-md);
-            z-index: 10;
-        }
-        
-        .scheduled-course-code {
-            font-weight: 700;
-            font-size: 0.95rem;
-            margin-bottom: 0.25rem;
-        }
-        
-        .scheduled-course-name {
-            font-size: 0.75rem;
-            opacity: 0.9;
-            margin-bottom: 0.25rem;
-        }
-        
+      }
+
+      @media (max-width: 768px) {
+        .scheduled-course-name,
         .scheduled-course-info {
-            font-size: 0.7rem;
-            opacity: 0.8;
-            margin-top: auto;
+          display: none;
         }
-        
-        .remove-course {
-            position: absolute;
-            top: 0.25rem;
-            right: 0.25rem;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: var(--white);
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: var(--transition);
+
+        .toolbar-actions {
+          width: 100%;
         }
-        
-        .scheduled-course:hover .remove-course {
-            opacity: 1;
+
+        .toolbar-actions .btn {
+          flex: 1;
         }
-        
-        .remove-course:hover {
-            background: rgba(220, 38, 38, 0.9);
-        }
-        
-        /* Conflict Indicator */
-        .scheduled-course.conflict {
-            background: linear-gradient(135deg, #dc2626, #ef4444);
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-        
-        /* Stats Bar */
-        .stats-bar {
-            background: var(--white);
-            padding: 1rem 1.5rem;
-            border-top: 2px solid var(--border-color);
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        
-        .stat-item {
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        
-        .stat-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-        
-        /* Mobile Responsiveness */
-        @media (max-width: 1024px) {
-            .editor-container {
-                flex-direction: column;
-            }
-            
-            .courses-sidebar {
-                width: 100%;
-                max-height: 300px;
-            }
-            
-            .timetable-grid {
-                font-size: 0.85rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .scheduled-course-name,
-            .scheduled-course-info {
-                display: none;
-            }
-            
-            .toolbar-actions {
-                width: 100%;
-            }
-            
-            .toolbar-actions .btn {
-                flex: 1;
-            }
-        }
+      }
     </style>
-</head>
-<body>
-    
+  </head>
+  <body>
     <!-- NAVIGATION -->
     <nav class="navbar">
-        <div class="container">
-            <a class="navbar-brand" href="dashboard.html">
-                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60"> &nbsp; Timetable Manager
-            </a>
-            
-            <button class="navbar-toggle" onclick="toggleMobileMenu()">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <div class="navbar-menu" id="navbarMenu">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.html">
-                            <i class="fas fa-home"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-login" href="#" onclick="saveSchedule()">
-                            <i class="fas fa-save"></i> Save
-                        </a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="dashboard.html">
+          <img
+            src="logo.png"
+            alt="NUST Logo"
+            class="navbar-logo"
+            width="140"
+            height="60"
+          />
+          &nbsp; Timetable Manager
+        </a>
+
+        <button class="navbar-toggle" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="navbar-menu" id="navbarMenu">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="dashboard.html">
+                <i class="fas fa-home"></i> Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-login" href="#" onclick="saveSchedule()">
+                <i class="fas fa-save"></i> Save
+              </a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <!-- EDITOR CONTAINER -->
     <div class="editor-container">
-        
-        <!-- COURSES SIDEBAR -->
-        <aside class="courses-sidebar">
-            <div class="sidebar-header">
-                <h3 style="margin-bottom: 0.5rem;">
-                    <i class="fas fa-book"></i> Available Courses
-                </h3>
-                <p style="margin: 0; opacity: 0.9; font-size: 0.9rem;">
-                    Drag courses onto the timetable
-                </p>
-                
-                <div class="sidebar-search">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search courses..." id="courseSearchInput" 
-                           onkeyup="filterCourses()">
-                </div>
-            </div>
-            
-            <div class="courses-list" id="coursesList">
-                <!-- Courses will be populated by JavaScript -->
-            </div>
-        </aside>
-        
-        <!-- MAIN EDITOR -->
-        <main class="editor-main">
-            
-            <!-- Toolbar -->
-            <div class="editor-toolbar">
-                <div class="schedule-title-display" id="scheduleTitle">
-                    Semester 2 - Final Schedule
-                </div>
-                
-                <div class="toolbar-actions">
-                    <button class="btn btn-outline btn-sm" onclick="clearSchedule()">
-                        <i class="fas fa-trash"></i> Clear
-                    </button>
-                    <button class="btn btn-outline btn-sm" onclick="undoLastAction()">
-                        <i class="fas fa-undo"></i> Undo
-                    </button>
-                    <button class="btn btn-secondary btn-sm" onclick="saveSchedule()">
-                        <i class="fas fa-save"></i> Save
-                    </button>
-                    <button class="btn btn-primary btn-sm" onclick="viewSchedule()">
-                        <i class="fas fa-eye"></i> Preview
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Timetable Grid -->
-            <div class="timetable-container">
-                <div class="timetable-grid" id="timetableGrid">
-                    <!-- Grid will be generated by JavaScript -->
-                </div>
-            </div>
-            
-            <!-- Stats Bar -->
-            <div class="stats-bar">
-                <div class="stat-item">
-                    <div class="stat-value" id="totalCourses">0</div>
-                    <div class="stat-label">Courses</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="totalCredits">0</div>
-                    <div class="stat-label">Total Credits</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="totalHours">0</div>
-                    <div class="stat-label">Contact Hours</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="conflictCount">0</div>
-                    <div class="stat-label">Conflicts</div>
-                </div>
-            </div>
-            
-        </main>
-        
+      <!-- COURSES SIDEBAR -->
+      <aside class="courses-sidebar">
+        <div class="sidebar-header">
+          <h3 style="margin-bottom: 0.5rem">
+            <i class="fas fa-book"></i> Available Courses
+          </h3>
+          <p style="margin: 0; opacity: 0.9; font-size: 0.9rem">
+            Drag courses onto the timetable
+          </p>
+
+          <div class="sidebar-search">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Search courses..."
+              id="courseSearchInput"
+              onkeyup="filterCourses()"
+            />
+          </div>
+        </div>
+
+        <div class="courses-list" id="coursesList">
+          <!-- Courses will be populated by JavaScript -->
+        </div>
+      </aside>
+
+      <!-- MAIN EDITOR -->
+      <main class="editor-main">
+        <!-- Toolbar -->
+        <div class="editor-toolbar">
+          <div class="schedule-title-display" id="scheduleTitle">
+            Semester 2 - Final Schedule
+          </div>
+
+          <div class="toolbar-actions">
+            <button class="btn btn-outline btn-sm" onclick="clearSchedule()">
+              <i class="fas fa-trash"></i> Clear
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="undoLastAction()">
+              <i class="fas fa-undo"></i> Undo
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="saveSchedule()">
+              <i class="fas fa-save"></i> Save
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="viewSchedule()">
+              <i class="fas fa-eye"></i> Preview
+            </button>
+          </div>
+        </div>
+
+        <!-- Timetable Grid -->
+        <div class="timetable-container">
+          <div class="timetable-grid" id="timetableGrid">
+            <!-- Grid will be generated by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+          <div class="stat-item">
+            <div class="stat-value" id="totalCourses">0</div>
+            <div class="stat-label">Courses</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="totalCredits">0</div>
+            <div class="stat-label">Total Credits</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="totalHours">0</div>
+            <div class="stat-label">Contact Hours</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="conflictCount">0</div>
+            <div class="stat-label">Conflicts</div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <!-- JAVASCRIPT -->
     <script>
-        /**
-         * Schedule Editor JavaScript
-         * Implements drag-and-drop timetable building with conflict detection
-         */
-        
-        // Time slots for the timetable (08:00 - 17:00)
-        const timeSlots = [
-            '08:00', '09:00', '10:00', '11:00', '12:00', 
-            '13:00', '14:00', '15:00', '16:00'
-        ];
-        
-        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-        
-        // Available courses - in production, fetch from PHP/MySQL
-        const availableCourses = [
-            {
-                code: 'WAD621S',
-                name: 'Web Application Development',
-                credits: 12,
-                lecturer: 'Dr. S. Muchinenyika',
-                color: '#3b82f6'
-            },
-            {
-                code: 'DTA621S',
-                name: 'Data Analytics',
-                credits: 12,
-                lecturer: 'Prof. G. Iyawa',
-                color: '#10b981'
-            },
-            {
-                code: 'ITD621S',
-                name: 'Interaction Design',
-                credits: 12,
-                lecturer: 'Dr. G. Koch Kapuire',
-                color: '#8b5cf6'
-            },
-            {
-                code: 'DSA612S',
-                name: 'Distributed Systems',
-                credits: 12,
-                lecturer: 'Prof. D. S. Jat',
-                color: '#f59e0b'
-            },
-            {
-                code: 'SDN621S',
-                name: 'Software Design',
-                credits: 12,
-                lecturer: 'Mrs. S. Chivuno-Kuria',
-                color: '#ef4444'
-            },
-            {
-                code: 'EFC621S',
-                name: 'Ethics for Computing',
-                credits: 10,
-                lecturer: 'Cross-departmental',
-                color: '#6366f1'
-            }
-        ];
-        
-        // Current schedule state - stores courses placed on the grid
-        let schedule = {};
-        
-        // Undo stack for undo functionality
-        let undoStack = [];
-        
-        // Currently dragging course
-        let draggedCourse = null;
-        
-        /**
-         * Initialize the editor on page load
-         */
-        document.addEventListener('DOMContentLoaded', function() {
-            generateTimetableGrid();
-            populateCoursesList();
-            updateStats();
+      /**
+       * Schedule Editor JavaScript
+       * Implements drag-and-drop timetable building with conflict detection
+       */
+
+      // Time slots for the timetable (08:00 - 17:00)
+      const timeSlots = [
+        "07:30",
+        "08:30",
+        "09:30",
+        "10:30",
+        "11:30",
+        "12:30",
+        "14:00",
+        "15:00",
+        "16:00",
+        "17:15",
+        "18:40",
+        "20:00",
+      ];
+
+      const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+      // Available courses - in production, fetch from PHP/MySQL
+      const availableCourses = [
+        {
+          code: "WAD621S",
+          name: "Web Application Development",
+          credits: 12,
+          lecturer: "Dr. S. Muchinenyika",
+          color: "#3b82f6",
+        },
+        {
+          code: "DTA621S",
+          name: "Data Analytics",
+          credits: 12,
+          lecturer: "Prof. G. Iyawa",
+          color: "#10b981",
+        },
+        {
+          code: "ITD621S",
+          name: "Interaction Design",
+          credits: 12,
+          lecturer: "Dr. G. Koch Kapuire",
+          color: "#8b5cf6",
+        },
+        {
+          code: "DSA612S",
+          name: "Distributed Systems",
+          credits: 12,
+          lecturer: "Prof. D. S. Jat",
+          color: "#f59e0b",
+        },
+        {
+          code: "SDN621S",
+          name: "Software Design",
+          credits: 12,
+          lecturer: "Mrs. S. Chivuno-Kuria",
+          color: "#ef4444",
+        },
+        {
+          code: "EFC621S",
+          name: "Ethics for Computing",
+          credits: 10,
+          lecturer: "Cross-departmental",
+          color: "#6366f1",
+        },
+      ];
+
+      // Current schedule state - stores courses placed on the grid
+      let schedule = {};
+
+      // Undo stack for undo functionality
+      let undoStack = [];
+
+      // Currently dragging course
+      let draggedCourse = null;
+
+      /**
+       * Initialize the editor on page load
+       */
+      document.addEventListener("DOMContentLoaded", function () {
+        generateTimetableGrid();
+        populateCoursesList();
+        updateStats();
+      });
+
+      /**
+       * Generate the timetable grid structure
+       */
+      function generateTimetableGrid() {
+        const grid = document.getElementById("timetableGrid");
+        grid.innerHTML = "";
+
+        // Top-left corner cell (empty)
+        const corner = document.createElement("div");
+        corner.className = "time-label";
+        corner.textContent = "Time";
+        grid.appendChild(corner);
+
+        // Day headers
+        days.forEach((day) => {
+          const header = document.createElement("div");
+          header.className = "day-header";
+          header.textContent = day;
+          grid.appendChild(header);
         });
-        
-        /**
-         * Generate the timetable grid structure
-         */
-        function generateTimetableGrid() {
-            const grid = document.getElementById('timetableGrid');
-            grid.innerHTML = '';
-            
-            // Top-left corner cell (empty)
-            const corner = document.createElement('div');
-            corner.className = 'time-label';
-            corner.textContent = 'Time';
-            grid.appendChild(corner);
-            
-            // Day headers
-            days.forEach(day => {
-                const header = document.createElement('div');
-                header.className = 'day-header';
-                header.textContent = day;
-                grid.appendChild(header);
-            });
-            
-            // Time slots and cells
-            timeSlots.forEach(time => {
-                // Time label
-                const timeLabel = document.createElement('div');
-                timeLabel.className = 'time-label';
-                timeLabel.textContent = time;
-                grid.appendChild(timeLabel);
-                
-                // Day cells for this time slot
-                days.forEach(day => {
-                    const cell = document.createElement('div');
-                    cell.className = 'time-slot';
-                    cell.dataset.day = day;
-                    cell.dataset.time = time;
-                    
-                    // Make cells drop targets
-                    cell.addEventListener('dragover', handleDragOver);
-                    cell.addEventListener('drop', handleDrop);
-                    cell.addEventListener('dragleave', handleDragLeave);
-                    
-                    grid.appendChild(cell);
-                });
-            });
-        }
-        
-        /**
-         * Populate the courses sidebar
-         */
-        function populateCoursesList() {
-            const list = document.getElementById('coursesList');
-            list.innerHTML = '';
-            
-            availableCourses.forEach(course => {
-                const item = createCourseItem(course);
-                list.appendChild(item);
-            });
-        }
-        
-        /**
-         * Create a draggable course item
-         */
-        function createCourseItem(course) {
-            const item = document.createElement('div');
-            item.className = 'course-item';
-            item.draggable = true;
-            item.dataset.courseCode = course.code;
-            
-            item.innerHTML = `
+
+        // Time slots and cells
+        timeSlots.forEach((time) => {
+          // Time label
+          const timeLabel = document.createElement("div");
+          timeLabel.className = "time-label";
+          timeLabel.textContent = time;
+          grid.appendChild(timeLabel);
+
+          // Day cells for this time slot
+          days.forEach((day) => {
+            const cell = document.createElement("div");
+            cell.className = "time-slot";
+            cell.dataset.day = day;
+            cell.dataset.time = time;
+
+            // Make cells drop targets
+            cell.addEventListener("dragover", handleDragOver);
+            cell.addEventListener("drop", handleDrop);
+            cell.addEventListener("dragleave", handleDragLeave);
+
+            grid.appendChild(cell);
+          });
+        });
+      }
+
+      /**
+       * Populate the courses sidebar
+       */
+      function populateCoursesList() {
+        const list = document.getElementById("coursesList");
+        list.innerHTML = "";
+
+        availableCourses.forEach((course) => {
+          const item = createCourseItem(course);
+          list.appendChild(item);
+        });
+      }
+
+      /**
+       * Create a draggable course item
+       */
+      function createCourseItem(course) {
+        const item = document.createElement("div");
+        item.className = "course-item";
+        item.draggable = true;
+        item.dataset.courseCode = course.code;
+
+        item.innerHTML = `
                 <div class="course-code">${course.code}</div>
                 <div class="course-name">${course.name}</div>
                 <div class="course-meta">
@@ -602,101 +630,101 @@
                     <i class="fas fa-user"></i> ${course.lecturer}
                 </div>
             `;
-            
-            // Drag event listeners
-            item.addEventListener('dragstart', handleDragStart);
-            item.addEventListener('dragend', handleDragEnd);
-            
-            return item;
+
+        // Drag event listeners
+        item.addEventListener("dragstart", handleDragStart);
+        item.addEventListener("dragend", handleDragEnd);
+
+        return item;
+      }
+
+      /**
+       * Handle drag start
+       */
+      function handleDragStart(e) {
+        this.classList.add("dragging");
+        const courseCode = this.dataset.courseCode;
+        draggedCourse = availableCourses.find((c) => c.code === courseCode);
+        e.dataTransfer.effectAllowed = "copy";
+      }
+
+      /**
+       * Handle drag end
+       */
+      function handleDragEnd(e) {
+        this.classList.remove("dragging");
+      }
+
+      /**
+       * Handle drag over drop zone
+       */
+      function handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "copy";
+
+        // Visual feedback
+        if (!this.querySelector(".scheduled-course")) {
+          this.classList.add("valid-drop");
+        } else {
+          this.classList.add("invalid-drop");
         }
-        
-        /**
-         * Handle drag start
-         */
-        function handleDragStart(e) {
-            this.classList.add('dragging');
-            const courseCode = this.dataset.courseCode;
-            draggedCourse = availableCourses.find(c => c.code === courseCode);
-            e.dataTransfer.effectAllowed = 'copy';
+      }
+
+      /**
+       * Handle drag leave
+       */
+      function handleDragLeave(e) {
+        this.classList.remove("valid-drop", "invalid-drop");
+      }
+
+      /**
+       * Handle drop on time slot
+       */
+      function handleDrop(e) {
+        e.preventDefault();
+        this.classList.remove("valid-drop", "invalid-drop");
+
+        if (!draggedCourse) return;
+
+        const day = this.dataset.day;
+        const time = this.dataset.time;
+
+        // Check if slot is empty
+        if (this.querySelector(".scheduled-course")) {
+          alert("This time slot is already occupied!");
+          return;
         }
-        
-        /**
-         * Handle drag end
-         */
-        function handleDragEnd(e) {
-            this.classList.remove('dragging');
-        }
-        
-        /**
-         * Handle drag over drop zone
-         */
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'copy';
-            
-            // Visual feedback
-            if (!this.querySelector('.scheduled-course')) {
-                this.classList.add('valid-drop');
-            } else {
-                this.classList.add('invalid-drop');
-            }
-        }
-        
-        /**
-         * Handle drag leave
-         */
-        function handleDragLeave(e) {
-            this.classList.remove('valid-drop', 'invalid-drop');
-        }
-        
-        /**
-         * Handle drop on time slot
-         */
-        function handleDrop(e) {
-            e.preventDefault();
-            this.classList.remove('valid-drop', 'invalid-drop');
-            
-            if (!draggedCourse) return;
-            
-            const day = this.dataset.day;
-            const time = this.dataset.time;
-            
-            // Check if slot is empty
-            if (this.querySelector('.scheduled-course')) {
-                alert('This time slot is already occupied!');
-                return;
-            }
-            
-            // Add to schedule
-            const slotKey = `${day}-${time}`;
-            schedule[slotKey] = { ...draggedCourse, day, time };
-            
-            // Save to undo stack
-            undoStack.push(JSON.parse(JSON.stringify(schedule)));
-            if (undoStack.length > 20) undoStack.shift(); // Keep last 20 actions
-            
-            // Render the course in the grid
-            renderScheduledCourse(this, draggedCourse);
-            
-            // Update statistics
-            updateStats();
-            
-            // Check for conflicts
-            checkConflicts();
-            
-            draggedCourse = null;
-        }
-        
-        /**
-         * Render a course in a time slot
-         */
-        function renderScheduledCourse(cell, course) {
-            const block = document.createElement('div');
-            block.className = 'scheduled-course';
-            block.style.background = `linear-gradient(135deg, ${course.color}, ${course.color}dd)`;
-            block.draggable = true;
-            
-            block.innerHTML = `
+
+        // Add to schedule
+        const slotKey = `${day}-${time}`;
+        schedule[slotKey] = { ...draggedCourse, day, time };
+
+        // Save to undo stack
+        undoStack.push(JSON.parse(JSON.stringify(schedule)));
+        if (undoStack.length > 20) undoStack.shift(); // Keep last 20 actions
+
+        // Render the course in the grid
+        renderScheduledCourse(this, draggedCourse);
+
+        // Update statistics
+        updateStats();
+
+        // Check for conflicts
+        checkConflicts();
+
+        draggedCourse = null;
+      }
+
+      /**
+       * Render a course in a time slot
+       */
+      function renderScheduledCourse(cell, course) {
+        const block = document.createElement("div");
+        block.className = "scheduled-course";
+        block.style.background = `linear-gradient(135deg, ${course.color}, ${course.color}dd)`;
+        block.draggable = true;
+
+        block.innerHTML = `
                 <button class="remove-course" onclick="removeCourse(this)">
                     <i class="fas fa-times"></i>
                 </button>
@@ -706,155 +734,236 @@
                     <i class="fas fa-user"></i> ${course.lecturer}
                 </div>
             `;
-            
-            cell.appendChild(block);
+
+        cell.appendChild(block);
+      }
+
+      /**
+       * Remove a course from the schedule
+       */
+      function removeCourse(button) {
+        const block = button.closest(".scheduled-course");
+        const cell = block.closest(".time-slot");
+        const day = cell.dataset.day;
+        const time = cell.dataset.time;
+        const slotKey = `${day}-${time}`;
+
+        // Save to undo stack
+        undoStack.push(JSON.parse(JSON.stringify(schedule)));
+
+        // Remove from schedule
+        delete schedule[slotKey];
+
+        // Remove from DOM
+        block.remove();
+
+        // Update stats
+        updateStats();
+        checkConflicts();
+      }
+
+      /**
+       * Update statistics display
+       */
+      function updateStats() {
+        const courses = Object.values(schedule);
+        const totalCourses = new Set(courses.map((c) => c.code)).size;
+        const totalCredits = courses.reduce((sum, c) => {
+          // Only count each unique course once
+          return sum;
+        }, 0);
+
+        // Calculate unique courses and their credits
+        const uniqueCourses = {};
+        courses.forEach((c) => {
+          uniqueCourses[c.code] = c.credits;
+        });
+        const credits = Object.values(uniqueCourses).reduce((a, b) => a + b, 0);
+
+        document.getElementById("totalCourses").textContent = totalCourses;
+        document.getElementById("totalCredits").textContent = credits;
+        document.getElementById("totalHours").textContent = courses.length;
+      }
+
+      /**
+       * Check for scheduling conflicts
+       */
+      function checkConflicts() {
+        // Reset conflict indicators
+        document.querySelectorAll(".scheduled-course").forEach((block) => {
+          block.classList.remove("conflict");
+        });
+
+        let conflictCount = 0;
+
+        // Check for time overlaps (simplified - just checks if multiple courses same time)
+        // In production, this would be more sophisticated
+
+        document.getElementById("conflictCount").textContent = conflictCount;
+      }
+
+      /**
+       * Filter courses in sidebar
+       */
+      function filterCourses() {
+        const searchTerm = document
+          .getElementById("courseSearchInput")
+          .value.toLowerCase();
+        const items = document.querySelectorAll(".course-item");
+
+        items.forEach((item) => {
+          const text = item.textContent.toLowerCase();
+          item.style.display = text.includes(searchTerm) ? "block" : "none";
+        });
+      }
+
+      /**
+       * Clear entire schedule
+       */
+      function clearSchedule() {
+        if (!confirm("Are you sure you want to clear the entire schedule?"))
+          return;
+
+        undoStack.push(JSON.parse(JSON.stringify(schedule)));
+        schedule = {};
+
+        document
+          .querySelectorAll(".scheduled-course")
+          .forEach((block) => block.remove());
+        updateStats();
+      }
+
+      /**
+       * Undo last action
+       */
+      function undoLastAction() {
+        if (undoStack.length === 0) {
+          alert("Nothing to undo");
+          return;
         }
-        
-        /**
-         * Remove a course from the schedule
-         */
-        function removeCourse(button) {
-            const block = button.closest('.scheduled-course');
-            const cell = block.closest('.time-slot');
-            const day = cell.dataset.day;
-            const time = cell.dataset.time;
-            const slotKey = `${day}-${time}`;
-            
-            // Save to undo stack
-            undoStack.push(JSON.parse(JSON.stringify(schedule)));
-            
-            // Remove from schedule
-            delete schedule[slotKey];
-            
-            // Remove from DOM
-            block.remove();
-            
-            // Update stats
-            updateStats();
-            checkConflicts();
-        }
-        
-        /**
-         * Update statistics display
-         */
-        function updateStats() {
-            const courses = Object.values(schedule);
-            const totalCourses = new Set(courses.map(c => c.code)).size;
-            const totalCredits = courses.reduce((sum, c) => {
-                // Only count each unique course once
-                return sum;
-            }, 0);
-            
-            // Calculate unique courses and their credits
-            const uniqueCourses = {};
-            courses.forEach(c => {
-                uniqueCourses[c.code] = c.credits;
-            });
-            const credits = Object.values(uniqueCourses).reduce((a, b) => a + b, 0);
-            
-            document.getElementById('totalCourses').textContent = totalCourses;
-            document.getElementById('totalCredits').textContent = credits;
-            document.getElementById('totalHours').textContent = courses.length;
-        }
-        
-        /**
-         * Check for scheduling conflicts
-         */
-        function checkConflicts() {
-            // Reset conflict indicators
-            document.querySelectorAll('.scheduled-course').forEach(block => {
-                block.classList.remove('conflict');
-            });
-            
-            let conflictCount = 0;
-            
-            // Check for time overlaps (simplified - just checks if multiple courses same time)
-            // In production, this would be more sophisticated
-            
-            document.getElementById('conflictCount').textContent = conflictCount;
-        }
-        
-        /**
-         * Filter courses in sidebar
-         */
-        function filterCourses() {
-            const searchTerm = document.getElementById('courseSearchInput').value.toLowerCase();
-            const items = document.querySelectorAll('.course-item');
-            
-            items.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                item.style.display = text.includes(searchTerm) ? 'block' : 'none';
-            });
-        }
-        
-        /**
-         * Clear entire schedule
-         */
-        function clearSchedule() {
-            if (!confirm('Are you sure you want to clear the entire schedule?')) return;
-            
-            undoStack.push(JSON.parse(JSON.stringify(schedule)));
-            schedule = {};
-            
-            document.querySelectorAll('.scheduled-course').forEach(block => block.remove());
-            updateStats();
-        }
-        
-        /**
-         * Undo last action
-         */
-        function undoLastAction() {
-            if (undoStack.length === 0) {
-                alert('Nothing to undo');
-                return;
-            }
-            
-            schedule = undoStack.pop();
-            
-            // Re-render grid
-            document.querySelectorAll('.scheduled-course').forEach(block => block.remove());
-            
-            Object.entries(schedule).forEach(([key, course]) => {
-                const [day, time] = key.split('-');
-                const cell = document.querySelector(`[data-day="${day}"][data-time="${time}"]`);
-                if (cell) {
-                    renderScheduledCourse(cell, course);
-                }
-            });
-            
-            updateStats();
-        }
-        
-        /**
-         * Save schedule
-         */
-        function saveSchedule() {
-            // In production, send to PHP backend
-            console.log('Saving schedule:', schedule);
-            
-            // Simulate save
-            const scheduleName = document.getElementById('scheduleTitle').textContent;
-            localStorage.setItem('currentSchedule', JSON.stringify({
-                name: scheduleName,
-                courses: schedule,
-                lastSaved: new Date()
-            }));
-            
-            alert('Schedule saved successfully!');
-        }
-        
-        /**
-         * View schedule preview
-         */
-        function viewSchedule() {
-            alert('Preview mode - Schedule would be displayed in read-only format');
-        }
-        
-        // Navigation functions
-        function toggleMobileMenu() {
-            document.getElementById('navbarMenu').classList.toggle('active');
-        }
+
+        schedule = undoStack.pop();
+
+        // Re-render grid
+        document
+          .querySelectorAll(".scheduled-course")
+          .forEach((block) => block.remove());
+
+        Object.entries(schedule).forEach(([key, course]) => {
+          const [day, time] = key.split("-");
+          const cell = document.querySelector(
+            `[data-day="${day}"][data-time="${time}"]`
+          );
+          if (cell) {
+            renderScheduledCourse(cell, course);
+          }
+        });
+
+        updateStats();
+      }
+
+      /**
+       * Save schedule
+       */
+      function saveSchedule() {
+        // In production, send to PHP backend
+        console.log("Saving schedule:", schedule);
+
+        // Simulate save
+        const scheduleName =
+          document.getElementById("scheduleTitle").textContent;
+        localStorage.setItem(
+          "currentSchedule",
+          JSON.stringify({
+            name: scheduleName,
+            courses: schedule,
+            lastSaved: new Date(),
+          })
+        );
+
+        alert("Schedule saved successfully!");
+      }
+
+      /**
+       * View schedule preview
+       */
+      function viewSchedule() {
+        alert("Preview mode - Schedule would be displayed in read-only format");
+      }
+
+      // Navigation functions
+      function toggleMobileMenu() {
+        document.getElementById("navbarMenu").classList.toggle("active");
+      }
     </script>
 
-</body>
+    <script src="scripts/app.js"></script>
+
+    <script>
+      // Page-specific JavaScript can use the global NUSTApp object
+      $(document).ready(function () {
+        // Show a welcome notification
+        NUSTApp.showNotification(
+          "Welcome to the enhanced timetable manager!",
+          "success"
+        );
+
+        // Load initial data
+        loadPageData();
+
+        // Custom form handling
+        $("#customForm").on("submit", function (e) {
+          e.preventDefault();
+
+          if (NUSTApp.validateForm(this)) {
+            submitCustomForm();
+          }
+        });
+      });
+
+      function loadPageData() {
+        NUSTApp.showGlobalLoading();
+
+        NUSTApp.dataLoader
+          .loadData("/dashboard/stats.php")
+          .then((data) => {
+            displayDashboardData(data);
+            NUSTApp.hideGlobalLoading();
+          })
+          .catch((error) => {
+            NUSTApp.showNotification("Failed to load data", "error");
+            NUSTApp.hideGlobalLoading();
+          });
+      }
+
+      function displayDashboardData(data) {
+        $("#statsContainer")
+          .html(
+            `
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">${data.totalSchedules}</div>
+                <div class="stat-label">Total Schedules</div>
+            </div>
+            <!-- More stats... -->
+        </div>
+    `
+          )
+          .addClass("fade-in");
+      }
+
+      // Custom notification examples
+      function showSuccessMessage() {
+        NUSTApp.showNotification("Schedule saved successfully!", "success");
+      }
+
+      function showErrorMessage() {
+        NUSTApp.showNotification("An error occurred while saving", "error");
+      }
+
+      function showInfoMessage() {
+        NUSTApp.showNotification("Auto-save enabled", "info");
+      }
+    </script>
+  </body>
 </html>

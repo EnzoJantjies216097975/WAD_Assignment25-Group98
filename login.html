@@ -1,347 +1,559 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login / Register - NUST Timetable Manager</title>
-    
+
     <!-- CSS & Font Awesome -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
     <style>
-        .auth-container {
-            min-height: calc(100vh - 200px);
-            display: flex;
-            align-items: center;
-            padding: 2rem 0;
-        }
-        
-        .auth-card {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .password-field {
-            position: relative;
-        }
-        
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: var(--text-muted);
-            user-select: none;
-        }
-        
-        .password-toggle:hover {
-            color: var(--primary-color);
-        }
+      .auth-container {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        padding: 2rem 0;
+      }
+
+      .auth-card {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .password-field {
+        position: relative;
+      }
+
+      .password-toggle {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: var(--text-muted);
+        user-select: none;
+      }
+
+      .password-toggle:hover {
+        color: var(--primary-color);
+      }
     </style>
-</head>
-<body>
-    
+  </head>
+  <body>
     <!-- NAVIGATION BAR -->
     <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60" padding="100" margin="1000"> &nbsp; Timetable Manager
-            </a>
-            
-            <!-- Mobile Toggle Button -->
-            <button class="navbar-toggle" onclick="toggleMenu()">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <div class="navbar-menu" id="navbarMenu">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="features.html">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="help.html">Help</a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img
+            src="logo.png"
+            alt="NUST Logo"
+            class="navbar-logo"
+            width="140"
+            height="60"
+            padding="100"
+            margin="1000"
+          />
+          &nbsp; Timetable Manager
+        </a>
+
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggle" onclick="toggleMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="navbar-menu" id="navbarMenu">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="features.html">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="help.html">Help</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <!-- AUTHENTICATION CONTAINER -->
     <div class="auth-container">
-        <div class="container">
-             <div class="row" style="justify-content: center;">
-                <div style="flex: 0 0 90%; max-width: 600px;">
-                    <div class="card auth-card">
-                        <div class="card-body p-5">
-                            <!-- Logo/Icon -->
-                            <div class="text-center mb-4">
-                                <div class="feature-icon" style="width: 100px; height: 100px; margin: 0 auto; font-size: 3rem;">
-                                    <i class="fas fa-user-circle"></i>
-                                </div>
-                                <h3 class="text-primary mt-3">Welcome to NUST Timetable Manager</h3>
-                                <p class="text-muted">Login or create a new account to get started</p>
-                            </div>
-                            
-                            <!-- Tabs -->
-                            <div class="tabs">
-                                <button class="tab-button active" onclick="showTab('login')">Login</button>
-                                <button class="tab-button" onclick="showTab('register')">Register</button>
-                            </div>
-                            
-                            <!-- LOGIN FORM -->
-                            <div class="tab-content active" id="loginTab">
-                                <form id="loginForm" action="dashboard.html" method="POST">
-                                    <div class="form-group">
-                                        <label for="loginEmail" class="form-label">
-                                            <i class="fas fa-envelope"></i> Email Address
-                                        </label>
-                                        <input type="email" class="form-control" id="loginEmail" 
-                                               name="email" placeholder="youremail@nust.na" required>
-                                    </div>
-                                    
-                                    <div class="form-group password-field">
-                                        <label for="loginPassword" class="form-label">
-                                            <i class="fas fa-lock"></i> Password
-                                        </label>
-                                        <input type="password" class="form-control" id="loginPassword" 
-                                               name="password" placeholder="Enter your password" required>
-                                        <span class="password-toggle" onclick="togglePassword('loginPassword', this)">
-                                            <i class="fas fa-eye-slash"></i>
-                                        </span>
-                                    </div>
-                                    
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="rememberMe">
-                                            <label class="form-check-label" for="rememberMe">
-                                                Remember me
-                                            </label>
-                                        </div>
-                                        <a href="#" class="text-secondary">Forgot Password?</a>
-                                    </div>
-                                    
-                                     <button type="submit" class="btn btn-primary btn-block mb-3">
-                                        <i class="fas fa-sign-in-alt"></i> Login
-                                    </button>
-                                    
-                                    <p class="text-center text-muted">
-                                        Don't have an account? 
-                                        <a href="#" class="text-secondary" onclick="showTab('register'); return false;">
-                                            Create one here
-                                        </a>
-                                    </p>
-                                </form>
-                            </div>
-                            
-                            <!-- REGISTRATION FORM -->
-                            <div class="tab-content" id="registerTab">
-                                <form id="registerForm" action="dashboard.html" method="POST">
-                                    <div class="form-group">
-                                        <label for="registerName" class="form-label">
-                                            <i class="fa-solid fa-user"></i> Full Name
-                                        </label>
-                                        <input type="text" class="form-control" id="registerName" 
-                                               name="fullname" placeholder="John Doe" required>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="registerStudentNumber" class="form-label">
-                                            <i class="fas fa-id-card"></i> Student Number
-                                        </label>
-                                        <input type="text" class="form-control" id="registerStudentNumber" 
-                                               name="student_number" placeholder="217090427" 
-                                               pattern="[0-9]{9}" required>
-                                        <small class="form-text">9-digit student number</small>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="registerEmail" class="form-label">
-                                            <i class="fas fa-envelope"></i> NUST Email Address
-                                        </label>
-                                        <input type="email" class="form-control" id="registerEmail" 
-                                               name="email" placeholder="youremail@nust.na" required>
-                                        <small class="form-text">Use your NUST email address</small>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="registerProgram" class="form-label">
-                                            <i class="fas fa-graduation-cap"></i> Program
-                                        </label>
-                                        <select class="form-control" id="registerProgram" name="program" required>
-                                            <option value="">Select your program...</option>
-                                            <option value="07BCSS">Bachelor of Computer Science - Systems Administration</option>
-                                            <option value="07BCSS-CN">Bachelor of Computer Science - Communication Networks</option>
-                                            <option value="07BCSS-SD">Bachelor of Computer Science - Software Development</option>
-                                            <option value="07BCCY">Bachelor of Computer Science in Cyber Security</option>
-                                            <option value="07BAIT">Bachelor of Informatics</option>
-                                            <option value="07BJOU">Bachelor of Journalism and Media Technology</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="form-group password-field">
-                                        <label for="registerPassword" class="form-label">
-                                            <i class="fas fa-lock"></i> Password
-                                        </label>
-                                        <input type="password" class="form-control" id="registerPassword" 
-                                               name="password" placeholder="Create a strong password" 
-                                               minlength="8" required>
-                                        <span class="password-toggle" onclick="togglePassword('registerPassword', this)">
-                                            <i class="fas fa-eye"></i>
-                                        </span>
-                                        <small class="form-text">Minimum 8 characters</small>
-                                    </div>
-                                    
-                                    <div class="form-group password-field">
-                                        <label for="registerConfirmPassword" class="form-label">
-                                            <i class="fas fa-lock"></i> Confirm Password
-                                        </label>
-                                        <input type="password" class="form-control" id="registerConfirmPassword" 
-                                               name="confirm_password" placeholder="Re-enter your password" required>
-                                        <span class="password-toggle" onclick="togglePassword('registerConfirmPassword', this)">
-                                            <i class="fas fa-eye"></i>
-                                        </span>
-                                    </div>
-                                    
-                                    <div class="form-check mb-4">
-                                        <input class="form-check-input" type="checkbox" id="agreeTerms" required>
-                                        <label class="form-check-label" for="agreeTerms">
-                                            I agree to the <a href="#" class="text-secondary">Terms and Conditions</a>
-                                        </label>
-                                    </div>
-                                    
-                                    <button type="submit" class="btn btn-secondary btn-block mb-3">
-                                        <i class="fas fa-user-plus"></i> Create Account
-                                    </button>
-                                    
-                                    <p class="text-center text-muted">
-                                        Already have an account? 
-                                        <a href="#" class="text-secondary" onclick="showTab('login'); return false;">
-                                            Login here
-                                        </a>
-                                    </p>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Help Text -->
-                    <div class="text-center mt-4">
-                        <p class="text-muted">
-                            <i class="fas fa-info-circle"></i> Need help? Visit our <a href="help.html" class="text-secondary">Help Center</a>
-                        </p>
-                    </div>
+      <div class="container">
+        <div class="row" style="justify-content: center">
+          <div style="flex: 0 0 90%; max-width: 600px">
+            <div class="card auth-card">
+              <div class="card-body p-5">
+                <!-- Logo/Icon -->
+                <div class="text-center mb-4">
+                  <div
+                    class="feature-icon"
+                    style="
+                      width: 100px;
+                      height: 100px;
+                      margin: 0 auto;
+                      font-size: 3rem;
+                    "
+                  >
+                    <i class="fas fa-user-circle"></i>
+                  </div>
+                  <h3 class="text-primary mt-3">
+                    Welcome to NUST Timetable Manager
+                  </h3>
+                  <p class="text-muted">
+                    Login or create a new account to get started
+                  </p>
                 </div>
+
+                <!-- Tabs -->
+                <div class="tabs">
+                  <button class="tab-button active" onclick="showTab('login')">
+                    Login
+                  </button>
+                  <button class="tab-button" onclick="showTab('register')">
+                    Register
+                  </button>
+                </div>
+
+                <!-- LOGIN FORM -->
+                <div class="tab-content active" id="loginTab">
+                  <form
+                    id="loginForm"
+                    action="dashboard.html"
+                    method="POST"
+                    data-autosave="true"
+                    novalidate
+                  >
+                    <div class="form-group">
+                      <label for="loginEmail" class="form-label">
+                        <i class="fas fa-envelope"></i> Email Address
+                      </label>
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="loginEmail"
+                        name="email"
+                        required
+                        data-validate="required|email|nust"
+                        placeholder="your.email@nust.na"
+                      />
+                      <div class="error-message" data-field="email"></div>
+                    </div>
+
+                    <div class="form-group password-field">
+                      <label for="password" class="form-label">
+                        <i class="fas fa-lock"></i> Password
+                      </label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        required
+                        data-validate="required|min:8"
+                        placeholder="Enter your password"
+                      />
+                      <div class="error-message" data-field="password"></div>
+                      <span
+                        class="password-toggle"
+                        onclick="togglePassword('loginPassword', this)"
+                      >
+                        <i class="fas fa-eye-slash"></i>
+                      </span>
+                    </div>
+
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 1.5rem;
+                      "
+                    >
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="rememberMe"
+                        />
+                        <label class="form-check-label" for="rememberMe">
+                          Remember me
+                        </label>
+                      </div>
+                      <a href="#" class="text-secondary">Forgot Password?</a>
+                    </div>
+
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-block mb-3"
+                    >
+                      <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+
+                    <p class="text-center text-muted">
+                      Don't have an account?
+                      <a
+                        href="#"
+                        class="text-secondary"
+                        onclick="showTab('register'); return false;"
+                      >
+                        Create one here
+                      </a>
+                    </p>
+                  </form>
+                </div>
+
+                <!-- REGISTRATION FORM -->
+                <div class="tab-content" id="registerTab">
+                  <form id="registerForm" action="dashboard.html" method="POST">
+                    <div class="form-group">
+                      <label for="registerName" class="form-label">
+                        <i class="fa-solid fa-user"></i> Full Name
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="registerName"
+                        name="fullname"
+                        placeholder="John Doe"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="registerStudentNumber" class="form-label">
+                        <i class="fas fa-id-card"></i> Student Number
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="registerStudentNumber"
+                        name="student_number"
+                        placeholder="217090427"
+                        pattern="[0-9]{9}"
+                        required
+                      />
+                      <small class="form-text">9-digit student number</small>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="registerEmail" class="form-label">
+                        <i class="fas fa-envelope"></i> NUST Email Address
+                      </label>
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="registerEmail"
+                        name="email"
+                        placeholder="youremail@nust.na"
+                        required
+                      />
+                      <small class="form-text"
+                        >Use your NUST email address</small
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label for="registerProgram" class="form-label">
+                        <i class="fas fa-graduation-cap"></i> Program
+                      </label>
+                      <select
+                        class="form-control"
+                        id="registerProgram"
+                        name="program"
+                        required
+                      >
+                        <option value="">Select your program...</option>
+                        <option value="07BCSS">
+                          Bachelor of Computer Science - Systems Administration
+                        </option>
+                        <option value="07BCSS-CN">
+                          Bachelor of Computer Science - Communication Networks
+                        </option>
+                        <option value="07BCSS-SD">
+                          Bachelor of Computer Science - Software Development
+                        </option>
+                        <option value="07BCCY">
+                          Bachelor of Computer Science in Cyber Security
+                        </option>
+                        <option value="07BAIT">Bachelor of Informatics</option>
+                        <option value="07BJOU">
+                          Bachelor of Journalism and Media Technology
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="form-group password-field">
+                      <label for="registerPassword" class="form-label">
+                        <i class="fas fa-lock"></i> Password
+                      </label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="registerPassword"
+                        name="password"
+                        placeholder="Create a strong password"
+                        minlength="8"
+                        required
+                      />
+                      <span
+                        class="password-toggle"
+                        onclick="togglePassword('registerPassword', this)"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </span>
+                      <small class="form-text">Minimum 8 characters</small>
+                    </div>
+
+                    <div class="form-group password-field">
+                      <label for="registerConfirmPassword" class="form-label">
+                        <i class="fas fa-lock"></i> Confirm Password
+                      </label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="registerConfirmPassword"
+                        name="confirm_password"
+                        placeholder="Re-enter your password"
+                        required
+                      />
+                      <span
+                        class="password-toggle"
+                        onclick="togglePassword('registerConfirmPassword', this)"
+                      >
+                        <i class="fas fa-eye"></i>
+                      </span>
+                    </div>
+
+                    <div class="form-check mb-4">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="agreeTerms"
+                        required
+                      />
+                      <label class="form-check-label" for="agreeTerms">
+                        I agree to the
+                        <a href="#" class="text-secondary"
+                          >Terms and Conditions</a
+                        >
+                      </label>
+                    </div>
+
+                    <button
+                      type="submit"
+                      class="btn btn-secondary btn-block mb-3"
+                    >
+                      <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+
+                    <p class="text-center text-muted">
+                      Already have an account?
+                      <a
+                        href="#"
+                        class="text-secondary"
+                        onclick="showTab('login'); return false;"
+                      >
+                        Login here
+                      </a>
+                    </p>
+                  </form>
+                </div>
+              </div>
             </div>
+
+            <!-- Help Text -->
+            <div class="text-center mt-4">
+              <p class="text-muted">
+                <i class="fas fa-info-circle"></i> Need help? Visit our
+                <a href="help.html" class="text-secondary">Help Center</a>
+              </p>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <!-- About Column -->
-                <div class="col-lg-4 col-md-6 col-12 mb-4">
-                    <h5>About NUST Timetable Manager</h5>
-                    <p style="color: rgba(255, 255, 255, 0.7);">
-                        A comprehensive web-based solution designed to help NUST students 
-                        efficiently create, manage, and optimize their academic schedules.
-                    </p>
-                </div>
-                
-                <!-- Quick Links Column -->
-                <div class="col-lg-4 col-md-6 col-12 mb-4">
-                    <h5>Quick Links</h5>
-                    <a href="about.html">About Us</a>
-                    <a href="features.html">Features</a>
-                    <a href="user-guide.html">User Guide</a>
-                    <a href="faq.html">FAQ</a>
-                </div>
-                
-                <!-- Contact Column -->
-                <div class="col-lg-4 col-md-6 col-12 mb-4">
-                    <h5>Contact & Support</h5>
-                    <a href="contact.html">Contact Support</a>
-                    <a href="help.html">Help Center</a>
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-top: 1rem;">
-                        <i class="fas fa-envelope"></i> support@nusttimetable.na
-                    </p>
-                </div>
-            </div>
-            
-            <!-- Footer Bottom -->
-            <div class="footer-bottom">
-                <p>
-                    &copy; 2025 NUST Timetable Manager | WAD621s Group Project | 
-                    Namibia University of Science and Technology
-                </p>
-            </div>
+      <div class="container">
+        <div class="row">
+          <!-- About Column -->
+          <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <h5>About NUST Timetable Manager</h5>
+            <p style="color: rgba(255, 255, 255, 0.7)">
+              A comprehensive web-based solution designed to help NUST students
+              efficiently create, manage, and optimize their academic schedules.
+            </p>
+          </div>
+
+          <!-- Quick Links Column -->
+          <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <h5>Quick Links</h5>
+            <a href="about.html">About Us</a>
+            <a href="features.html">Features</a>
+            <a href="user-guide.html">User Guide</a>
+            <a href="faq.html">FAQ</a>
+          </div>
+
+          <!-- Contact Column -->
+          <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <h5>Contact & Support</h5>
+            <a href="contact.html">Contact Support</a>
+            <a href="help.html">Help Center</a>
+            <p style="color: rgba(255, 255, 255, 0.7); margin-top: 1rem">
+              <i class="fas fa-envelope"></i> support@nusttimetable.na
+            </p>
+          </div>
         </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+          <p>
+            &copy; 2025 NUST Timetable Manager | WAD621s Group Project | Namibia
+            University of Science and Technology
+          </p>
+        </div>
+      </div>
     </footer>
 
     <!-- JAVASCRIPT FOR TABS AND PASSWORD TOGGLE -->
     <script>
-        // Mobile menu toggle
-        function toggleMenu() {
-            document.getElementById('navbarMenu').classList.toggle('active');
+      // Mobile menu toggle
+      function toggleMenu() {
+        document.getElementById("navbarMenu").classList.toggle("active");
+      }
+
+      // Tab switching function
+      function showTab(tabName) {
+        // Get all tab contents and buttons
+        const contents = document.querySelectorAll(".tab-content");
+        const buttons = document.querySelectorAll(".tab-button");
+
+        // Hide all tab contents
+        contents.forEach((content) => content.classList.remove("active"));
+
+        // Remove active class from all buttons
+        buttons.forEach((btn) => btn.classList.remove("active"));
+
+        // Show selected tab
+        if (tabName === "login") {
+          document.getElementById("loginTab").classList.add("active");
+          buttons[0].classList.add("active");
+        } else {
+          document.getElementById("registerTab").classList.add("active");
+          buttons[1].classList.add("active");
         }
-        
-        // Tab switching function
-        function showTab(tabName) {
-            // Get all tab contents and buttons
-            const contents = document.querySelectorAll('.tab-content');
-            const buttons = document.querySelectorAll('.tab-button');
-            
-            // Hide all tab contents
-            contents.forEach(content => content.classList.remove('active'));
-            
-            // Remove active class from all buttons
-            buttons.forEach(btn => btn.classList.remove('active'));
-            
-            // Show selected tab
-            if (tabName === 'login') {
-                document.getElementById('loginTab').classList.add('active');
-                buttons[0].classList.add('active');
-            } else {
-                document.getElementById('registerTab').classList.add('active');
-                buttons[1].classList.add('active');
-            }
+      }
+
+      // Password visibility toggle
+      function togglePassword(inputId, iconContainer) {
+        const input = document.getElementById(inputId);
+        const icon = iconContainer.querySelector("i");
+
+        if (input.type === "password") {
+          input.type = "text";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+        } else {
+          input.type = "password";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
         }
-        
-        // Password visibility toggle
-        function togglePassword(inputId, iconContainer) {
-            const input = document.getElementById(inputId);
-            const icon = iconContainer.querySelector('i');
-            
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        }
-        
-        // Form validation for matching passwords
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('registerConfirmPassword').value;
-            
-            if (password !== confirmPassword) {
-                e.preventDefault();
-                alert('Passwords do not match. Please try again.');
-                return false;
-            }
+      }
+
+      // Form validation for matching passwords
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", function (e) {
+          const password = document.getElementById("registerPassword").value;
+          const confirmPassword = document.getElementById(
+            "registerConfirmPassword"
+          ).value;
+
+          if (password !== confirmPassword) {
+            e.preventDefault();
+            alert("Passwords do not match. Please try again.");
+            return false;
+          }
         });
     </script>
-</body>
+
+    <script src="scripts/app.js"></script>
+
+    <script>
+      // Page-specific JavaScript can use the global NUSTApp object
+      $(document).ready(function () {
+        // Show a welcome notification
+        NUSTApp.showNotification(
+          "Welcome to the enhanced timetable manager!",
+          "success"
+        );
+
+        // Load initial data
+        loadPageData();
+
+        // Custom form handling
+        $("#customForm").on("submit", function (e) {
+          e.preventDefault();
+
+          if (NUSTApp.validateForm(this)) {
+            submitCustomForm();
+          }
+        });
+      });
+
+      function loadPageData() {
+        NUSTApp.showGlobalLoading();
+
+        NUSTApp.dataLoader
+          .loadData("/dashboard/stats.php")
+          .then((data) => {
+            displayDashboardData(data);
+            NUSTApp.hideGlobalLoading();
+          })
+          .catch((error) => {
+            NUSTApp.showNotification("Failed to load data", "error");
+            NUSTApp.hideGlobalLoading();
+          });
+      }
+
+      function displayDashboardData(data) {
+        $("#statsContainer")
+          .html(
+            `
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">${data.totalSchedules}</div>
+                <div class="stat-label">Total Schedules</div>
+            </div>
+            <!-- More stats... -->
+        </div>
+    `
+          )
+          .addClass("fade-in");
+      }
+
+      // Custom notification examples
+      function showSuccessMessage() {
+        NUSTApp.showNotification("Schedule saved successfully!", "success");
+      }
+
+      function showErrorMessage() {
+        NUSTApp.showNotification("An error occurred while saving", "error");
+      }
+
+      function showInfoMessage() {
+        NUSTApp.showNotification("Auto-save enabled", "info");
+      }
+    </script>
+  </body>
 </html>

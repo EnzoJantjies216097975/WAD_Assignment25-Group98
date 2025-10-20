@@ -1,833 +1,991 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FAQ - NUST Timetable Manager</title>
-    
+
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
     <style>
-        .search-bar {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-md);
-            margin-bottom: 2rem;
-        }
-        
-        .search-input-group {
-            position: relative;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .search-input {
-            width: 100%;
-            padding: 1rem 1rem 1rem 3rem;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1.1rem;
-            transition: var(--transition);
-        }
-        
-        .search-input:focus {
-            border-color: var(--secondary-color);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(252, 175, 23, 0.2);
-        }
-        
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 1.2rem;
-        }
-        
-        .search-btn {
-            position: absolute;
-            right: 0.5rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--secondary-color);
-            color: var(--primary-color);
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .search-btn:hover {
-            background: #e09d10;
-        }
-        
-        .category-links {
-            background: var(--light-bg);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-        }
-        
-        .category-links h5 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-        
+      .search-bar {
+        background: var(--white);
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: var(--shadow-md);
+        margin-bottom: 2rem;
+      }
+
+      .search-input-group {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 1rem 1rem 1rem 3rem;
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 1.1rem;
+        transition: var(--transition);
+      }
+
+      .search-input:focus {
+        border-color: var(--secondary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(252, 175, 23, 0.2);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 1.2rem;
+      }
+
+      .search-btn {
+        position: absolute;
+        right: 0.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--secondary-color);
+        color: var(--primary-color);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .search-btn:hover {
+        background: #e09d10;
+      }
+
+      .category-links {
+        background: var(--light-bg);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+      }
+
+      .category-links h5 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      .category-btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .category-btn {
+        padding: 0.5rem 1rem;
+        background: var(--white);
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+        font-size: 0.9rem;
+      }
+
+      .category-btn:hover {
+        background: var(--primary-color);
+        color: var(--white);
+      }
+
+      .faq-category {
+        scroll-margin-top: 100px;
+        margin-bottom: 3rem;
+      }
+
+      .faq-category h2 {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .accordion-custom {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .accordion-item-custom {
+        border: none;
+        margin-bottom: 0.5rem;
+        border-radius: 8px;
+        overflow: hidden;
+        background: var(--white);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .accordion-header-custom {
+        margin: 0;
+      }
+
+      .accordion-button-custom {
+        width: 100%;
+        padding: 1.25rem 1.5rem;
+        background: var(--white);
+        border: none;
+        text-align: left;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--text-dark);
+        font-size: 1.1rem;
+      }
+
+      .accordion-button-custom:hover {
+        background: var(--light-bg);
+      }
+
+      .accordion-button-custom.active {
+        background: var(--primary-color);
+        color: var(--white);
+      }
+
+      .accordion-icon {
+        font-size: 1.2rem;
+        transition: var(--transition);
+      }
+
+      .accordion-button-custom.active .accordion-icon {
+        transform: rotate(180deg);
+      }
+
+      .accordion-content-custom {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        background: var(--white);
+      }
+
+      .accordion-content-custom.show {
+        max-height: 500px;
+      }
+
+      .accordion-body-custom {
+        padding: 1.5rem;
+        border-top: 1px solid var(--border-color);
+        line-height: 1.6;
+      }
+
+      .help-cta {
+        background: var(--light-bg);
+        border: none;
+        border-radius: 12px;
+        padding: 3rem 2rem;
+        text-align: center;
+        margin-top: 3rem;
+      }
+
+      .help-cta-icon {
+        font-size: 4rem;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+      }
+
+      .help-cta h3 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      .help-cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
+      }
+
+      @media (max-width: 768px) {
         .category-btns {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
+          flex-direction: column;
         }
-        
+
         .category-btn {
-            padding: 0.5rem 1rem;
-            background: var(--white);
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            font-size: 0.9rem;
+          text-align: center;
         }
-        
-        .category-btn:hover {
-            background: var(--primary-color);
-            color: var(--white);
-        }
-        
-        .faq-category {
-            scroll-margin-top: 100px;
-            margin-bottom: 3rem;
-        }
-        
-        .faq-category h2 {
-            color: var(--primary-color);
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .accordion-custom {
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .accordion-item-custom {
-            border: none;
-            margin-bottom: 0.5rem;
-            border-radius: 8px;
-            overflow: hidden;
-            background: var(--white);
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .accordion-header-custom {
-            margin: 0;
-        }
-        
-        .accordion-button-custom {
-            width: 100%;
-            padding: 1.25rem 1.5rem;
-            background: var(--white);
-            border: none;
-            text-align: left;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-dark);
-            font-size: 1.1rem;
-        }
-        
-        .accordion-button-custom:hover {
-            background: var(--light-bg);
-        }
-        
-        .accordion-button-custom.active {
-            background: var(--primary-color);
-            color: var(--white);
-        }
-        
-        .accordion-icon {
-            font-size: 1.2rem;
-            transition: var(--transition);
-        }
-        
-        .accordion-button-custom.active .accordion-icon {
-            transform: rotate(180deg);
-        }
-        
-        .accordion-content-custom {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            background: var(--white);
-        }
-        
-        .accordion-content-custom.show {
-            max-height: 500px;
-        }
-        
-        .accordion-body-custom {
-            padding: 1.5rem;
-            border-top: 1px solid var(--border-color);
-            line-height: 1.6;
-        }
-        
-        .help-cta {
-            background: var(--light-bg);
-            border: none;
-            border-radius: 12px;
-            padding: 3rem 2rem;
-            text-align: center;
-            margin-top: 3rem;
-        }
-        
-        .help-cta-icon {
-            font-size: 4rem;
-            color: var(--secondary-color);
-            margin-bottom: 1rem;
-        }
-        
-        .help-cta h3 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-        
+
         .help-cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 1.5rem;
+          flex-direction: column;
+          align-items: center;
         }
-        
-        @media (max-width: 768px) {
-            .category-btns {
-                flex-direction: column;
-            }
-            
-            .category-btn {
-                text-align: center;
-            }
-            
-            .help-cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .help-cta-buttons .btn {
-                width: 100%;
-                max-width: 250px;
-            }
+
+        .help-cta-buttons .btn {
+          width: 100%;
+          max-width: 250px;
         }
+      }
     </style>
-</head>
-<body>
-    
+  </head>
+  <body>
     <!-- NAVIGATION BAR -->
     <nav class="navbar">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60"> &nbsp; Timetable Manager
-            </a>
-            
-             <button class="navbar-toggle" onclick="toggleMenu()">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <div class="navbar-menu" id="navbarMenu">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="features.html">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="help.html">Help</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-login" href="login.html">Login / Register</a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img
+            src="logo.png"
+            alt="NUST Logo"
+            class="navbar-logo"
+            width="140"
+            height="60"
+          />
+          &nbsp; Timetable Manager
+        </a>
+
+        <button class="navbar-toggle" onclick="toggleMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="navbar-menu" id="navbarMenu">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="features.html">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="help.html">Help</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-login" href="login.html">Login / Register</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <!-- PAGE HEADER -->
     <section class="hero-section text-center py-5">
-        <div class="container">
-            <h1 class="hero-title">Frequently Asked Questions</h1>
-            <p class="hero-subtitle">
-                Find quick answers to common questions about the timetable manager
-            </p>
-        </div>
+      <div class="container">
+        <h1 class="hero-title">Frequently Asked Questions</h1>
+        <p class="hero-subtitle">
+          Find quick answers to common questions about the timetable manager
+        </p>
+      </div>
     </section>
 
     <!-- FAQ CONTENT -->
     <section class="section">
-        <div class="container">
-            <!-- Search Bar -->
-            <div class="search-bar">
-                <h4 class="text-primary mb-3 text-center">
-                    <i class="fas fa-search"></i> Search for Help
-                </h4>
-                <div class="search-input-group">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" class="search-input" id="faqSearch" 
-                           placeholder="Type your question here..." aria-label="Search FAQs">
-                    <button class="search-btn" type="button">
-                        <i class="fas fa-search"></i> Search
-                    </button>
-                </div>
-            </div>
-
-            <!-- Category Quick Links -->
-            <div class="category-links">
-                <h5>
-                    <i class="fas fa-list"></i> Jump to Category:
-                </h5>
-                <div class="category-btns">
-                    <a href="#account" class="category-btn">Account & Login</a>
-                    <a href="#schedule" class="category-btn">Creating Schedules</a>
-                    <a href="#courses" class="category-btn">Courses</a>
-                    <a href="#conflicts" class="category-btn">Conflicts</a>
-                    <a href="#sharing" class="category-btn">Sharing & Export</a>
-                    <a href="#technical" class="category-btn">Technical</a>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-10" style="margin: 0 auto; max-width: 800px;">
-                    
-                    <!-- ACCOUNT & LOGIN QUESTIONS -->
-                    <div id="account" class="faq-category">
-                        <h2>
-                            <i class="fas fa-user-circle"></i> Account & Login
-                        </h2>
-                        
-                        <div class="accordion-custom">
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        How do I create an account?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom show">
-                                    <div class="accordion-body-custom">
-                                        Click on "Login / Register" in the navigation bar, select the 
-                                        "Register" tab, and fill in your details including your NUST 
-                                        email address, student number, and chosen password. Make sure 
-                                        to use your official NUST email (ending in @nust.na).
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        I forgot my password. How can I reset it?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        On the login page, click "Forgot Password?" below the password 
-                                        field. Enter your registered email address, and you'll receive 
-                                        instructions to reset your password. If you don't receive an 
-                                        email within 10 minutes, check your spam folder or contact support.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        Can I use a non-NUST email address?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        No, you must use your official NUST email address (@nust.na) 
-                                        to register. This ensures only NUST students can access the 
-                                        system and helps maintain data security and integrity.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        How do I change my password?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        After logging in, go to Profile Settings, click on "Change Password," 
-                                        enter your current password and your new password twice, then click 
-                                        "Update Password." For security reasons, you'll need to log in again 
-                                        after changing your password.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- CREATING SCHEDULES QUESTIONS -->
-                    <div id="schedule" class="faq-category">
-                        <h2>
-                            <i class="fas fa-calendar-plus"></i> Creating Schedules
-                        </h2>
-                        
-                        <div class="accordion-custom">
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        How do I create a new timetable?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        From your dashboard, click "Create New Schedule." Give your 
-                                        timetable a name, select the semester and year, then click 
-                                        "Create." You'll be taken to the timetable editor where you 
-                                        can start adding courses by dragging them from the sidebar onto 
-                                        the weekly grid.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        Can I create multiple versions of my timetable?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        Yes! You can create as many schedule versions as you like. This 
-                                        is useful for comparing different course combinations or planning 
-                                        for different scenarios. Each schedule is saved separately and 
-                                        can be easily accessed from your dashboard.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        How do I delete a schedule I no longer need?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        Go to "My Schedules" on your dashboard, find the schedule you 
-                                        want to delete, click the three-dot menu icon, and select "Delete." 
-                                        You'll be asked to confirm before the schedule is permanently 
-                                        removed. Note: This action cannot be undone.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        Is my schedule automatically saved?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        Yes, your changes are automatically saved to local storage every 
-                                        few seconds. However, to sync your schedule across devices and 
-                                        ensure permanent cloud storage, click the "Save to Cloud" button. 
-                                        We recommend doing this regularly, especially after major changes.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- COURSES QUESTIONS -->
-                    <div id="courses" class="faq-category">
-                        <h2>
-                            <i class="fas fa-book"></i> Courses
-                        </h2>
-                        
-                        <div class="accordion-custom">
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        How do I find a specific course?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        Use the search bar in the Course Browser. You can search by 
-                                        course code (e.g., "WAD621S"), course name (e.g., "Web Application"), 
-                                        or lecturer name. You can also use filters to narrow down results 
-                                        by department, year level, or semester.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        What if a course I need isn't listed?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        The course database is updated at the start of each semester with 
-                                        official NUST course offerings. If you can't find a course, it may 
-                                        not be offered in the current semester, or there may be a data 
-                                        synchronization delay. Contact support with the specific course 
-                                        code for assistance.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        How do I see course details like lecturer and venue?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        Click on any course card in the Course Browser to open a detailed 
-                                        modal window. This shows complete information including course 
-                                        description, credit hours, prerequisites, lecturer(s), venue 
-                                        assignment, and scheduled time slots.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- CONFLICTS QUESTIONS -->
-                    <div id="conflicts" class="faq-category">
-                        <h2>
-                            <i class="fas fa-exclamation-triangle"></i> Handling Conflicts
-                        </h2>
-                        
-                        <div class="accordion-custom">
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        What does a scheduling conflict mean?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        A scheduling conflict occurs when two courses overlap in time, 
-                                        making it impossible to attend both. The system detects three 
-                                        types: time overlaps, venue conflicts (being in two places at once), 
-                                        and prerequisite warnings (missing required prior courses).
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        How do I resolve a time conflict?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        You have several options: choose a different section of one course 
-                                        (if available), select an alternative time slot, or replace one of 
-                                        the conflicting courses with a different course that fits your 
-                                        schedule. The system will suggest alternatives when possible.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        Can I override a prerequisite warning?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        Prerequisite warnings are informational only - the system won't 
-                                        prevent you from adding the course to your timetable. However, 
-                                        you should verify with your academic advisor whether you've met 
-                                        the requirements or can get special permission to take the course.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SHARING & EXPORT QUESTIONS -->
-                    <div id="sharing" class="faq-category">
-                        <h2>
-                            <i class="fas fa-share-alt"></i> Sharing & Export
-                        </h2>
-                        
-                        <div class="accordion-custom">
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        How do I share my timetable with classmates?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        Open the schedule you want to share, click "Share" in the toolbar, 
-                                        then "Generate Share Link." Copy the unique URL and send it to your 
-                                        classmates via email, messaging, or social media. The link provides 
-                                        view-only access - they can't edit your schedule.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        Can someone edit my schedule if I share it?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        No, shared links are read-only. Recipients can view your timetable 
-                                        but cannot make any changes. Your schedule remains secure and only 
-                                        you can edit it when logged into your account.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        What's the difference between PDF and image export?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        PDF format is better for printing and maintains high quality at any 
-                                        size. It's ideal for official documentation. Image format (PNG/JPG) 
-                                        is better for quick sharing on social media or messaging apps, and 
-                                        has smaller file sizes. Choose based on your intended use.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TECHNICAL QUESTIONS -->
-                    <div id="technical" class="faq-category">
-                        <h2>
-                            <i class="fas fa-cog"></i> Technical Issues
-                        </h2>
-                        
-                        <div class="accordion-custom">
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        Which browsers are supported?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        The timetable manager works best on modern browsers: Google Chrome 
-                                        (version 90+), Mozilla Firefox (version 88+), Microsoft Edge (version 
-                                        90+), and Safari (version 14+). For the best experience, keep your 
-                                        browser updated to the latest version.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        Can I use this on my mobile phone?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        Yes! The application is fully responsive and optimized for mobile 
-                                        devices. You can create and edit timetables on smartphones and tablets. 
-                                        The mobile interface uses touch-friendly controls instead of drag-and-drop.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        What if I lose my internet connection while editing?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        Don't worry! Your changes are automatically saved to local storage 
-                                        on your device, so you won't lose any work. When your connection is 
-                                        restored, click "Save to Cloud" to sync your changes to the server.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="accordion-item-custom">
-                                <div class="accordion-header-custom">
-                                    <button class="accordion-button-custom" onclick="toggleAccordion(this)">
-                                        Why is the drag-and-drop not working?
-                                        <i class="fas fa-chevron-down accordion-icon"></i>
-                                    </button>
-                                </div>
-                                <div class="accordion-content-custom">
-                                    <div class="accordion-body-custom">
-                                        Try these solutions: 1) Refresh the page (F5 or Cmd+R), 2) Clear 
-                                        your browser cache, 3) Check if JavaScript is enabled in your browser 
-                                        settings, 4) Try a different browser, or 5) Disable browser extensions 
-                                        that might interfere. If problems persist, contact support.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Still Have Questions -->
-             <div class="help-cta">
-                <i class="fas fa-question-circle help-cta-icon"></i>
-                <h3>Still Have Questions?</h3>
-                <p class="text-muted">
-                    If you couldn't find the answer you were looking for, we're here to help!
-                </p>
-                <div class="help-cta-buttons">
-                    <a href="user-guide.html" class="btn btn-primary">
-                        <i class="fas fa-book"></i> Read User Guide
-                    </a>
-                    <a href="contact.html" class="btn btn-secondary">
-                        <i class="fas fa-envelope"></i> Contact Support
-                    </a>
-                </div>
-            </div>
+      <div class="container">
+        <!-- Search Bar -->
+        <div class="search-bar">
+          <h4 class="text-primary mb-3 text-center">
+            <i class="fas fa-search"></i> Search for Help
+          </h4>
+          <div class="search-input-group">
+            <i class="fas fa-search search-icon"></i>
+            <input
+              type="text"
+              class="search-input"
+              id="faqSearch"
+              placeholder="Type your question here..."
+              aria-label="Search FAQs"
+            />
+            <button class="search-btn" type="button">
+              <i class="fas fa-search"></i> Search
+            </button>
+          </div>
         </div>
+
+        <!-- Category Quick Links -->
+        <div class="category-links">
+          <h5><i class="fas fa-list"></i> Jump to Category:</h5>
+          <div class="category-btns">
+            <a href="#account" class="category-btn">Account & Login</a>
+            <a href="#schedule" class="category-btn">Creating Schedules</a>
+            <a href="#courses" class="category-btn">Courses</a>
+            <a href="#conflicts" class="category-btn">Conflicts</a>
+            <a href="#sharing" class="category-btn">Sharing & Export</a>
+            <a href="#technical" class="category-btn">Technical</a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-10" style="margin: 0 auto; max-width: 800px">
+            <!-- ACCOUNT & LOGIN QUESTIONS -->
+            <div id="account" class="faq-category">
+              <h2><i class="fas fa-user-circle"></i> Account & Login</h2>
+
+              <div class="accordion-custom">
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      How do I create an account?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom show">
+                    <div class="accordion-body-custom">
+                      Click on "Login / Register" in the navigation bar, select
+                      the "Register" tab, and fill in your details including
+                      your NUST email address, student number, and chosen
+                      password. Make sure to use your official NUST email
+                      (ending in @nust.na).
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      I forgot my password. How can I reset it?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      On the login page, click "Forgot Password?" below the
+                      password field. Enter your registered email address, and
+                      you'll receive instructions to reset your password. If you
+                      don't receive an email within 10 minutes, check your spam
+                      folder or contact support.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      Can I use a non-NUST email address?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      No, you must use your official NUST email address
+                      (@nust.na) to register. This ensures only NUST students
+                      can access the system and helps maintain data security and
+                      integrity.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      How do I change my password?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      After logging in, go to Profile Settings, click on "Change
+                      Password," enter your current password and your new
+                      password twice, then click "Update Password." For security
+                      reasons, you'll need to log in again after changing your
+                      password.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CREATING SCHEDULES QUESTIONS -->
+            <div id="schedule" class="faq-category">
+              <h2><i class="fas fa-calendar-plus"></i> Creating Schedules</h2>
+
+              <div class="accordion-custom">
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      How do I create a new timetable?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      From your dashboard, click "Create New Schedule." Give
+                      your timetable a name, select the semester and year, then
+                      click "Create." You'll be taken to the timetable editor
+                      where you can start adding courses by dragging them from
+                      the sidebar onto the weekly grid.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      Can I create multiple versions of my timetable?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      Yes! You can create as many schedule versions as you like.
+                      This is useful for comparing different course combinations
+                      or planning for different scenarios. Each schedule is
+                      saved separately and can be easily accessed from your
+                      dashboard.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      How do I delete a schedule I no longer need?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      Go to "My Schedules" on your dashboard, find the schedule
+                      you want to delete, click the three-dot menu icon, and
+                      select "Delete." You'll be asked to confirm before the
+                      schedule is permanently removed. Note: This action cannot
+                      be undone.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      Is my schedule automatically saved?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      Yes, your changes are automatically saved to local storage
+                      every few seconds. However, to sync your schedule across
+                      devices and ensure permanent cloud storage, click the
+                      "Save to Cloud" button. We recommend doing this regularly,
+                      especially after major changes.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- COURSES QUESTIONS -->
+            <div id="courses" class="faq-category">
+              <h2><i class="fas fa-book"></i> Courses</h2>
+
+              <div class="accordion-custom">
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      How do I find a specific course?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      Use the search bar in the Course Browser. You can search
+                      by course code (e.g., "WAD621S"), course name (e.g., "Web
+                      Application"), or lecturer name. You can also use filters
+                      to narrow down results by department, year level, or
+                      semester.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      What if a course I need isn't listed?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      The course database is updated at the start of each
+                      semester with official NUST course offerings. If you can't
+                      find a course, it may not be offered in the current
+                      semester, or there may be a data synchronization delay.
+                      Contact support with the specific course code for
+                      assistance.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      How do I see course details like lecturer and venue?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      Click on any course card in the Course Browser to open a
+                      detailed modal window. This shows complete information
+                      including course description, credit hours, prerequisites,
+                      lecturer(s), venue assignment, and scheduled time slots.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CONFLICTS QUESTIONS -->
+            <div id="conflicts" class="faq-category">
+              <h2>
+                <i class="fas fa-exclamation-triangle"></i> Handling Conflicts
+              </h2>
+
+              <div class="accordion-custom">
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      What does a scheduling conflict mean?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      A scheduling conflict occurs when two courses overlap in
+                      time, making it impossible to attend both. The system
+                      detects three types: time overlaps, venue conflicts (being
+                      in two places at once), and prerequisite warnings (missing
+                      required prior courses).
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      How do I resolve a time conflict?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      You have several options: choose a different section of
+                      one course (if available), select an alternative time
+                      slot, or replace one of the conflicting courses with a
+                      different course that fits your schedule. The system will
+                      suggest alternatives when possible.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      Can I override a prerequisite warning?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      Prerequisite warnings are informational only - the system
+                      won't prevent you from adding the course to your
+                      timetable. However, you should verify with your academic
+                      advisor whether you've met the requirements or can get
+                      special permission to take the course.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SHARING & EXPORT QUESTIONS -->
+            <div id="sharing" class="faq-category">
+              <h2><i class="fas fa-share-alt"></i> Sharing & Export</h2>
+
+              <div class="accordion-custom">
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      How do I share my timetable with classmates?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      Open the schedule you want to share, click "Share" in the
+                      toolbar, then "Generate Share Link." Copy the unique URL
+                      and send it to your classmates via email, messaging, or
+                      social media. The link provides view-only access - they
+                      can't edit your schedule.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      Can someone edit my schedule if I share it?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      No, shared links are read-only. Recipients can view your
+                      timetable but cannot make any changes. Your schedule
+                      remains secure and only you can edit it when logged into
+                      your account.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      What's the difference between PDF and image export?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      PDF format is better for printing and maintains high
+                      quality at any size. It's ideal for official
+                      documentation. Image format (PNG/JPG) is better for quick
+                      sharing on social media or messaging apps, and has smaller
+                      file sizes. Choose based on your intended use.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TECHNICAL QUESTIONS -->
+            <div id="technical" class="faq-category">
+              <h2><i class="fas fa-cog"></i> Technical Issues</h2>
+
+              <div class="accordion-custom">
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      Which browsers are supported?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      The timetable manager works best on modern browsers:
+                      Google Chrome (version 90+), Mozilla Firefox (version
+                      88+), Microsoft Edge (version 90+), and Safari (version
+                      14+). For the best experience, keep your browser updated
+                      to the latest version.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      Can I use this on my mobile phone?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      Yes! The application is fully responsive and optimized for
+                      mobile devices. You can create and edit timetables on
+                      smartphones and tablets. The mobile interface uses
+                      touch-friendly controls instead of drag-and-drop.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      What if I lose my internet connection while editing?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      Don't worry! Your changes are automatically saved to local
+                      storage on your device, so you won't lose any work. When
+                      your connection is restored, click "Save to Cloud" to sync
+                      your changes to the server.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item-custom">
+                  <div class="accordion-header-custom">
+                    <button
+                      class="accordion-button-custom"
+                      onclick="toggleAccordion(this)"
+                    >
+                      Why is the drag-and-drop not working?
+                      <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                  </div>
+                  <div class="accordion-content-custom">
+                    <div class="accordion-body-custom">
+                      Try these solutions: 1) Refresh the page (F5 or Cmd+R), 2)
+                      Clear your browser cache, 3) Check if JavaScript is
+                      enabled in your browser settings, 4) Try a different
+                      browser, or 5) Disable browser extensions that might
+                      interfere. If problems persist, contact support.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Still Have Questions -->
+        <div class="help-cta">
+          <i class="fas fa-question-circle help-cta-icon"></i>
+          <h3>Still Have Questions?</h3>
+          <p class="text-muted">
+            If you couldn't find the answer you were looking for, we're here to
+            help!
+          </p>
+          <div class="help-cta-buttons">
+            <a href="user-guide.html" class="btn btn-primary">
+              <i class="fas fa-book"></i> Read User Guide
+            </a>
+            <a href="contact.html" class="btn btn-secondary">
+              <i class="fas fa-envelope"></i> Contact Support
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 col-12 mb-4">
-                    <h5>About NUST Timetable Manager</h5>
-                    <p style="color: rgba(255, 255, 255, 0.7);">
-                        A comprehensive web-based solution designed to help NUST students 
-                        efficiently create, manage, and optimize their academic schedules.
-                    </p>
-                </div>
-                
-                <div class="col-lg-4 col-md-6 col-12 mb-4">
-                    <h5>Quick Links</h5>
-                    <a href="about.html">About Us</a>
-                    <a href="features.html">Features</a>
-                    <a href="user-guide.html">User Guide</a>
-                    <a href="faq.html">FAQ</a>
-                </div>
-                
-                <div class="col-lg-4 col-md-6 col-12 mb-4">
-                    <h5>Contact & Support</h5>
-                    <a href="contact.html">Contact Support</a>
-                    <a href="help.html">Help Center</a>
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-top: 1rem;">
-                        <i class="fas fa-envelope"></i> support@nusttimetable.na
-                    </p>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>
-                    &copy; 2025 NUST Timetable Manager | WAD621s Group Project | 
-                    Namibia University of Science and Technology
-                </p>
-            </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <h5>About NUST Timetable Manager</h5>
+            <p style="color: rgba(255, 255, 255, 0.7)">
+              A comprehensive web-based solution designed to help NUST students
+              efficiently create, manage, and optimize their academic schedules.
+            </p>
+          </div>
+
+          <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <h5>Quick Links</h5>
+            <a href="about.html">About Us</a>
+            <a href="features.html">Features</a>
+            <a href="user-guide.html">User Guide</a>
+            <a href="faq.html">FAQ</a>
+          </div>
+
+          <div class="col-lg-4 col-md-6 col-12 mb-4">
+            <h5>Contact & Support</h5>
+            <a href="contact.html">Contact Support</a>
+            <a href="help.html">Help Center</a>
+            <p style="color: rgba(255, 255, 255, 0.7); margin-top: 1rem">
+              <i class="fas fa-envelope"></i> support@nusttimetable.na
+            </p>
+          </div>
         </div>
+
+        <div class="footer-bottom">
+          <p>
+            &copy; 2025 NUST Timetable Manager | WAD621s Group Project | Namibia
+            University of Science and Technology
+          </p>
+        </div>
+      </div>
     </footer>
 
     <!-- JavaScript -->
     <script>
-        function toggleMenu() {
-            document.getElementById('navbarMenu').classList.toggle('active');
+      function toggleMenu() {
+        document.getElementById("navbarMenu").classList.toggle("active");
+      }
+
+      function toggleAccordion(button) {
+        const content = button.parentElement.nextElementSibling;
+        const isOpen = content.classList.contains("show");
+
+        // Close all accordion items
+        document
+          .querySelectorAll(".accordion-content-custom")
+          .forEach((item) => {
+            item.classList.remove("show");
+          });
+        document.querySelectorAll(".accordion-button-custom").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+
+        // If this item wasn't open, open it
+        if (!isOpen) {
+          content.classList.add("show");
+          button.classList.add("active");
         }
-        
-        function toggleAccordion(button) {
-            const content = button.parentElement.nextElementSibling;
-            const isOpen = content.classList.contains('show');
-            
-            // Close all accordion items
-            document.querySelectorAll('.accordion-content-custom').forEach(item => {
-                item.classList.remove('show');
-            });
-            document.querySelectorAll('.accordion-button-custom').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // If this item wasn't open, open it
-            if (!isOpen) {
-                content.classList.add('show');
-                button.classList.add('active');
+      }
+
+      // Search functionality
+      document
+        .getElementById("faqSearch")
+        .addEventListener("input", function (e) {
+          const searchTerm = e.target.value.toLowerCase();
+          const accordionItems = document.querySelectorAll(
+            ".accordion-item-custom"
+          );
+
+          accordionItems.forEach((item) => {
+            const button = item.querySelector(".accordion-button-custom");
+            const body = item.querySelector(".accordion-body-custom");
+            const text = (button.textContent + body.textContent).toLowerCase();
+
+            if (text.includes(searchTerm)) {
+              item.style.display = "block";
+            } else {
+              item.style.display = "none";
             }
-        }
-        
-        // Search functionality
-        document.getElementById('faqSearch').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const accordionItems = document.querySelectorAll('.accordion-item-custom');
-            
-            accordionItems.forEach(item => {
-                const button = item.querySelector('.accordion-button-custom');
-                const body = item.querySelector('.accordion-body-custom');
-                const text = (button.textContent + body.textContent).toLowerCase();
-                
-                if (text.includes(searchTerm)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
+          });
         });
     </script>
-</body>
+
+    <script src="scripts/app.js"></script>
+
+    <script>
+      // Page-specific JavaScript can use the global NUSTApp object
+      $(document).ready(function () {
+        // Show a welcome notification
+        NUSTApp.showNotification(
+          "Welcome to the enhanced timetable manager!",
+          "success"
+        );
+
+        // Load initial data
+        loadPageData();
+
+        // Custom form handling
+        $("#customForm").on("submit", function (e) {
+          e.preventDefault();
+
+          if (NUSTApp.validateForm(this)) {
+            submitCustomForm();
+          }
+        });
+      });
+
+      function loadPageData() {
+        NUSTApp.showGlobalLoading();
+
+        NUSTApp.dataLoader
+          .loadData("/dashboard/stats.php")
+          .then((data) => {
+            displayDashboardData(data);
+            NUSTApp.hideGlobalLoading();
+          })
+          .catch((error) => {
+            NUSTApp.showNotification("Failed to load data", "error");
+            NUSTApp.hideGlobalLoading();
+          });
+      }
+
+      function displayDashboardData(data) {
+        $("#statsContainer")
+          .html(
+            `
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">${data.totalSchedules}</div>
+                <div class="stat-label">Total Schedules</div>
+            </div>
+            <!-- More stats... -->
+        </div>
+    `
+          )
+          .addClass("fade-in");
+      }
+
+      // Custom notification examples
+      function showSuccessMessage() {
+        NUSTApp.showNotification("Schedule saved successfully!", "success");
+      }
+
+      function showErrorMessage() {
+        NUSTApp.showNotification("An error occurred while saving", "error");
+      }
+
+      function showInfoMessage() {
+        NUSTApp.showNotification("Auto-save enabled", "info");
+      }
+    </script>
+  </body>
 </html>
