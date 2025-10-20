@@ -11,232 +11,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-
-    <style>
-      .search-bar {
-        background: var(--white);
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: var(--shadow-md);
-        margin-bottom: 2rem;
-      }
-
-      .search-input-group {
-        position: relative;
-        max-width: 600px;
-        margin: 0 auto;
-      }
-
-      .search-input {
-        width: 100%;
-        padding: 1rem 1rem 1rem 3rem;
-        border: 2px solid var(--border-color);
-        border-radius: 8px;
-        font-size: 1.1rem;
-        transition: var(--transition);
-      }
-
-      .search-input:focus {
-        border-color: var(--secondary-color);
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(252, 175, 23, 0.2);
-      }
-
-      .search-icon {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-muted);
-        font-size: 1.2rem;
-      }
-
-      .search-btn {
-        position: absolute;
-        right: 0.5rem;
-        top: 50%;
-        transform: translateY(-50%);
-        background: var(--secondary-color);
-        color: var(--primary-color);
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: var(--transition);
-      }
-
-      .search-btn:hover {
-        background: #e09d10;
-      }
-
-      .category-links {
-        background: var(--light-bg);
-        padding: 1.5rem;
-        border-radius: 8px;
-        margin-bottom: 2rem;
-      }
-
-      .category-links h5 {
-        color: var(--primary-color);
-        margin-bottom: 1rem;
-      }
-
-      .category-btns {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-
-      .category-btn {
-        padding: 0.5rem 1rem;
-        background: var(--white);
-        color: var(--primary-color);
-        border: 2px solid var(--primary-color);
-        border-radius: 20px;
-        text-decoration: none;
-        font-weight: 500;
-        transition: var(--transition);
-        font-size: 0.9rem;
-      }
-
-      .category-btn:hover {
-        background: var(--primary-color);
-        color: var(--white);
-      }
-
-      .faq-category {
-        scroll-margin-top: 100px;
-        margin-bottom: 3rem;
-      }
-
-      .faq-category h2 {
-        color: var(--primary-color);
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-
-      .accordion-custom {
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: var(--shadow-sm);
-      }
-
-      .accordion-item-custom {
-        border: none;
-        margin-bottom: 0.5rem;
-        border-radius: 8px;
-        overflow: hidden;
-        background: var(--white);
-        box-shadow: var(--shadow-sm);
-      }
-
-      .accordion-header-custom {
-        margin: 0;
-      }
-
-      .accordion-button-custom {
-        width: 100%;
-        padding: 1.25rem 1.5rem;
-        background: var(--white);
-        border: none;
-        text-align: left;
-        font-weight: 600;
-        cursor: pointer;
-        transition: var(--transition);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        color: var(--text-dark);
-        font-size: 1.1rem;
-      }
-
-      .accordion-button-custom:hover {
-        background: var(--light-bg);
-      }
-
-      .accordion-button-custom.active {
-        background: var(--primary-color);
-        color: var(--white);
-      }
-
-      .accordion-icon {
-        font-size: 1.2rem;
-        transition: var(--transition);
-      }
-
-      .accordion-button-custom.active .accordion-icon {
-        transform: rotate(180deg);
-      }
-
-      .accordion-content-custom {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-        background: var(--white);
-      }
-
-      .accordion-content-custom.show {
-        max-height: 500px;
-      }
-
-      .accordion-body-custom {
-        padding: 1.5rem;
-        border-top: 1px solid var(--border-color);
-        line-height: 1.6;
-      }
-
-      .help-cta {
-        background: var(--light-bg);
-        border: none;
-        border-radius: 12px;
-        padding: 3rem 2rem;
-        text-align: center;
-        margin-top: 3rem;
-      }
-
-      .help-cta-icon {
-        font-size: 4rem;
-        color: var(--secondary-color);
-        margin-bottom: 1rem;
-      }
-
-      .help-cta h3 {
-        color: var(--primary-color);
-        margin-bottom: 1rem;
-      }
-
-      .help-cta-buttons {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-top: 1.5rem;
-      }
-
-      @media (max-width: 768px) {
-        .category-btns {
-          flex-direction: column;
-        }
-
-        .category-btn {
-          text-align: center;
-        }
-
-        .help-cta-buttons {
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .help-cta-buttons .btn {
-          width: 100%;
-          max-width: 250px;
-        }
-      }
-    </style>
   </head>
   <body>
     <!-- NAVIGATION BAR -->
@@ -869,6 +643,12 @@
       </div>
     </footer>
 
+    <!-- JQuery -->
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js](https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js)"></script>
+
+    <!-- Main JS-->
+    <script src="scripts/app.js"></script>
+
     <!-- JavaScript -->
     <script>
       function toggleMenu() {
@@ -918,8 +698,6 @@
           });
         });
     </script>
-
-    <script src="scripts/app.js"></script>
 
     <script>
       // Page-specific JavaScript can use the global NUSTApp object

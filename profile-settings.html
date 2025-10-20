@@ -10,228 +10,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-
-    <style>
-      /* Profile Settings Specific Styles */
-      .dashboard-container {
-        display: flex;
-        min-height: calc(100vh - 80px);
-        background-color: var(--light-bg);
-      }
-
-      /* Reuse sidebar styles from dashboard */
-      .dashboard-sidebar {
-        width: 280px;
-        background-color: var(--white);
-        box-shadow: var(--shadow-md);
-        padding: 2rem 0;
-        position: sticky;
-        top: 80px;
-        height: calc(100vh - 80px);
-        overflow-y: auto;
-      }
-
-      .user-profile-card {
-        padding: 0 1.5rem 1.5rem;
-        border-bottom: 2px solid var(--border-color);
-        margin-bottom: 1.5rem;
-      }
-
-      .user-avatar {
-        width: 80px;
-        height: 80px;
-        background: linear-gradient(
-          135deg,
-          var(--primary-color),
-          var(--secondary-color)
-        );
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1rem;
-        font-size: 2rem;
-        color: var(--white);
-        font-weight: 700;
-      }
-
-      .nav-section-title {
-        color: var(--text-muted);
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        padding: 0 1.5rem;
-        margin: 1.5rem 0 0.5rem;
-      }
-
-      .sidebar-nav {
-        list-style: none;
-        padding: 0;
-      }
-
-      .sidebar-nav-item {
-        margin-bottom: 0.25rem;
-      }
-
-      .sidebar-nav-link {
-        display: flex;
-        align-items: center;
-        padding: 0.75rem 1.5rem;
-        color: var(--text-dark);
-        text-decoration: none;
-        transition: var(--transition);
-        border-left: 3px solid transparent;
-      }
-
-      .sidebar-nav-link:hover {
-        background-color: var(--light-bg);
-        border-left-color: var(--secondary-color);
-        padding-left: 1.75rem;
-      }
-
-      .sidebar-nav-link.active {
-        background-color: rgba(252, 175, 23, 0.1);
-        border-left-color: var(--secondary-color);
-        color: var(--primary-color);
-        font-weight: 600;
-      }
-
-      .sidebar-nav-link i {
-        margin-right: 0.75rem;
-        width: 20px;
-        text-align: center;
-      }
-
-      /* Main Content Area */
-      .dashboard-content {
-        flex: 1;
-        padding: 2rem;
-        overflow-y: auto;
-      }
-
-      /* Page Header */
-      .page-header {
-        background: linear-gradient(135deg, var(--primary-color), #2a3f6f);
-        color: var(--white);
-        padding: 2rem;
-        border-radius: 15px;
-        margin-bottom: 2rem;
-        box-shadow: var(--shadow-lg);
-      }
-
-      /* Settings Sections - Organized into cards */
-      .settings-section {
-        background: var(--white);
-        border-radius: 12px;
-        box-shadow: var(--shadow-md);
-        padding: 2rem;
-        margin-bottom: 2rem;
-      }
-
-      .settings-section-title {
-        color: var(--primary-color);
-        font-weight: 700;
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 2px solid var(--border-color);
-      }
-
-      /* Profile Picture Upload */
-      .profile-picture-section {
-        display: flex;
-        align-items: center;
-        gap: 2rem;
-        margin-bottom: 2rem;
-      }
-
-      .profile-picture-preview {
-        width: 120px;
-        height: 120px;
-        background: linear-gradient(
-          135deg,
-          var(--primary-color),
-          var(--secondary-color)
-        );
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3rem;
-        color: var(--white);
-        font-weight: 700;
-      }
-
-      /* Two-column form layout for better organization */
-      .form-row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
-      }
-
-      /* Read-only fields styling */
-      .form-control[readonly] {
-        background-color: var(--light-bg);
-        cursor: not-allowed;
-        color: var(--text-muted);
-      }
-
-      /* Success message styling */
-      .success-message {
-        background-color: #d1e7dd;
-        border: 1px solid #badbcc;
-        color: #0f5132;
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
-        display: none;
-      }
-
-      .success-message i {
-        margin-right: 0.5rem;
-      }
-
-      /* Danger zone styling for destructive actions */
-      .danger-zone {
-        background-color: #fff5f5;
-        border: 2px solid #fecaca;
-        padding: 1.5rem;
-        border-radius: 8px;
-      }
-
-      .danger-zone h4 {
-        color: #dc2626;
-        margin-bottom: 0.5rem;
-      }
-
-      @media (max-width: 768px) {
-        .dashboard-container {
-          flex-direction: column;
-        }
-
-        .dashboard-sidebar {
-          width: 100%;
-          position: relative;
-          height: auto;
-          top: 0;
-        }
-
-        .dashboard-content {
-          padding: 1rem;
-        }
-
-        .profile-picture-section {
-          flex-direction: column;
-          text-align: center;
-        }
-
-        .form-row {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
   </head>
   <body>
     <!-- NAVIGATION BAR -->
@@ -663,6 +441,12 @@
       </main>
     </div>
 
+    <!-- JQuery -->
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js](https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js)"></script>
+
+    <!-- Main JS-->
+    <script src="scripts/app.js"></script>
+
     <!-- JAVASCRIPT -->
     <script>
       /**
@@ -844,8 +628,6 @@
         }
       }
     </script>
-
-    <script src="scripts/app.js"></script>
 
     <script>
       // Page-specific JavaScript can use the global NUSTApp object

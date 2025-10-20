@@ -11,38 +11,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-
-    <style>
-      .auth-container {
-        min-height: calc(100vh - 200px);
-        display: flex;
-        align-items: center;
-        padding: 2rem 0;
-      }
-
-      .auth-card {
-        max-width: 600px;
-        margin: 0 auto;
-      }
-
-      .password-field {
-        position: relative;
-      }
-
-      .password-toggle {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        color: var(--text-muted);
-        user-select: none;
-      }
-
-      .password-toggle:hover {
-        color: var(--primary-color);
-      }
-    </style>
   </head>
   <body>
     <!-- NAVIGATION BAR -->
@@ -370,6 +338,12 @@
       </div>
     </footer>
 
+    <!-- JQuery -->
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js](https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js)"></script>
+
+    <!-- Main JS-->
+    <script src="scripts/app.js"></script>
+
     <script>
       // Tab switching function
       function showTab(tabName) {
@@ -487,8 +461,6 @@
         }, 5000);
       }
     </script>
-
-    <script src="scripts/app.js"></script>
 
     <script>
       // Page-specific JavaScript can use the global NUSTApp object

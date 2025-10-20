@@ -11,59 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        .team-member-card {
-            transition: var(--transition);
-        }
-
-        .team-member-card:hover {
-            transform: translateY(-8px);
-        }
-
-        .team-member-card .card {
-            height: 100%;
-            border: none;
-            box-shadow: var(--shadow-md);
-        }
-
-        .team-member-card:hover .card {
-            box-shadow: var(--shadow-lg);
-        }
-
-        .lecturer-card {
-            transition: var(--transition);
-        }
-
-        .lecturer-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .lecturer-card .card {
-            border: none;
-            box-shadow: var(--shadow-md);
-        }
-
-        .lecturer-card:hover .card {
-            box-shadow: var(--shadow-lg);
-        }
-
-        .project-info-card .card {
-            border: none;
-            box-shadow: var(--shadow-md);
-        }
-
-        @media (max-width: 768px) {
-            .team-members-grid {
-                grid-template-columns: 1fr !important;
-            }
-
-            .lecturers-grid {
-                grid-template-columns: 1fr !important;
-            }
-
-            .project-info-details {
-                grid-template-columns: 1fr !important;
-            }
-        }
+        
     </style>
 
 </head>
@@ -434,6 +382,12 @@
         </div>
     </footer>
 
+    <!-- JQuery -->
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js](https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js)"></script>
+
+    <!-- Main JS-->
+    <script src="scripts/app.js"></script>
+
     <!-- Mobile Menu Script -->
     <script>
         function toggleMenu() {
@@ -459,8 +413,6 @@
             }
         });
     </script>
-
-    <script src="scripts/app.js"></script>
 
     <script>
       // Page-specific JavaScript can use the global NUSTApp object
