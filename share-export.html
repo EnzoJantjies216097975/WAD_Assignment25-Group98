@@ -381,326 +381,399 @@
 
     <!-- JAVASCRIPT -->
     <script>
-      /**
-       * Share & Export JavaScript
-       * Handles sharing and export functionality
-       */
+                /**
+                 * Share & Export JavaScript
+                 * Handles sharing and export functionality
+                 */
 
-      let currentSchedule = null;
+                let currentSchedule = null;
+                let schedules = [];
+                let selectedScheduleId = null;
+                let shareData = null;
 
-      /**
-       * Handle schedule selection
-       */
-      function scheduleSelected() {
-        const scheduleId = document.getElementById("scheduleSelect").value;
+                /**
+                 * Handle schedule selection
+                 */
+                function scheduleSelected() {
+                  const scheduleId = document.getElementById("scheduleSelect").value;
 
-        if (!scheduleId) {
-          currentSchedule = null;
-          document.getElementById("generateLinkBtn").disabled = true;
-          return;
-        }
+                  if (!scheduleId) {
+                    currentSchedule = null;
+                    document.getElementById("generateLinkBtn").disabled = true;
+                    return;
+                  }
 
-        currentSchedule = scheduleId;
-        document.getElementById("generateLinkBtn").disabled = false;
-      }
+                  currentSchedule = scheduleId;
+                  document.getElementById("generateLinkBtn").disabled = false;
+                }
 
-      async function loadSchedules() {
-        const response = await fetch("/api/schedules/list.php");
-        const data = await response.json();
-        if (data.success) {
-          schedules = data.data;
-        }
-      }
-
-      /**
-       * Generate shareable link
-       */
-      function generateShareLink() {
-        if (!currentSchedule) {
-          alert("Please select a schedule first");
-          return;
-        }
-
-        // In production, this would make an API call to generate a unique share token
-        const shareToken = "sh_" + Math.random().toString(36).substr(2, 9);
-        const shareUrl = `${window.location.origin}/shared/${shareToken}`;
-
-        // Display the share link
-        document.getElementById("shareLink").value = shareUrl;
-        document.getElementById("shareLinkSection").style.display = "block";
-
-        showSuccess("Share link generated successfully!");
-      }
-
-      /**
-       * Copy share link to clipboard
-       */
-      function copyShareLink() {
-        const shareLink = document.getElementById("shareLink");
-        shareLink.select();
-        shareLink.setSelectionRange(0, 99999); // For mobile devices
-
-        navigator.clipboard.writeText(shareLink.value).then(() => {
-          const copyBtn = document.getElementById("copyBtn");
-          const originalHTML = copyBtn.innerHTML;
-
-          copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-          copyBtn.classList.add("copied");
-
-          setTimeout(() => {
-            copyBtn.innerHTML = originalHTML;
-            copyBtn.classList.remove("copied");
-          }, 2000);
-        });
-      }
-
-      /**
-       * Share via email
-       */
-      function shareViaEmail() {
-        const shareLink = document.getElementById("shareLink").value;
-        const subject = encodeURIComponent("My NUST Timetable");
-        const body = encodeURIComponent(`Check out my timetable: ${shareLink}`);
-
-        window.location.href = `mailto:?subject=${subject}&body=${body}`;
-      }
-
-      /**
-       * Share via WhatsApp
-       */
-      function shareViaWhatsApp() {
-        const shareLink = document.getElementById("shareLink").value;
-        const text = encodeURIComponent(
-          `Check out my NUST timetable: ${shareLink}`
-        );
-
-        window.open(`https://wa.me/?text=${text}`, "_blank");
-      }
-
-      /**
-       * Generate QR code for sharing
-       */
-      function shareViaQR() {
-        const shareLink = document.getElementById("shareLink").value;
-
-        // In production, you would generate an actual QR code
-        // For now, we'll use a QR code API service
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
-          shareLink
-        )}`;
-
-        // Open QR code in new window
-        const qrWindow = window.open("", "_blank", "width=400,height=450");
-        qrWindow.document.write(`
-                <html>
-                    <head>
-                        <title>QR Code</title>
-                        <style>
-                            body { 
-                                margin: 0; 
-                                padding: 20px; 
-                                text-align: center; 
-                                font-family: Arial, sans-serif;
-                            }
-                            img { 
-                                border: 1px solid #ddd; 
-                                padding: 10px; 
-                                background: white;
-                            }
-                            button {
-                                margin-top: 20px;
-                                padding: 10px 20px;
-                                background: #1d2c5d;
-                                color: white;
-                                border: none;
-                                border-radius: 5px;
-                                cursor: pointer;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <h2>Scan to View Timetable</h2>
-                        <img src="${qrUrl}" alt="QR Code">
-                        <br>
-                        <button onclick="window.print()">Print QR Code</button>
-                    </body>
-                </html>
-            `);
-      }
-
-      /**
-       * Export to PDF
-       */
-      function exportToPDF() {
-        if (!currentSchedule) {
-          alert("Please select a schedule first");
-          return;
-        }
-
-        // Get export settings
-        const settings = getExportSettings();
-
-        // In production, this would generate and download a PDF
-        // For now, we'll simulate the download
-        showSuccess("Generating PDF... Download will start shortly.");
-
-        setTimeout(() => {
-          console.log("PDF export with settings:", settings);
-          // Simulate download
-          alert("PDF download would start here. File: timetable.pdf");
-        }, 1000);
-      }
-
-      /**
-       * Export to Image (PNG)
-       */
-      function exportToImage() {
-        if (!currentSchedule) {
-          alert("Please select a schedule first");
-          return;
-        }
-
-        const settings = getExportSettings();
-
-        showSuccess("Generating image... Download will start shortly.");
-
-        setTimeout(() => {
-          console.log("Image export with settings:", settings);
-          alert("PNG download would start here. File: timetable.png");
-        }, 1000);
-      }
-
-      /**
-       * Export to iCal format
-       */
-      function exportToICal() {
-        if (!currentSchedule) {
-          alert("Please select a schedule first");
-          return;
-        }
-
-        showSuccess("Generating calendar file... Download will start shortly.");
-
-        setTimeout(() => {
-          // In production, generate actual .ics file
-          alert("iCal download would start here. File: timetable.ics");
-        }, 1000);
-      }
-
-      /**
-       * Get current export settings
-       */
-      function getExportSettings() {
-        return {
-          includeLecturers: document.getElementById("includeLecturers").checked,
-          includeVenues: document.getElementById("includeVenues").checked,
-          codesOnly: document.getElementById("codesOnly").checked,
-          colorCode: document.getElementById("colorCode").checked,
-          orientation: document.getElementById("orientation").value,
-        };
-      }
-
-      /**
-       * Show success message
-       */
-      function showSuccess(message) {
-        const banner = document.getElementById("successBanner");
-        const messageSpan = document.getElementById("successMessage");
-
-        messageSpan.textContent = message;
-        banner.classList.add("show");
-
-        setTimeout(() => {
-          banner.classList.remove("show");
-        }, 5000);
-      }
-
-      // Navigation functions
-      function toggleMobileMenu() {
-        document.getElementById("navbarMenu").classList.toggle("active");
-      }
-
-      function showNotifications() {
-        alert("Notifications feature coming soon!");
-      }
-
-      function logout() {
-        if (confirm("Are you sure you want to logout?")) {
-          window.location.href = "login.html";
-        }
-      }
-
-      // Initialize
-      document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("generateLinkBtn").disabled = true;
-      });
-    </script>
-
-    <script>
-      // Page-specific JavaScript can use the global NUSTApp object
-      $(document).ready(function () {
-        // Show a welcome notification
-        NUSTApp.showNotification(
-          "Welcome to the enhanced timetable manager!",
-          "success"
-        );
-
-        // Load initial data
-        loadPageData();
-
-        // Custom form handling
-        $("#customForm").on("submit", function (e) {
-          e.preventDefault();
-
-          if (NUSTApp.validateForm(this)) {
-            submitCustomForm();
+                async function loadSchedules() {
+            try {
+              const response = await fetch('/api/schedules/list.php', {
+                method: 'GET',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' }
+              });
+              const data = await response.json();
+              if (data.success) {
+                schedules = data.data;
+              } else {
+                NUSTApp.showNotification("Failed to load schedules", "error");
+              }
+            } catch (error) {
+              console.error("Load schedules error:", error);
+              NUSTApp.showNotification("Network error", "error");
+            }
           }
+
+          function populateScheduleSelect() {
+        const select = document.getElementById("scheduleSelect");
+        select.innerHTML = '<option value="">Choose a schedule...</option>';
+        schedules.forEach(schedule => {
+          const option = document.createElement('option');
+          option.value = schedule.id;
+          option.textContent = `${schedule.name} (${schedule.semester}/${schedule.year}) - ${schedule.course_count} courses`;
+          select.appendChild(option);
         });
-      });
+        select.addEventListener('change', (e) => {
+          selectedScheduleId = e.target.value;
+          resetShareUI(); // Clear previous share data
+        });
+      }
 
-      function loadPageData() {
-        NUSTApp.showGlobalLoading();
-
-        NUSTApp.dataLoader
-          .loadData("/dashboard/stats.php")
-          .then((data) => {
-            displayDashboardData(data);
-            NUSTApp.hideGlobalLoading();
-          })
-          .catch((error) => {
-            NUSTApp.showNotification("Failed to load data", "error");
-            NUSTApp.hideGlobalLoading();
+                /**
+                 * Generate shareable link
+                 */
+                async function generateShareLink() {
+        if (!selectedScheduleId) {
+          NUSTApp.showNotification("Select a schedule first", "warning");
+          return;
+        }
+        const expiresInDays = parseInt(document.getElementById("expiresInDays").value) || 30; // Assume input exists
+        const allowPublic = document.getElementById("allowPublic").checked; // Assume checkbox
+        const payload = {
+          schedule_id: selectedScheduleId,
+          expires_in_days: expiresInDays,
+          allow_public: allowPublic
+        };
+        try {
+          const response = await fetch('/api/share/generate.php', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
           });
+          const data = await response.json();
+          if (data.success) {
+            shareData = data.share_data;
+            document.getElementById("shareLink").value = shareData.share_url;
+            document.getElementById("qrCodeImg").src = shareData.qr_code_url; // Direct img src
+            document.getElementById("expiryInfo").textContent = `Expires on: ${shareData.expires_at}`;
+            NUSTApp.showNotification("Share link generated!", "success");
+          } else {
+            NUSTApp.showNotification(data.error || "Failed to generate share", "error");
+          }
+        } catch (error) {
+          NUSTApp.showNotification("Network error", "error");
+        }
       }
 
-      function displayDashboardData(data) {
-        $("#statsContainer")
-          .html(
-            `
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value">${data.totalSchedules}</div>
-                <div class="stat-label">Total Schedules</div>
+      async function exportToPdf() {
+        if (!selectedScheduleId) {
+          NUSTApp.showNotification("Select a schedule first", "warning");
+          return;
+        }
+        const payload = {
+          schedule_id: selectedScheduleId,
+          format: 'pdf', // Or 'png' if supported
+          orientation: document.getElementById("orientationSelect").value || 'landscape', // Assume select
+          include_details: document.getElementById("includeDetails").checked,
+          color_coding: document.getElementById("colorCoding").checked
+        };
+        try {
+          const response = await fetch('/api/export/pdf.php', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await response.json();
+          if (data.success) {
+            // Trigger download
+            window.location.href = data.download_url; // From response
+            NUSTApp.showNotification("Export started!", "success");
+          } else {
+            NUSTApp.showNotification("Export failed", "error");
+          }
+        } catch (error) {
+          NUSTApp.showNotification("Network error", "error");
+        }
+      }
+
+      function copyShareLink() {
+        if (!shareData) return;
+        navigator.clipboard.writeText(shareData.share_url).then(() => {
+          NUSTApp.showNotification("Link copied!", "success");
+        }).catch(() => {
+          NUSTApp.showNotification("Copy failed", "error");
+        });
+      }
+
+      function resetShareUI() {
+        shareData = null;
+        document.getElementById("shareLink").value = '';
+        document.getElementById("qrCodeImg").src = '';
+        document.getElementById("expiryInfo").textContent = '';
+      }
+
+                /**
+                 * Share via email
+                 */
+                function shareViaEmail() {
+                  const shareLink = document.getElementById("shareLink").value;
+                  const subject = encodeURIComponent("My NUST Timetable");
+                  const body = encodeURIComponent(`Check out my timetable: ${shareLink}`);
+
+                  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+                }
+
+                /**
+                 * Share via WhatsApp
+                 */
+                function shareViaWhatsApp() {
+                  const shareLink = document.getElementById("shareLink").value;
+                  const text = encodeURIComponent(
+                    `Check out my NUST timetable: ${shareLink}`
+                  );
+
+                  window.open(`https://wa.me/?text=${text}`, "_blank");
+                }
+
+                /**
+                 * Generate QR code for sharing
+                 */
+                function shareViaQR() {
+                  const shareLink = document.getElementById("shareLink").value;
+
+                  // In production, you would generate an actual QR code
+                  // For now, we'll use a QR code API service
+                  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+                    shareLink
+                  )}`;
+
+                  // Open QR code in new window
+                  const qrWindow = window.open("", "_blank", "width=400,height=450");
+                  qrWindow.document.write(`
+                          <html>
+                              <head>
+                                  <title>QR Code</title>
+                                  <style>
+                                      body {
+                                          margin: 0;
+                                          padding: 20px;
+                                          text-align: center;
+                                          font-family: Arial, sans-serif;
+                                      }
+                                      img {
+                                          border: 1px solid #ddd;
+                                          padding: 10px;
+                                          background: white;
+                                      }
+                                      button {
+                                          margin-top: 20px;
+                                          padding: 10px 20px;
+                                          background: #1d2c5d;
+                                          color: white;
+                                          border: none;
+                                          border-radius: 5px;
+                                          cursor: pointer;
+                                      }
+                                  </style>
+                              </head>
+                              <body>
+                                  <h2>Scan to View Timetable</h2>
+                                  <img src="${qrUrl}" alt="QR Code">
+                                  <br>
+                                  <button onclick="window.print()">Print QR Code</button>
+                              </body>
+                          </html>
+                      `);
+                }
+
+                /**
+                 * Export to PDF
+                 */
+                function exportToPDF() {
+                  if (!currentSchedule) {
+                    alert("Please select a schedule first");
+                    return;
+                  }
+
+                  // Get export settings
+                  const settings = getExportSettings();
+
+                  // In production, this would generate and download a PDF
+                  // For now, we'll simulate the download
+                  showSuccess("Generating PDF... Download will start shortly.");
+
+                  setTimeout(() => {
+                    console.log("PDF export with settings:", settings);
+                    // Simulate download
+                    alert("PDF download would start here. File: timetable.pdf");
+                  }, 1000);
+                }
+
+                /**
+                 * Export to Image (PNG)
+                 */
+                function exportToImage() {
+                  if (!currentSchedule) {
+                    alert("Please select a schedule first");
+                    return;
+                  }
+
+                  const settings = getExportSettings();
+
+                  showSuccess("Generating image... Download will start shortly.");
+
+                  setTimeout(() => {
+                    console.log("Image export with settings:", settings);
+                    alert("PNG download would start here. File: timetable.png");
+                  }, 1000);
+                }
+
+                /**
+                 * Export to iCal format
+                 */
+                function exportToICal() {
+                  if (!currentSchedule) {
+                    alert("Please select a schedule first");
+                    return;
+                  }
+
+                  showSuccess("Generating calendar file... Download will start shortly.");
+
+                  setTimeout(() => {
+                    // In production, generate actual .ics file
+                    alert("iCal download would start here. File: timetable.ics");
+                  }, 1000);
+                }
+
+                /**
+                 * Get current export settings
+                 */
+                function getExportSettings() {
+                  return {
+                    includeLecturers: document.getElementById("includeLecturers").checked,
+                    includeVenues: document.getElementById("includeVenues").checked,
+                    codesOnly: document.getElementById("codesOnly").checked,
+                    colorCode: document.getElementById("colorCode").checked,
+                    orientation: document.getElementById("orientation").value,
+                  };
+                }
+
+                /**
+                 * Show success message
+                 */
+                function showSuccess(message) {
+                  const banner = document.getElementById("successBanner");
+                  const messageSpan = document.getElementById("successMessage");
+
+                  messageSpan.textContent = message;
+                  banner.classList.add("show");
+
+                  setTimeout(() => {
+                    banner.classList.remove("show");
+                  }, 5000);
+                }
+
+                // Navigation functions
+                function toggleMobileMenu() {
+                  document.getElementById("navbarMenu").classList.toggle("active");
+                }
+
+                function showNotifications() {
+                  alert("Notifications feature coming soon!");
+                }
+
+                function logout() {
+                  if (confirm("Are you sure you want to logout?")) {
+                    window.location.href = "login.html";
+                  }
+                }
+
+                // Initialize
+                document.addEventListener("DOMContentLoaded", async function () {
+              await loadSchedules();
+              populateScheduleSelect();
+              document.getElementById("generateLinkBtn").addEventListener("click", generateShareLink);
+              document.getElementById("exportPdfBtn").addEventListener("click", exportToPdf);
+              document.getElementById("copyLinkBtn").addEventListener("click", copyShareLink);
+
+          // Page-specific JavaScript can use the global NUSTApp object
+          $(document).ready(function () {
+            // Show a welcome notification
+            NUSTApp.showNotification(
+              "Welcome to the enhanced timetable manager!",
+              "success"
+            );
+
+            // Load initial data
+            loadPageData();
+
+            // Custom form handling
+            $("#customForm").on("submit", function (e) {
+              e.preventDefault();
+
+              if (NUSTApp.validateForm(this)) {
+                submitCustomForm();
+              }
+            });
+          });
+
+          function loadPageData() {
+            NUSTApp.showGlobalLoading();
+
+            NUSTApp.dataLoader
+              .loadData("/dashboard/stats.php")
+              .then((data) => {
+                displayDashboardData(data);
+                NUSTApp.hideGlobalLoading();
+              })
+              .catch((error) => {
+                NUSTApp.showNotification("Failed to load data", "error");
+                NUSTApp.hideGlobalLoading();
+              });
+          }
+
+          function displayDashboardData(data) {
+            $("#statsContainer")
+              .html(
+                `
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">${data.totalSchedules}</div>
+                    <div class="stat-label">Total Schedules</div>
+                </div>
+                <!-- More stats... -->
             </div>
-            <!-- More stats... -->
-        </div>
-    `
-          )
-          .addClass("fade-in");
-      }
+        `
+              )
+              .addClass("fade-in");
+          }
 
-      // Custom notification examples
-      function showSuccessMessage() {
-        NUSTApp.showNotification("Schedule saved successfully!", "success");
-      }
+          // Custom notification examples
+          function showSuccessMessage() {
+            NUSTApp.showNotification("Schedule saved successfully!", "success");
+          }
 
-      function showErrorMessage() {
-        NUSTApp.showNotification("An error occurred while saving", "error");
-      }
+          function showErrorMessage() {
+            NUSTApp.showNotification("An error occurred while saving", "error");
+          }
 
-      function showInfoMessage() {
-        NUSTApp.showNotification("Auto-save enabled", "info");
-      }
+          function showInfoMessage() {
+            NUSTApp.showNotification("Auto-save enabled", "info");
+          }
     </script>
   </body>
 </html>
