@@ -1203,3 +1203,406 @@ window.NUSTApp = {
   formatTime,
   AppState,
 };
+
+// Dashboard initialization - now properly checks authentication
+document.addEventListener("DOMContentLoaded", function () {
+  // Check if user is logged in before loading anything
+  checkUserAuthentication()
+    .then(() => {
+      // User is authenticated, load dashboard data
+      loadUserData();
+      loadDashboardStats();
+      loadRecentSchedules();
+
+      // Show welcome message
+      if (typeof NUSTApp !== "undefined") {
+        NUSTApp.showNotification("Welcome to your dashboard!", "success");
+      }
+    })
+    .catch((error) => {
+      console.error("Authentication failed:", error);
+      // Redirect to login if not authenticated
+      redirectToLogin();
+    });
+});
+
+/**
+ * Check if user is properly authenticated
+ * This function calls your PHP session check API
+ */
+async function checkUserAuthentication() {
+  try {
+    const response = await fetch("/api/auth/session-check.php", {
+      method: "GET",
+      credentials: "include", // Include cookies for session
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success || !data.user) {
+      throw new Error("Not authenticated");
+    }
+
+    // Store user data globally for use across the app
+    window.currentUser = data.user;
+    return data.user;
+  } catch (error) {
+    console.error("Authentication check failed:", error);
+    throw error;
+  }
+}
+
+/**
+ * Load real user data from the backend
+ * This replaces the hardcoded Nathan Duarte data
+ */
+async function loadUserData() {
+  try {
+    // Show loading state
+    showLoadingState("userProfile");
+
+    const response = await fetch("/api/profile/get.php", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error(data.error || "Failed to load user data");
+    }
+
+    const user = data.profile;
+
+    // Update UI with real user data
+    updateUserInterface(user);
+
+    // Hide loading state
+    hideLoadingState("userProfile");
+  } catch (error) {
+    console.error("Failed to load user data:", error);
+    hideLoadingState("userProfile");
+
+    if (typeof NUSTApp !== "undefined") {
+      NUSTApp.showNotification("Failed to load user profile", "error");
+    }
+
+    // Fallback to login if user data can't be loaded
+    setTimeout(() => redirectToLogin(), 2000);
+  }
+}
+
+/**
+ * Update the user interface with real user data
+ */
+function updateUserInterface(user) {
+  // Generate initials from full name
+  const initials = generateInitials(user.full_name);
+
+  // Update user display elements
+  const userNameElement = document.getElementById("userName");
+  const welcomeNameElement = document.getElementById("welcomeName");
+  const userInitialsElement = document.getElementById("userInitials");
+  const userProgramElement = document.getElementById("userProgram");
+
+  if (userNameElement) userNameElement.textContent = user.full_name;
+  if (welcomeNameElement)
+    welcomeNameElement.textContent = user.full_name.split(" ")[0];
+  if (userInitialsElement) userInitialsElement.textContent = initials;
+  if (userProgramElement) userProgramElement.textContent = user.program;
+
+  // Update other profile-related elements
+  const profileInitialsElements = document.querySelectorAll(
+    ".user-initials, .profile-initials"
+  );
+  profileInitialsElements.forEach((element) => {
+    element.textContent = initials;
+  });
+
+  console.log("User interface updated with:", user.full_name);
+}
+
+/**
+ * Load real dashboard statistics from the backend
+ * This replaces the hardcoded statistics
+ */
+async function loadDashboardStats() {
+  try {
+    // Show loading state for stats
+    showLoadingState("dashboardStats");
+
+    const response = await fetch("/api/dashboard/stats.php", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error(data.error || "Failed to load dashboard stats");
+    }
+
+    // Update statistics in the UI
+    updateDashboardStatistics(data.dashboard_data);
+
+    hideLoadingState("dashboardStats");
+  } catch (error) {
+    console.error("Failed to load dashboard stats:", error);
+    hideLoadingState("dashboardStats");
+
+    // Show fallback/default stats
+    showFallbackStats();
+
+    if (typeof NUSTApp !== "undefined") {
+      NUSTApp.showNotification("Could not load latest statistics", "warning");
+    }
+  }
+}
+
+/**
+ * Update dashboard statistics in the UI
+ */
+function updateDashboardStatistics(dashboardData) {
+  const stats = dashboardData.user_statistics;
+
+  // Update stat cards with real data
+  const totalSchedulesElement = document.getElementById("totalSchedules");
+  const activeSchedulesElement = document.getElementById("activeSchedules");
+  const totalCoursesElement = document.getElementById("totalCourses");
+  const sharedSchedulesElement = document.getElementById("sharedSchedules");
+
+  if (totalSchedulesElement) {
+    totalSchedulesElement.textContent = stats.schedules.total || 0;
+  }
+  if (activeSchedulesElement) {
+    activeSchedulesElement.textContent = stats.schedules.active || 0;
+  }
+  if (totalCoursesElement) {
+    totalCoursesElement.textContent = stats.courses.unique_courses || 0;
+  }
+
+  // For shared schedules, we'll need to implement this in the backend
+  // For now, use a default value
+  if (sharedSchedulesElement) {
+    sharedSchedulesElement.textContent = 0; // Update when sharing is implemented
+  }
+
+  console.log("Dashboard statistics updated");
+}
+
+/**
+ * Load real recent schedules from the backend
+ */
+async function loadRecentSchedules() {
+  try {
+    const response = await fetch(
+      "/api/schedules/list.php?sort=updated_at&order=DESC&limit=3",
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.success && data.data) {
+      updateRecentSchedulesList(data.data);
+    }
+  } catch (error) {
+    console.error("Failed to load recent schedules:", error);
+    // Keep the existing hardcoded schedules as fallback
+  }
+}
+
+/**
+ * Update the recent schedules list with real data
+ */
+function updateRecentSchedulesList(schedules) {
+  const recentSchedulesContainer = document.getElementById(
+    "recentSchedulesList"
+  );
+
+  if (!recentSchedulesContainer || schedules.length === 0) {
+    return;
+  }
+
+  // Clear existing content
+  recentSchedulesContainer.innerHTML = "";
+
+  schedules.forEach((schedule) => {
+    const scheduleItem = document.createElement("div");
+    scheduleItem.className = "schedule-item";
+    scheduleItem.onclick = () => openSchedule(schedule.id);
+
+    // Determine badge color based on status
+    let badgeClass = "badge-secondary";
+    if (schedule.status === "active") badgeClass = "badge-primary";
+    else if (schedule.status === "draft") badgeClass = "badge-secondary";
+    else if (schedule.status === "archived") badgeClass = "badge";
+
+    scheduleItem.innerHTML = `
+            <div class="schedule-header">
+                <div class="schedule-name">
+                    <i class="fas fa-calendar"></i> ${schedule.name}
+                </div>
+                <span class="badge ${badgeClass}">${
+      schedule.status.charAt(0).toUpperCase() + schedule.status.slice(1)
+    }</span>
+            </div>
+            <div class="schedule-meta">
+                <i class="fas fa-book"></i> ${
+                  schedule.course_count || 0
+                } courses &nbsp;|&nbsp;
+                <i class="fas fa-clock"></i> ${
+                  schedule.updated_ago || "Recently updated"
+                }
+            </div>
+        `;
+
+    recentSchedulesContainer.appendChild(scheduleItem);
+  });
+}
+
+/**
+ * Utility Functions
+ */
+
+// Generate initials from full name
+function generateInitials(fullName) {
+  if (!fullName) return "U"; // Default for "User"
+
+  return fullName
+    .split(" ")
+    .map((name) => name.charAt(0).toUpperCase())
+    .join("")
+    .substring(0, 2); // Max 2 characters
+}
+
+// Show loading state for different sections
+function showLoadingState(section) {
+  const loadingHTML = `
+        <div class="loading-placeholder">
+            <i class="fas fa-spinner fa-spin"></i> Loading...
+        </div>
+    `;
+
+  switch (section) {
+    case "userProfile":
+      // Show loading in user profile area
+      break;
+    case "dashboardStats":
+      // Could show loading spinners in stat cards
+      break;
+  }
+}
+
+// Hide loading state
+function hideLoadingState(section) {
+  const loadingElements = document.querySelectorAll(".loading-placeholder");
+  loadingElements.forEach((element) => element.remove());
+}
+
+// Show fallback statistics when API fails
+function showFallbackStats() {
+  const fallbackStats = {
+    totalSchedules: 0,
+    activeSchedules: 0,
+    totalCourses: 0,
+    sharedSchedules: 0,
+  };
+
+  Object.keys(fallbackStats).forEach((statKey) => {
+    const element = document.getElementById(statKey);
+    if (element) {
+      element.textContent = fallbackStats[statKey];
+    }
+  });
+}
+
+// Redirect to login page
+function redirectToLogin() {
+  // Clear any stored session data
+  localStorage.removeItem("userSession");
+  sessionStorage.clear();
+
+  // Redirect with a message
+  window.location.href = "login.html?message=session_expired";
+}
+
+/**
+ * Navigation and UI Functions
+ */
+
+// Open a specific schedule in the editor
+function openSchedule(scheduleId) {
+  window.location.href = `schedule-editor.html?id=${scheduleId}`;
+}
+
+// Toggle mobile menu
+function toggleMobileMenu() {
+  const navbarMenu = document.getElementById("navbarMenu");
+  if (navbarMenu) {
+    navbarMenu.classList.toggle("active");
+  }
+}
+
+// Show notifications (placeholder for future feature)
+function showNotifications() {
+  if (typeof NUSTApp !== "undefined") {
+    NUSTApp.showNotification("Notifications feature coming soon!", "info");
+  } else {
+    alert("Notifications feature coming soon!");
+  }
+}
+
+// Logout function with proper session cleanup
+async function logout() {
+  if (confirm("Are you sure you want to logout?")) {
+    try {
+      // Call logout API
+      await fetch("/api/auth/logout.php", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      });
+    } catch (error) {
+      console.error("Logout API call failed:", error);
+    } finally {
+      // Always clean up and redirect, even if API call fails
+      localStorage.removeItem("userSession");
+      sessionStorage.clear();
+      window.location.href = "login.html";
+    }
+  }
+}
