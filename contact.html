@@ -5,30 +5,453 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Support - NUST Timetable Manager</title>
     
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3rem;
+            align-items: start;
+        }
+        
+        .contact-form-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            padding: 2.5rem;
+        }
+        
+        .contact-form-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row.single {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-field {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-field label {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-field input,
+        .form-field select,
+        .form-field textarea {
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        
+        .form-field input:focus,
+        .form-field select:focus,
+        .form-field textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(252, 175, 23, 0.2);
+        }
+        
+        .form-field textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-field small {
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        .priority-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        
+        .priority-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .priority-option:hover {
+            border-color: var(--secondary-color);
+            background: var(--light-bg);
+        }
+        
+        .priority-option input[type="radio"] {
+            margin: 0;
+            flex-shrink: 0;
+        }
+        
+        .priority-option-content {
+            flex: 1;
+        }
+        
+        .priority-option-title {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .priority-option-desc {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover {
+            background: #2a3f6f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(29, 44, 93, 0.3);
+        }
+        
+        .success-alert {
+            background: #d1e7dd;
+            border: 2px solid #badbcc;
+            color: #0f5132;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .success-alert.show {
+            display: flex;
+        }
+        
+        .contact-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .info-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+        }
+        
+        .info-card-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .response-times {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .response-time-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .priority-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .priority-badge.low {
+            background: var(--light-bg);
+            color: var(--text-dark);
+        }
+        
+        .priority-badge.medium {
+            background: #fff3cd;
+            color: #664d03;
+        }
+        
+        .priority-badge.high {
+            background: #f8d7da;
+            color: #842029;
+        }
+        
+        .contact-detail-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .contact-detail-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .contact-detail-title {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .contact-detail-content {
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+        
+        .contact-detail-content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .contact-detail-content a:hover {
+            text-decoration: underline;
+        }
+        
+        .help-resources {
+            background: var(--light-bg);
+            border: none;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .help-resources-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .help-resources-text {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .help-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .help-link {
+            background: var(--white);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .help-link:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .team-section {
+            background: var(--light-bg);
+            padding: 3rem 0;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .team-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .team-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+        
+        .team-name {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .team-student-number {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .team-role {
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .project-info-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .project-info-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .project-info-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            text-align: left;
+        }
+        
+        .project-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .project-info-label {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .project-info-value {
+            color: var(--text-dark);
+        }
+        
+        @media (max-width: 1024px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-info-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .help-links {
+                flex-direction: column;
+            }
+        }
+    </style>
+
 </head>
 <body>
     
     <!-- NAVIGATION BAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <nav class="navbar">
         <div class="container">
             <a class="navbar-brand" href="index.html">
-                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60" padding="100" margin="1000"> &nbsp; Timetable Manager
+                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60"> &nbsp; Timetable Manager
             </a>
             
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
             </button>
             
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+            <div class="navbar-menu" id="navbarMenu">
+                <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">Home</a>
                     </li>
@@ -42,7 +465,7 @@
                         <a class="nav-link active" href="help.html">Help</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-login ms-lg-3" href="login.html">Login / Register</a>
+                        <a class="btn btn-login" href="login.html">Login / Register</a>
                     </li>
                 </ul>
             </div>
@@ -62,230 +485,229 @@
     <!-- CONTACT CONTENT -->
     <section class="section">
         <div class="container">
-            <div class="row">
+            <div class="contact-container">
+
                 <!-- Contact Form -->
-                <div class="col-lg-7 mb-5 mb-lg-0">
-                    <div class="card">
-                        <div class="card-body p-4 p-md-5">
-                            <h2 class="text-primary-custom mb-4">
-                                <i class="bi bi-envelope me-2"></i>Send Us a Message
-                            </h2>
+                <div class="contact-form-card">
+                    <h2 class="contact-form-title">
+                        <i class="fas fa-envelope"></i> Send Us a Message
+                    </h2>
                             
                             <form id="contactForm">
-                                <!-- Name -->
-                                <div class="mb-4">
-                                    <label for="name" class="form-label">
-                                        <i class="bi bi-person me-2"></i>Your Name *
-                                    </label>
-                                    <input type="text" class="form-control" id="name" 
-                                           name="name" placeholder="John Doe" required>
+                                <!-- Name and Email Row -->
+                                <div class="form-row">
+                                    <div class="form-field">
+                                        <label for="name">
+                                            <i class="fas fa-user"></i> Your Name *
+                                        </label>
+                                        <input type="text" id="name" name="name" placeholder="John Doe" required>
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="email">
+                                            <i class="fas fa-envelope"></i> Email Address *
+                                        </label>
+                                        <input type="email" id="email" name="email" placeholder="youremail@nust.na" required>
+                                        <small>We'll respond to this email address</small>
+                                    </div>
                                 </div>
                                 
-                                <!-- Email -->
-                                <div class="mb-4">
-                                    <label for="email" class="form-label">
-                                        <i class="bi bi-envelope me-2"></i>Email Address *
-                                    </label>
-                                    <input type="email" class="form-control" id="email" 
-                                           name="email" placeholder="youremail@nust.na" required>
-                                    <small class="text-muted">
-                                        We'll respond to this email address
-                                    </small>
-                                </div>
-                                
-                                <!-- Student Number (Optional) -->
-                                <div class="mb-4">
-                                    <label for="studentNumber" class="form-label">
-                                        <i class="bi bi-card-text me-2"></i>Student Number (Optional)
-                                    </label>
-                                    <input type="text" class="form-control" id="studentNumber" 
-                                           name="student_number" placeholder="217090427" 
-                                           pattern="[0-9]{9}">
-                                    <small class="text-muted">
-                                        Helps us locate your account if needed
-                                    </small>
+                                <!-- Student Number -->
+                                <div class="form-row single">
+                                    <div class="form-field">
+                                        <label for="studentNumber">
+                                            <i class="fas fa-id-card"></i> Student Number (Optional)
+                                        </label>
+                                        <input type="text" id="studentNumber" name="student_number" 
+                                            placeholder="217090427" pattern="[0-9]{9}">
+                                        <small>Helps us locate your account if needed</small>
+                                    </div>
                                 </div>
                                 
                                 <!-- Subject/Category -->
-                                <div class="mb-4">
-                                    <label for="category" class="form-label">
-                                        <i class="bi bi-tag me-2"></i>Subject Category *
-                                    </label>
-                                    <select class="form-select" id="category" name="category" required>
-                                        <option value="">Select a category...</option>
-                                        <option value="account">Account & Login Issues</option>
-                                        <option value="technical">Technical Problems</option>
-                                        <option value="schedule">Schedule Creation Help</option>
-                                        <option value="courses">Course Information</option>
-                                        <option value="sharing">Sharing & Export Issues</option>
-                                        <option value="bug">Report a Bug</option>
-                                        <option value="feature">Feature Request</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-                                
-                                <!-- Subject Line -->
-                                <div class="mb-4">
-                                    <label for="subject" class="form-label">
-                                        <i class="bi bi-chat-left-text me-2"></i>Subject *
-                                    </label>
-                                    <input type="text" class="form-control" id="subject" 
-                                           name="subject" placeholder="Brief description of your issue" required>
+                                <div class="form-row">
+                                    <div class="form-field">
+                                        <label for="category">
+                                            <i class="fas fa-tag"></i> Subject Category *
+                                        </label>
+                                        <select id="category" name="category" required>
+                                            <option value="">Select a category...</option>
+                                            <option value="account">Account & Login Issues</option>
+                                            <option value="technical">Technical Problems</option>
+                                            <option value="schedule">Schedule Creation Help</option>
+                                            <option value="courses">Course Information</option>
+                                            <option value="sharing">Sharing & Export Issues</option>
+                                            <option value="bug">Report a Bug</option>
+                                            <option value="feature">Feature Request</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="subject">
+                                            <i class="fas fa-comment"></i> Subject *
+                                        </label>
+                                        <input type="text" id="subject" name="subject" 
+                                            placeholder="Brief description of your issue" required>
+                                    </div>
                                 </div>
                                 
                                 <!-- Message -->
-                                <div class="mb-4">
-                                    <label for="message" class="form-label">
-                                        <i class="bi bi-pencil me-2"></i>Message *
-                                    </label>
-                                    <textarea class="form-control" id="message" name="message" 
-                                              rows="6" placeholder="Please describe your issue in detail..." 
-                                              required></textarea>
-                                    <small class="text-muted">
-                                        The more details you provide, the faster we can help
-                                    </small>
+                                <div class="form-row single">
+                                    <div class="form-field">
+                                        <label for="message">
+                                            <i class="fas fa-pencil-alt"></i> Message *
+                                        </label>
+                                        <textarea id="message" name="message" 
+                                                placeholder="Please describe your issue in detail..." required></textarea>
+                                        <small>The more details you provide, the faster we can help</small>
+                                    </div>
                                 </div>
                                 
                                 <!-- Priority Level -->
-                                <div class="mb-4">
-                                    <label class="form-label">
-                                        <i class="bi bi-flag me-2"></i>Priority Level
-                                    </label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="priority" 
-                                               id="priorityLow" value="low" checked>
-                                        <label class="form-check-label" for="priorityLow">
-                                            Low - General inquiry or minor issue
+                                <div class="form-row single">
+                                    <div class="form-field">
+                                        <label>
+                                            <i class="fas fa-flag"></i> Priority Level
                                         </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="priority" 
-                                               id="priorityMedium" value="medium">
-                                        <label class="form-check-label" for="priorityMedium">
-                                            Medium - Issue affecting functionality
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="priority" 
-                                               id="priorityHigh" value="high">
-                                        <label class="form-check-label" for="priorityHigh">
-                                            High - Urgent issue preventing use
-                                        </label>
+                                        <div class="priority-options">
+                                            <label class="priority-option">
+                                                <input type="radio" name="priority" value="low" checked>
+                                                <div class="priority-option-content">
+                                                    <div class="priority-option-title">Low</div>
+                                                    <div class="priority-option-desc">General inquiry or minor issue</div>
+                                                </div>
+                                            </label>
+                                            <label class="priority-option">
+                                                <input type="radio" name="priority" value="medium">
+                                                <div class="priority-option-content">
+                                                    <div class="priority-option-title">Medium</div>
+                                                    <div class="priority-option-desc">Issue affecting functionality</div>
+                                                </div>
+                                            </label>
+                                            <label class="priority-option">
+                                                <input type="radio" name="priority" value="high">
+                                                <div class="priority-option-content">
+                                                    <div class="priority-option-title">High</div>
+                                                    <div class="priority-option-desc">Urgent issue preventing use</div>
+                                                </div>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                                 
                                 <!-- Submit Button -->
-                                <button type="submit" class="btn btn-primary-custom w-100 btn-lg">
-                                    <i class="bi bi-send me-2"></i>Send Message
+                                <button type="submit" class="submit-btn">
+                                    <i class="fas fa-paper-plane"></i> Send Message
                                 </button>
                                 
                                 <!-- Success Message (Hidden by default) -->
-                                <div id="successMessage" class="alert alert-success mt-4" style="display: none;">
-                                    <i class="bi bi-check-circle me-2"></i>
-                                    <strong>Message sent successfully!</strong> We'll get back to you 
-                                    within 24-48 hours.
+                                <div id="successMessage" class="success-alert">
+                                    <i class="fas fa-check-circle"></i>
+                                    <div>
+                                        <strong>Message sent successfully!</strong> We'll get back to you 
+                                        within 24-48 hours.
+                                    </div>
                                 </div>
                             </form>
-                        </div>
-                    </div>
                 </div>
                 
                 <!-- Contact Information Sidebar -->
-                <div class="col-lg-5">
+                <div class="contact-sidebar">
                     <!-- Response Times -->
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h4 class="text-primary-custom mb-3">
-                                <i class="bi bi-clock-history me-2"></i>Expected Response Times
-                            </h4>
-                            <div class="d-flex align-items-start mb-3">
-                                <span class="badge badge-secondary-custom me-3">Low</span>
-                                <p class="mb-0 small">2-3 business days</p>
+                    <div class="info-card">
+                        <h4 class="info-card-title">
+                            <i class="fas fa-clock"></i> Expected Response Times
+                        </h4>
+                        <div class="response-times">
+                            <div class="response-time-item">
+                                <span class="priority-badge low">Low</span>
+                                <span>2-3 business days</span>
                             </div>
-                            <div class="d-flex align-items-start mb-3">
-                                <span class="badge badge-secondary-custom me-3">Medium</span>
-                                <p class="mb-0 small">24-48 hours</p>
+                            <div class="response-time-item">
+                                <span class="priority-badge medium">Medium</span>
+                                <span>24-48 hours</span>
                             </div>
-                            <div class="d-flex align-items-start">
-                                <span class="badge badge-secondary-custom me-3">High</span>
-                                <p class="mb-0 small">Within 24 hours</p>
+                            <div class="response-time-item">
+                                <span class="priority-badge high">High</span>
+                                <span>Within 24 hours</span>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Support Hours -->
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h4 class="text-primary-custom mb-3">
-                                <i class="bi bi-calendar3 me-2"></i>Support Hours
-                            </h4>
-                            <p class="mb-2">
-                                <strong>Monday - Friday:</strong> 08:00 - 17:00 (CAT)
-                            </p>
-                            <p class="mb-2">
-                                <strong>Saturday:</strong> 09:00 - 13:00 (CAT)
-                            </p>
-                            <p class="mb-0">
-                                <strong>Sunday & Public Holidays:</strong> Closed
-                            </p>
-                            <small class="text-muted mt-2 d-block">
-                                Messages received outside business hours will be responded to on 
-                                the next business day.
-                            </small>
+                    <div class="info-card">
+                        <h4 class="info-card-title">
+                            <i class="fas fa-calendar"></i> Support Hours
+                        </h4>
+                        <div class="contact-detail-item">
+                            <div class="contact-detail-title">
+                                <i class="fas fa-business-time"></i> Monday - Friday
+                            </div>
+                            <div class="contact-detail-content">08:00 - 17:00 (CAT)</div>
                         </div>
+                        <div class="contact-detail-item">
+                            <div class="contact-detail-title">
+                                <i class="fas fa-clock"></i> Saturday
+                            </div>
+                            <div class="contact-detail-content">09:00 - 13:00 (CAT)</div>
+                        </div>
+                        <div class="contact-detail-item">
+                            <div class="contact-detail-title">
+                                <i class="fas fa-ban"></i> Sunday & Public Holidays
+                            </div>
+                            <div class="contact-detail-content">Closed</div>
+                        </div>
+                        <small style="color: var(--text-muted); margin-top: 1rem; display: block;">
+                            Messages received outside business hours will be responded to on 
+                            the next business day.
+                        </small>
                     </div>
                     
                     <!-- Contact Details -->
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h4 class="text-primary-custom mb-3">
-                                <i class="bi bi-info-circle me-2"></i>Contact Information
-                            </h4>
-                            <div class="mb-3">
-                                <h6 class="text-secondary-custom mb-2">
-                                    <i class="bi bi-envelope-fill me-2"></i>Email
-                                </h6>
-                                <p class="mb-0">
-                                    <a href="mailto:support@nusttimetable.na" 
-                                       style="color: var(--text-dark);">
-                                        support@nusttimetable.na
-                                    </a>
-                                </p>
+                    <div class="info-card">
+                        <h4 class="info-card-title">
+                            <i class="fas fa-info-circle"></i> Contact Information
+                        </h4>
+                        <div class="contact-detail-item">
+                            <div class="contact-detail-title">
+                                <i class="fas fa-envelope"></i> Email
                             </div>
-                            <div class="mb-3">
-                                <h6 class="text-secondary-custom mb-2">
-                                    <i class="bi bi-telephone-fill me-2"></i>Phone (for urgent issues)
-                                </h6>
-                                <p class="mb-0">+264 61 207 2268</p>
+                            <div class="contact-detail-content">
+                                <a href="mailto:support@nusttimetable.na">support@nusttimetable.na</a>
                             </div>
-                            <div>
-                                <h6 class="text-secondary-custom mb-2">
-                                    <i class="bi bi-geo-alt-fill me-2"></i>Office Location
-                                </h6>
-                                <p class="mb-0">
-                                    Faculty of Computing and Informatics<br>
-                                    Namibia University of Science and Technology<br>
-                                    13 Storch Street, Windhoek, Namibia
-                                </p>
+                        </div>
+                        <div class="contact-detail-item">
+                            <div class="contact-detail-title">
+                                <i class="fas fa-phone"></i> Phone (for urgent issues)
+                            </div>
+                            <div class="contact-detail-content">+264 61 207 2268</div>
+                        </div>
+                        <div class="contact-detail-item">
+                            <div class="contact-detail-title">
+                                <i class="fas fa-map-marker-alt"></i> Office Location
+                            </div>
+                            <div class="contact-detail-content">
+                                Faculty of Computing and Informatics<br>
+                                Namibia University of Science and Technology<br>
+                                13 Storch Street, Windhoek, Namibia
                             </div>
                         </div>
                     </div>
                     
                     <!-- Alternative Resources -->
-                    <div class="card bg-light-custom border-0">
-                        <div class="card-body">
-                            <h5 class="text-primary-custom mb-3">
-                                <i class="bi bi-lightbulb me-2"></i>Before You Contact Us
-                            </h5>
-                            <p class="small">Check if your question is already answered:</p>
-                            <div class="d-grid gap-2">
-                                <a href="faq.html" class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-question-circle me-2"></i>Browse FAQ
-                                </a>
-                                <a href="user-guide.html" class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-book me-2"></i>Read User Guide
-                                </a>
-                            </div>
+                    <div class="help-resources">
+                        <h5 class="help-resources-title">
+                            <i class="fas fa-lightbulb"></i> Before You Contact Us
+                        </h5>
+                        <p class="help-resources-text">
+                            Check if your question is already answered:
+                        </p>
+                        <div class="help-links">
+                            <a href="faq.html" class="help-link">
+                                <i class="fas fa-question-circle"></i> Browse FAQ
+                            </a>
+                            <a href="user-guide.html" class="help-link">
+                                <i class="fas fa-book"></i> Read User Guide
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -294,7 +716,7 @@
     </section>
 
     <!-- TEAM SECTION -->
-    <section class="section bg-light-custom">
+    <section class="team-section">
         <div class="container">
             <div class="text-center mb-5">
                 <h2 class="section-title">Our Development Team</h2>
@@ -303,63 +725,59 @@
                 </p>
             </div>
             
-            <div class="row g-4 justify-content-center">
-                <div class="col-md-4">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <div class="feature-icon mx-auto" style="width: 80px; height: 80px;">
-                                <i class="bi bi-person"></i>
-                            </div>
-                            <h5 class="text-primary-custom mt-3">Nathan Duarte</h5>
-                            <p class="text-muted mb-2">Student Number: 217090427</p>
-                            <span class="badge badge-secondary-custom">Developer</span>
-                        </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-icon">
+                        <i class="fas fa-user"></i>
                     </div>
+                    <h5 class="team-name">Nathan Duarte</h5>
+                    <p class="team-student-number">Student Number: 217090427</p>
+                    <span class="team-role">Developer</span>
                 </div>
                 
-                <div class="col-md-4">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <div class="feature-icon mx-auto" style="width: 80px; height: 80px;">
-                                <i class="bi bi-person"></i>
-                            </div>
-                            <h5 class="text-primary-custom mt-3">Ndilimeke Frans</h5>
-                            <p class="text-muted mb-2">Student Number: 224041525</p>
-                            <span class="badge badge-secondary-custom">Developer</span>
-                        </div>
+                <div class="team-card">
+                    <div class="team-icon">
+                        <i class="fas fa-user"></i>
                     </div>
+                    <h5 class="team-name">Ndilimeke Frans</h5>
+                    <p class="team-student-number">Student Number: 224041525</p>
+                    <span class="team-role">Developer</span>
                 </div>
                 
-                <div class="col-md-4">
-                    <div class="card text-center h-100">
-                        <div class="card-body">
-                            <div class="feature-icon mx-auto" style="width: 80px; height: 80px;">
-                                <i class="bi bi-person"></i>
-                            </div>
-                            <h5 class="text-primary-custom mt-3">Enzo Jantjies</h5>
-                            <p class="text-muted mb-2">Student Number: 216097975</p>
-                            <span class="badge badge-secondary-custom">Developer</span>
-                        </div>
+                <div class="team-card">
+                    <div class="team-icon">
+                        <i class="fas fa-user"></i>
                     </div>
+                    <h5 class="team-name">Enzo Jantjies</h5>
+                    <p class="team-student-number">Student Number: 216097975</p>
+                    <span class="team-role">Developer</span>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h5 class="team-name">Eric Lubinda</h5>
+                    <p class="team-student-number">Student Number: 222067438</p>
+                    <span class="team-role">Developer</span>
                 </div>
             </div>
             
             <!-- Course Information -->
-            <div class="row mt-5">
-                <div class="col-lg-8 mx-auto">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="text-primary-custom mb-3">Project Information</h5>
-                            <p class="mb-2">
-                                <strong>Course:</strong> WAD621s - Web Application Development
-                            </p>
-                            <p class="mb-2">
-                                <strong>Semester:</strong> Semester 2, 2025
-                            </p>
-                            <p class="mb-0">
-                                <strong>Lecturers:</strong> Mrs. Josephina Muntuumo & Mr. Wilfred Kongolo
-                            </p>
-                        </div>
+            <div class="project-info-card">
+                <h5 class="project-info-title">Project Information</h5>
+                <div class="project-info-details">
+                    <div class="project-info-item">
+                        <span class="project-info-label">Course:</span>
+                        <span class="project-info-value">WAD621s - Web Application Development</span>
+                    </div>
+                    <div class="project-info-item">
+                        <span class="project-info-label">Semester:</span>
+                        <span class="project-info-value">Semester 2, 2025</span>
+                    </div>
+                    <div class="project-info-item">
+                        <span class="project-info-label">Lecturers:</span>
+                        <span class="project-info-value">Mrs. Josephina Muntuumo & Mr. Wilfred Kongolo</span>
                     </div>
                 </div>
             </div>
@@ -370,7 +788,7 @@
     <footer class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-md-4 mb-4">
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
                     <h5>About NUST Timetable Manager</h5>
                     <p style="color: rgba(255, 255, 255, 0.7);">
                         A comprehensive web-based solution designed to help NUST students 
@@ -378,7 +796,7 @@
                     </p>
                 </div>
                 
-                <div class="col-md-4 mb-4">
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
                     <h5>Quick Links</h5>
                     <a href="about.html">About Us</a>
                     <a href="features.html">Features</a>
@@ -386,18 +804,18 @@
                     <a href="faq.html">FAQ</a>
                 </div>
                 
-                <div class="col-md-4 mb-4">
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
                     <h5>Contact & Support</h5>
                     <a href="contact.html">Contact Support</a>
                     <a href="help.html">Help Center</a>
-                    <p class="mt-3" style="color: rgba(255, 255, 255, 0.7);">
-                        <i class="bi bi-envelope me-2"></i>support@nusttimetable.na
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-top: 1rem;">
+                        <i class="fas fa-envelope"></i> support@nusttimetable.na
                     </p>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p class="mb-0">
+                <p>
                     &copy; 2025 NUST Timetable Manager | WAD621s Group Project | 
                     Namibia University of Science and Technology
                 </p>
@@ -405,11 +823,12 @@
         </div>
     </footer>
 
-    <!-- Bootstrap 5 JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Form Submission Handler -->
+    <!-- JavaScript -->
     <script>
+        function toggleMenu() {
+            document.getElementById('navbarMenu').classList.toggle('active');
+        }
+        
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -426,7 +845,7 @@
             }
             
             // Show success message
-            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('successMessage').classList.add('show');
             
             // Reset form
             this.reset();
@@ -439,7 +858,7 @@
             
             // Hide success message after 5 seconds
             setTimeout(function() {
-                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('successMessage').classList.remove('show');
             }, 5000);
         });
     </script>
