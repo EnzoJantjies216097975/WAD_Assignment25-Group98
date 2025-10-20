@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share & Export - NUST Timetable Manager</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Share & Export Specific Styles */
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+            background-color: var(--light-bg);
+        }
+        
+        .dashboard-sidebar {
+            width: 280px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-md);
+            padding: 2rem 0;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+        
+        .user-profile-card {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: var(--white);
+            font-weight: 700;
+        }
+        
+        .nav-section-title {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0 1.5rem;
+            margin: 1.5rem 0 0.5rem;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .sidebar-nav-item {
+            margin-bottom: 0.25rem;
+        }
+        
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-nav-link:hover {
+            background-color: var(--light-bg);
+            border-left-color: var(--secondary-color);
+            padding-left: 1.75rem;
+        }
+        
+        .sidebar-nav-link.active {
+            background-color: rgba(252, 175, 23, 0.1);
+            border-left-color: var(--secondary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .sidebar-nav-link i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), #2a3f6f);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        /* Schedule Selector */
+        .schedule-selector {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+        
+        .schedule-selector-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+        
+        .schedule-dropdown {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .schedule-dropdown:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+        
+        /* Action Cards Grid */
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .action-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+        
+        .action-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-5px);
+        }
+        
+        .action-card-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .action-card-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .action-card-description {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        /* Share Link Section */
+        .share-link-display {
+            background: var(--light-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .share-link-url {
+            flex: 1;
+            padding: 0.75rem;
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+        }
+        
+        .copy-button {
+            padding: 0.75rem 1.5rem;
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        
+        .copy-button:hover {
+            background: #e09d10;
+        }
+        
+        .copy-button.copied {
+            background: #10b981;
+            color: var(--white);
+        }
+        
+        /* Share Options */
+        .share-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .share-option-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .share-option-btn:hover {
+            border-color: var(--secondary-color);
+            background: var(--light-bg);
+        }
+        
+        .share-option-btn i {
+            font-size: 1.2rem;
+        }
+        
+        /* Export Options */
+        .export-options {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .export-option {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .export-option:hover {
+            border-color: var(--secondary-color);
+            background: var(--white);
+        }
+        
+        .export-option-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .export-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .export-option-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        .export-option-description {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Format Settings */
+        .format-settings {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .format-setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .format-setting-row:last-child {
+            border-bottom: none;
+        }
+        
+        .format-setting-label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        /* Success Message */
+        .success-banner {
+            background: #d1e7dd;
+            border: 2px solid #badbcc;
+            color: #0f5132;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .success-banner.show {
+            display: flex;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .dashboard-sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                top: 0;
+            }
+            
+            .dashboard-content {
+                padding: 1rem;
+            }
+            
+            .action-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .share-link-display {
+                flex-direction: column;
+            }
+            
+            .share-options {
+                flex-direction: column;
+            }
+            
+            .share-option-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60"> &nbsp; Timetable Manager
+            </a>
+            
+            <button class="navbar-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="navbar-menu" id="navbarMenu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showNotifications()">
+                            <i class="fas fa-bell"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN LAYOUT -->
+    <div class="dashboard-container">
+        
+        <!-- SIDEBAR -->
+        <aside class="dashboard-sidebar">
+            <div class="user-profile-card">
+                <div class="user-avatar">
+                    <span>ND</span>
+                </div>
+                <div class="text-center">
+                    <h5 class="mb-1">Nathan Duarte</h5>
+                    <p class="text-muted mb-0" style="font-size: 0.875rem;">
+                        Computer Science - Software Development
+                    </p>
+                </div>
+            </div>
+            
+            <nav>
+                <div class="nav-section-title">Main</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="dashboard.html" class="sidebar-nav-link">
+                            <i class="fas fa-home"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="my-schedules.html" class="sidebar-nav-link">
+                            <i class="fas fa-calendar-alt"></i>
+                            My Schedules
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="course-browser.html" class="sidebar-nav-link">
+                            <i class="fas fa-search"></i>
+                            Course Browser
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="nav-section-title">Account</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="profile-settings.html" class="sidebar-nav-link">
+                            <i class="fas fa-user-cog"></i>
+                            Profile Settings
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="share-export.html" class="sidebar-nav-link active">
+                            <i class="fas fa-share-alt"></i>
+                            Share & Export
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="nav-section-title">Help</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="user-guide.html" class="sidebar-nav-link">
+                            <i class="fas fa-book"></i>
+                            User Guide
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="faq.html" class="sidebar-nav-link">
+                            <i class="fas fa-question-circle"></i>
+                            FAQ
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="contact.html" class="sidebar-nav-link">
+                            <i class="fas fa-headset"></i>
+                            Support
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- MAIN CONTENT -->
+        <main class="dashboard-content">
+            
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 style="margin-bottom: 0.5rem;">
+                    <i class="fas fa-share-alt"></i> Share & Export
+                </h1>
+                <p style="margin: 0; opacity: 0.9;">
+                    Share your timetable with classmates or export it for offline use
+                </p>
+            </div>
+            
+            <!-- Success Banner -->
+            <div class="success-banner" id="successBanner">
+                <i class="fas fa-check-circle" style="font-size: 1.5rem;"></i>
+                <div>
+                    <strong>Success!</strong>
+                    <span id="successMessage">Your action was completed successfully.</span>
+                </div>
+            </div>
+            
+            <!-- Schedule Selector -->
+            <div class="schedule-selector">
+                <label class="schedule-selector-label">
+                    <i class="fas fa-calendar-check"></i> Select Schedule to Share/Export
+                </label>
+                <select class="schedule-dropdown" id="scheduleSelect" onchange="scheduleSelected()">
+                    <option value="">Choose a schedule...</option>
+                    <option value="schedule-1">Semester 2 - Final Schedule</option>
+                    <option value="schedule-2">Semester 2 - Option B</option>
+                    <option value="schedule-3">Semester 1 - Archived</option>
+                </select>
+            </div>
+            
+            <!-- Action Cards -->
+            <div class="action-cards">
+                
+                <!-- SHARE CARD -->
+                <div class="action-card">
+                    <div class="action-card-icon">
+                        <i class="fas fa-share-nodes"></i>
+                    </div>
+                    <h3 class="action-card-title">Share with Classmates</h3>
+                    <p class="action-card-description">
+                        Generate a unique shareable link that allows others to view your timetable. 
+                        Shared schedules are read-only and don't require recipients to have an account.
+                    </p>
+                    
+                    <button class="btn btn-primary btn-block" onclick="generateShareLink()" id="generateLinkBtn">
+                        <i class="fas fa-link"></i> Generate Share Link
+                    </button>
+                    
+                    <!-- Share Link Display (hidden initially) -->
+                    <div id="shareLinkSection" style="display: none; margin-top: 1.5rem;">
+                        <div class="share-link-display">
+                            <input type="text" class="share-link-url" id="shareLink" readonly>
+                            <button class="copy-button" onclick="copyShareLink()" id="copyBtn">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        
+                        <div class="share-options">
+                            <button class="share-option-btn" onclick="shareViaEmail()">
+                                <i class="fas fa-envelope"></i> Email
+                            </button>
+                            <button class="share-option-btn" onclick="shareViaWhatsApp()">
+                                <i class="fab fa-whatsapp"></i> WhatsApp
+                            </button>
+                            <button class="share-option-btn" onclick="shareViaQR()">
+                                <i class="fas fa-qrcode"></i> QR Code
+                            </button>
+                        </div>
+                        
+                        <p class="text-muted" style="margin-top: 1rem; font-size: 0.875rem;">
+                            <i class="fas fa-info-circle"></i> This link will remain active until you delete 
+                            the schedule or disable sharing.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- EXPORT CARD -->
+                <div class="action-card">
+                    <div class="action-card-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3 class="action-card-title">Export Schedule</h3>
+                    <p class="action-card-description">
+                        Download your timetable in various formats for printing, offline viewing, 
+                        or importing into other calendar applications.
+                    </p>
+                    
+                    <div class="export-options">
+                        <!-- PDF Export -->
+                        <div class="export-option" onclick="exportToPDF()">
+                            <div class="export-option-header">
+                                <div class="export-icon">
+                                    <i class="fas fa-file-pdf" style="color: #dc2626;"></i>
+                                </div>
+                                <div>
+                                    <div class="export-option-title">Export as PDF</div>
+                                    <div class="export-option-description">
+                                        Perfect for printing and official documentation
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary btn-block">
+                                <i class="fas fa-file-pdf"></i> Download PDF
+                            </button>
+                        </div>
+                        
+                        <!-- Image Export -->
+                        <div class="export-option" onclick="exportToImage()">
+                            <div class="export-option-header">
+                                <div class="export-icon">
+                                    <i class="fas fa-image" style="color: #3b82f6;"></i>
+                                </div>
+                                <div>
+                                    <div class="export-option-title">Export as Image</div>
+                                    <div class="export-option-description">
+                                        Easy to share on social media and messaging apps
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary btn-block">
+                                <i class="fas fa-image"></i> Download PNG
+                            </button>
+                        </div>
+                        
+                        <!-- iCal Export -->
+                        <div class="export-option" onclick="exportToICal()">
+                            <div class="export-option-header">
+                                <div class="export-icon">
+                                    <i class="fas fa-calendar-plus" style="color: #10b981;"></i>
+                                </div>
+                                <div>
+                                    <div class="export-option-title">Export to Calendar</div>
+                                    <div class="export-option-description">
+                                        Import into Google Calendar, Outlook, or Apple Calendar
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary btn-block">
+                                <i class="fas fa-calendar-plus"></i> Download iCal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Export Settings (Optional Advanced Settings) -->
+            <div class="action-card">
+                <h3 class="action-card-title">
+                    <i class="fas fa-sliders-h"></i> Export Settings
+                </h3>
+                <p class="action-card-description">
+                    Customize how your timetable appears when exported
+                </p>
+                
+                <div class="format-settings">
+                    <div class="format-setting-row">
+                        <span class="format-setting-label">Include Lecturer Names</span>
+                        <label class="form-check">
+                            <input class="form-check-input" type="checkbox" id="includeLecturers" checked>
+                        </label>
+                    </div>
+                    
+                    <div class="format-setting-row">
+                        <span class="format-setting-label">Include Venue Information</span>
+                        <label class="form-check">
+                            <input class="form-check-input" type="checkbox" id="includeVenues" checked>
+                        </label>
+                    </div>
+                    
+                    <div class="format-setting-row">
+                        <span class="format-setting-label">Show Course Codes Only</span>
+                        <label class="form-check">
+                            <input class="form-check-input" type="checkbox" id="codesOnly">
+                        </label>
+                    </div>
+                    
+                    <div class="format-setting-row">
+                        <span class="format-setting-label">Color-code Courses</span>
+                        <label class="form-check">
+                            <input class="form-check-input" type="checkbox" id="colorCode" checked>
+                        </label>
+                    </div>
+                    
+                    <div class="format-setting-row">
+                        <span class="format-setting-label">Orientation</span>
+                        <select class="form-control" id="orientation" style="width: auto;">
+                            <option value="portrait">Portrait</option>
+                            <option value="landscape" selected>Landscape</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        /**
+         * Share & Export JavaScript
+         * Handles sharing and export functionality
+         */
+        
+        let currentSchedule = null;
+        
+        /**
+         * Handle schedule selection
+         */
+        function scheduleSelected() {
+            const scheduleId = document.getElementById('scheduleSelect').value;
+            
+            if (!scheduleId) {
+                currentSchedule = null;
+                document.getElementById('generateLinkBtn').disabled = true;
+                return;
+            }
+            
+            currentSchedule = scheduleId;
+            document.getElementById('generateLinkBtn').disabled = false;
+        }
+        
+        /**
+         * Generate shareable link
+         */
+        function generateShareLink() {
+            if (!currentSchedule) {
+                alert('Please select a schedule first');
+                return;
+            }
+            
+            // In production, this would make an API call to generate a unique share token
+            const shareToken = 'sh_' + Math.random().toString(36).substr(2, 9);
+            const shareUrl = `${window.location.origin}/shared/${shareToken}`;
+            
+            // Display the share link
+            document.getElementById('shareLink').value = shareUrl;
+            document.getElementById('shareLinkSection').style.display = 'block';
+            
+            showSuccess('Share link generated successfully!');
+        }
+        
+        /**
+         * Copy share link to clipboard
+         */
+        function copyShareLink() {
+            const shareLink = document.getElementById('shareLink');
+            shareLink.select();
+            shareLink.setSelectionRange(0, 99999); // For mobile devices
+            
+            navigator.clipboard.writeText(shareLink.value).then(() => {
+                const copyBtn = document.getElementById('copyBtn');
+                const originalHTML = copyBtn.innerHTML;
+                
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                copyBtn.classList.add('copied');
+                
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalHTML;
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+        
+        /**
+         * Share via email
+         */
+        function shareViaEmail() {
+            const shareLink = document.getElementById('shareLink').value;
+            const subject = encodeURIComponent('My NUST Timetable');
+            const body = encodeURIComponent(`Check out my timetable: ${shareLink}`);
+            
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+        }
+        
+        /**
+         * Share via WhatsApp
+         */
+        function shareViaWhatsApp() {
+            const shareLink = document.getElementById('shareLink').value;
+            const text = encodeURIComponent(`Check out my NUST timetable: ${shareLink}`);
+            
+            window.open(`https://wa.me/?text=${text}`, '_blank');
+        }
+        
+        /**
+         * Generate QR code for sharing
+         */
+        function shareViaQR() {
+            const shareLink = document.getElementById('shareLink').value;
+            
+            // In production, you would generate an actual QR code
+            // For now, we'll use a QR code API service
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(shareLink)}`;
+            
+            // Open QR code in new window
+            const qrWindow = window.open('', '_blank', 'width=400,height=450');
+            qrWindow.document.write(`
+                <html>
+                    <head>
+                        <title>QR Code</title>
+                        <style>
+                            body { 
+                                margin: 0; 
+                                padding: 20px; 
+                                text-align: center; 
+                                font-family: Arial, sans-serif;
+                            }
+                            img { 
+                                border: 1px solid #ddd; 
+                                padding: 10px; 
+                                background: white;
+                            }
+                            button {
+                                margin-top: 20px;
+                                padding: 10px 20px;
+                                background: #1d2c5d;
+                                color: white;
+                                border: none;
+                                border-radius: 5px;
+                                cursor: pointer;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <h2>Scan to View Timetable</h2>
+                        <img src="${qrUrl}" alt="QR Code">
+                        <br>
+                        <button onclick="window.print()">Print QR Code</button>
+                    </body>
+                </html>
+            `);
+        }
+        
+        /**
+         * Export to PDF
+         */
+        function exportToPDF() {
+            if (!currentSchedule) {
+                alert('Please select a schedule first');
+                return;
+            }
+            
+            // Get export settings
+            const settings = getExportSettings();
+            
+            // In production, this would generate and download a PDF
+            // For now, we'll simulate the download
+            showSuccess('Generating PDF... Download will start shortly.');
+            
+            setTimeout(() => {
+                console.log('PDF export with settings:', settings);
+                // Simulate download
+                alert('PDF download would start here. File: timetable.pdf');
+            }, 1000);
+        }
+        
+        /**
+         * Export to Image (PNG)
+         */
+        function exportToImage() {
+            if (!currentSchedule) {
+                alert('Please select a schedule first');
+                return;
+            }
+            
+            const settings = getExportSettings();
+            
+            showSuccess('Generating image... Download will start shortly.');
+            
+            setTimeout(() => {
+                console.log('Image export with settings:', settings);
+                alert('PNG download would start here. File: timetable.png');
+            }, 1000);
+        }
+        
+        /**
+         * Export to iCal format
+         */
+        function exportToICal() {
+            if (!currentSchedule) {
+                alert('Please select a schedule first');
+                return;
+            }
+            
+            showSuccess('Generating calendar file... Download will start shortly.');
+            
+            setTimeout(() => {
+                // In production, generate actual .ics file
+                alert('iCal download would start here. File: timetable.ics');
+            }, 1000);
+        }
+        
+        /**
+         * Get current export settings
+         */
+        function getExportSettings() {
+            return {
+                includeLecturers: document.getElementById('includeLecturers').checked,
+                includeVenues: document.getElementById('includeVenues').checked,
+                codesOnly: document.getElementById('codesOnly').checked,
+                colorCode: document.getElementById('colorCode').checked,
+                orientation: document.getElementById('orientation').value
+            };
+        }
+        
+        /**
+         * Show success message
+         */
+        function showSuccess(message) {
+            const banner = document.getElementById('successBanner');
+            const messageSpan = document.getElementById('successMessage');
+            
+            messageSpan.textContent = message;
+            banner.classList.add('show');
+            
+            setTimeout(() => {
+                banner.classList.remove('show');
+            }, 5000);
+        }
+        
+        // Navigation functions
+        function toggleMobileMenu() {
+            document.getElementById('navbarMenu').classList.toggle('active');
+        }
+        
+        function showNotifications() {
+            alert('Notifications feature coming soon!');
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('generateLinkBtn').disabled = true;
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Schedules - NUST Timetable Manager</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* My Schedules Specific Styles */
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+            background-color: var(--light-bg);
+        }
+        
+        .dashboard-sidebar {
+            width: 280px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-md);
+            padding: 2rem 0;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+        
+        .user-profile-card {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: var(--white);
+            font-weight: 700;
+        }
+        
+        .nav-section-title {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0 1.5rem;
+            margin: 1.5rem 0 0.5rem;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .sidebar-nav-item {
+            margin-bottom: 0.25rem;
+        }
+        
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-nav-link:hover {
+            background-color: var(--light-bg);
+            border-left-color: var(--secondary-color);
+            padding-left: 1.75rem;
+        }
+        
+        .sidebar-nav-link.active {
+            background-color: rgba(252, 175, 23, 0.1);
+            border-left-color: var(--secondary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .sidebar-nav-link i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), #2a3f6f);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        /* Filter and Sort Controls */
+        .controls-bar {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .search-box input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        /* Schedule Grid View */
+        .schedules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        /* Individual Schedule Card */
+        .schedule-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .schedule-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        /* Color-coded status bar at top of card */
+        .schedule-status-bar {
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .schedule-status-bar.active {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+        
+        .schedule-status-bar.draft {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+        
+        .schedule-status-bar.archived {
+            background: linear-gradient(90deg, #6b7280, #9ca3af);
+        }
+        
+        .schedule-card-body {
+            padding: 1.5rem;
+        }
+        
+        .schedule-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+        
+        .schedule-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.25rem;
+        }
+        
+        .schedule-status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .schedule-status-badge.active {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .schedule-status-badge.draft {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .schedule-status-badge.archived {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        
+        .schedule-meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .schedule-meta-item {
+            display: inline-block;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .schedule-meta-item i {
+            margin-right: 0.25rem;
+            color: var(--secondary-color);
+        }
+        
+        /* Mini timetable preview */
+        .schedule-preview {
+            background: var(--light-bg);
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .preview-courses {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .preview-course-chip {
+            background: var(--white);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            border-left: 3px solid var(--secondary-color);
+            font-size: 0.75rem;
+        }
+        
+        /* Action buttons at bottom of card */
+        .schedule-actions {
+            display: flex;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .action-btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .action-btn-primary:hover {
+            background-color: #2a3f6f;
+        }
+        
+        .action-btn-secondary {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+        }
+        
+        .action-btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+        
+        /* Empty state when no schedules exist */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .empty-state-icon {
+            font-size: 5rem;
+            color: var(--text-muted);
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+        
+        /* Modal for delete confirmation */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .dashboard-sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                top: 0;
+            }
+            
+            .dashboard-content {
+                padding: 1rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .schedules-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls-bar {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60"> &nbsp; Timetable Manager
+            </a>
+            
+            <button class="navbar-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="navbar-menu" id="navbarMenu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showNotifications()">
+                            <i class="fas fa-bell"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN LAYOUT -->
+    <div class="dashboard-container">
+        
+        <!-- SIDEBAR -->
+        <aside class="dashboard-sidebar">
+            <div class="user-profile-card">
+                <div class="user-avatar">
+                    <span id="userInitials">ND</span>
+                </div>
+                <div class="text-center">
+                    <h5 class="mb-1" id="userName">Nathan Duarte</h5>
+                    <p class="text-muted mb-0" style="font-size: 0.875rem;">
+                        Computer Science - Software Development
+                    </p>
+                </div>
+            </div>
+            
+            <nav>
+                <div class="nav-section-title">Main</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="dashboard.html" class="sidebar-nav-link">
+                            <i class="fas fa-home"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="my-schedules.html" class="sidebar-nav-link active">
+                            <i class="fas fa-calendar-alt"></i>
+                            My Schedules
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="course-browser.html" class="sidebar-nav-link">
+                            <i class="fas fa-search"></i>
+                            Course Browser
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="nav-section-title">Account</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="profile-settings.html" class="sidebar-nav-link">
+                            <i class="fas fa-user-cog"></i>
+                            Profile Settings
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="share-export.html" class="sidebar-nav-link">
+                            <i class="fas fa-share-alt"></i>
+                            Share & Export
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="nav-section-title">Help</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="user-guide.html" class="sidebar-nav-link">
+                            <i class="fas fa-book"></i>
+                            User Guide
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="faq.html" class="sidebar-nav-link">
+                            <i class="fas fa-question-circle"></i>
+                            FAQ
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="contact.html" class="sidebar-nav-link">
+                            <i class="fas fa-headset"></i>
+                            Support
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- MAIN CONTENT -->
+        <main class="dashboard-content">
+            
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h1 style="margin-bottom: 0.5rem;">
+                        <i class="fas fa-calendar-alt"></i> My Schedules
+                    </h1>
+                    <p style="margin: 0; opacity: 0.9;">
+                        Manage all your timetables in one place
+                    </p>
+                </div>
+                <a href="schedule-editor.html?action=create" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-plus-circle"></i> Create New Schedule
+                </a>
+            </div>
+            
+            <!-- Search and Filter Controls -->
+            <div class="controls-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchSchedules" 
+                           placeholder="Search schedules..." 
+                           onkeyup="filterSchedules()">
+                </div>
+                
+                <div class="filter-group">
+                    <label style="margin-right: 0.5rem; color: var(--text-muted);">
+                        <i class="fas fa-filter"></i> Filter:
+                    </label>
+                    <select id="statusFilter" onchange="filterSchedules()" 
+                            style="padding: 0.5rem; border-radius: 6px; border: 2px solid var(--border-color);">
+                        <option value="all">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="draft">Draft</option>
+                        <option value="archived">Archived</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label style="margin-right: 0.5rem; color: var(--text-muted);">
+                        <i class="fas fa-sort"></i> Sort:
+                    </label>
+                    <select id="sortSchedules" onchange="sortSchedules()" 
+                            style="padding: 0.5rem; border-radius: 6px; border: 2px solid var(--border-color);">
+                        <option value="recent">Most Recent</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="name">Name (A-Z)</option>
+                        <option value="courses">Most Courses</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Schedules Grid -->
+            <div class="schedules-grid" id="schedulesGrid">
+                <!-- Schedule cards will be dynamically generated -->
+            </div>
+            
+            <!-- Empty State (shown when no schedules exist) -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-state-icon">
+                    <i class="fas fa-calendar-plus"></i>
+                </div>
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                    No Schedules Yet
+                </h3>
+                <p class="text-muted" style="margin-bottom: 2rem;">
+                    Create your first timetable to get started with planning your semester
+                </p>
+                <a href="schedule-editor.html?action=create" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus-circle"></i> Create Your First Schedule
+                </a>
+            </div>
+            
+        </main>
+        
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                <i class="fas fa-exclamation-triangle" style="color: #dc2626;"></i>
+                Confirm Deletion
+            </h3>
+            <p style="margin-bottom: 1.5rem;">
+                Are you sure you want to delete "<strong id="deleteScheduleName"></strong>"? 
+                This action cannot be undone.
+            </p>
+            <div class="modal-buttons">
+                <button class="btn btn-outline" onclick="closeDeleteModal()">
+                    Cancel
+                </button>
+                <button class="btn" style="background-color: #dc2626; color: white;" 
+                        onclick="confirmDelete()">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        /**
+         * My Schedules JavaScript
+         * Manages the display and manipulation of user's schedules
+         */
+        
+        // Sample schedule data - In production, this comes from your PHP backend
+        let schedules = [
+            {
+                id: 'schedule-1',
+                name: 'Semester 2 - Final Schedule',
+                status: 'active',
+                semester: 2,
+                year: 2025,
+                courses: [
+                    { code: 'WAD621S', name: 'Web Application Development' },
+                    { code: 'DTA621S', name: 'Data Analytics' },
+                    { code: 'ITD621S', name: 'Interaction Design' },
+                    { code: 'DSA612S', name: 'Distributed Systems' },
+                    { code: 'SDN621S', name: 'Software Design' },
+                    { code: 'EFC621S', name: 'Ethics for Computing' }
+                ],
+                lastModified: new Date('2025-10-20T10:30:00'),
+                created: new Date('2025-08-15T09:00:00')
+            },
+            {
+                id: 'schedule-2',
+                name: 'Semester 2 - Option B',
+                status: 'draft',
+                semester: 2,
+                year: 2025,
+                courses: [
+                    { code: 'WAD621S', name: 'Web Application Development' },
+                    { code: 'DTA621S', name: 'Data Analytics' },
+                    { code: 'ITD621S', name: 'Interaction Design' },
+                    { code: 'DSA612S', name: 'Distributed Systems' },
+                    { code: 'SDN621S', name: 'Software Design' }
+                ],
+                lastModified: new Date('2025-10-19T14:20:00'),
+                created: new Date('2025-08-20T11:15:00')
+            },
+            {
+                id: 'schedule-3',
+                name: 'Semester 1 - Archived',
+                status: 'archived',
+                semester: 1,
+                year: 2025,
+                courses: [
+                    { code: 'OOP611S', name: 'Object Oriented Programming' },
+                    { code: 'DPG621S', name: 'Database Programming' },
+                    { code: 'EAP511S', name: 'English for Academic Purposes' },
+                    { code: 'ISS611S', name: 'Information Systems Security' },
+                    { code: 'CMN620S', name: 'Communication Networks' },
+                    { code: 'ASP611S', name: 'Applied Statistics' }
+                ],
+                lastModified: new Date('2025-07-10T16:45:00'),
+                created: new Date('2025-02-01T08:00:00')
+            }
+        ];
+        
+        let currentDeleteId = null;
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            displaySchedules();
+        });
+        
+        /**
+         * Display all schedules as cards
+         */
+        function displaySchedules() {
+            const grid = document.getElementById('schedulesGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (schedules.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            grid.innerHTML = '';
+            
+            schedules.forEach(schedule => {
+                const card = createScheduleCard(schedule);
+                grid.appendChild(card);
+            });
+        }
+        
+        /**
+         * Create HTML for a single schedule card
+         */
+        function createScheduleCard(schedule) {
+            const card = document.createElement('div');
+            card.className = 'schedule-card';
+            card.dataset.scheduleId = schedule.id;
+            
+            const timeAgo = getTimeAgo(schedule.lastModified);
+            
+            card.innerHTML = `
+                <div class="schedule-status-bar ${schedule.status}"></div>
+                <div class="schedule-card-body">
+                    <div class="schedule-card-header">
+                        <div>
+                            <div class="schedule-title">${schedule.name}</div>
+                            <div class="schedule-meta">
+                                <span class="schedule-meta-item">
+                                    <i class="fas fa-calendar"></i>
+                                    Semester ${schedule.semester}, ${schedule.year}
+                                </span>
+                            </div>
+                        </div>
+                        <span class="schedule-status-badge ${schedule.status}">
+                            ${schedule.status}
+                        </span>
+                    </div>
+                    
+                    <div class="schedule-preview">
+                        <strong style="color: var(--primary-color);">Courses (${schedule.courses.length}):</strong>
+                        <div class="preview-courses" style="margin-top: 0.5rem;">
+                            ${schedule.courses.slice(0, 4).map(course => `
+                                <span class="preview-course-chip">${course.code}</span>
+                            `).join('')}
+                            ${schedule.courses.length > 4 ? 
+                                `<span class="preview-course-chip">+${schedule.courses.length - 4} more</span>` : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="schedule-meta">
+                        <span class="schedule-meta-item">
+                            <i class="fas fa-clock"></i>
+                            Updated ${timeAgo}
+                        </span>
+                    </div>
+                    
+                    <div class="schedule-actions">
+                        <button class="action-btn action-btn-primary" onclick="editSchedule('${schedule.id}')">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="action-btn action-btn-secondary" onclick="viewSchedule('${schedule.id}')">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="action-btn action-btn-secondary" onclick="duplicateSchedule('${schedule.id}')">
+                            <i class="fas fa-copy"></i> Duplicate
+                        </button>
+                        <button class="action-btn action-btn-secondary" onclick="deleteSchedule('${schedule.id}')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        /**
+         * Convert date to "time ago" format
+         */
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            
+            if (seconds < 60) return 'just now';
+            if (seconds < 3600) return Math.floor(seconds / 60) + ' minutes ago';
+            if (seconds < 86400) return Math.floor(seconds / 3600) + ' hours ago';
+            if (seconds < 604800) return Math.floor(seconds / 86400) + ' days ago';
+            
+            return date.toLocaleDateString();
+        }
+        
+        /**
+         * Filter schedules by search term and status
+         */
+        function filterSchedules() {
+            const searchTerm = document.getElementById('searchSchedules').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            const cards = document.querySelectorAll('.schedule-card');
+            
+            cards.forEach(card => {
+                const scheduleId = card.dataset.scheduleId;
+                const schedule = schedules.find(s => s.id === scheduleId);
+                
+                const matchesSearch = schedule.name.toLowerCase().includes(searchTerm);
+                const matchesStatus = statusFilter === 'all' || schedule.status === statusFilter;
+                
+                card.style.display = (matchesSearch && matchesStatus) ? 'block' : 'none';
+            });
+        }
+        
+        /**
+         * Sort schedules
+         */
+        function sortSchedules() {
+            const sortBy = document.getElementById('sortSchedules').value;
+            
+            schedules.sort((a, b) => {
+                switch(sortBy) {
+                    case 'recent':
+                        return b.lastModified - a.lastModified;
+                    case 'oldest':
+                        return a.lastModified - b.lastModified;
+                    case 'name':
+                        return a.name.localeCompare(b.name);
+                    case 'courses':
+                        return b.courses.length - a.courses.length;
+                    default:
+                        return 0;
+                }
+            });
+            
+            displaySchedules();
+        }
+        
+        /**
+         * Edit schedule - opens schedule editor
+         */
+        function editSchedule(scheduleId) {
+            window.location.href = `schedule-editor.html?id=${scheduleId}`;
+        }
+        
+        /**
+         * View schedule in read-only mode
+         */
+        function viewSchedule(scheduleId) {
+            window.location.href = `schedule-editor.html?id=${scheduleId}&mode=view`;
+        }
+        
+        /**
+         * Duplicate schedule
+         */
+        function duplicateSchedule(scheduleId) {
+            const original = schedules.find(s => s.id === scheduleId);
+            const duplicate = {
+                ...original,
+                id: 'schedule-' + Date.now(),
+                name: original.name + ' (Copy)',
+                status: 'draft',
+                lastModified: new Date(),
+                created: new Date()
+            };
+            
+            schedules.unshift(duplicate);
+            displaySchedules();
+            
+            alert('Schedule duplicated successfully!');
+        }
+        
+        /**
+         * Delete schedule - shows confirmation modal
+         */
+        function deleteSchedule(scheduleId) {
+            const schedule = schedules.find(s => s.id === scheduleId);
+            currentDeleteId = scheduleId;
+            
+            document.getElementById('deleteScheduleName').textContent = schedule.name;
+            document.getElementById('deleteModal').classList.add('show');
+        }
+        
+        /**
+         * Close delete modal
+         */
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('show');
+            currentDeleteId = null;
+        }
+        
+        /**
+         * Confirm delete action
+         */
+        function confirmDelete() {
+            schedules = schedules.filter(s => s.id !== currentDeleteId);
+            displaySchedules();
+            closeDeleteModal();
+        }
+        
+        // Navigation functions
+        function toggleMobileMenu() {
+            document.getElementById('navbarMenu').classList.toggle('active');
+        }
+        
+        function showNotifications() {
+            alert('Notifications feature coming soon!');
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+
+</body>
+</html>

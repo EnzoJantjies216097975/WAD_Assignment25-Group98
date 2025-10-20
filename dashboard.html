@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - NUST Timetable Manager</title>
+    
+    <!-- External CSS Libraries -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        
+        /* Main Layout Structure - Dashboard uses a sidebar + content layout */
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 80px); /* Full height minus navbar */
+            background-color: var(--light-bg);
+        }
+        
+        /* Sidebar Navigation - Fixed position for easy access to all sections */
+        .dashboard-sidebar {
+            width: 280px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-md);
+            padding: 2rem 0;
+            position: sticky;
+            top: 80px; /* Accounts for navbar height */
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+        
+        /* User Profile Card in Sidebar - Shows who's logged in */
+        .user-profile-card {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: var(--white);
+            font-weight: 700;
+        }
+        
+        /* Navigation Links - Clear visual hierarchy */
+        .nav-section-title {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0 1.5rem;
+            margin: 1.5rem 0 0.5rem;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .sidebar-nav-item {
+            margin-bottom: 0.25rem;
+        }
+        
+        /* Interactive nav links with hover states */
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-nav-link:hover {
+            background-color: var(--light-bg);
+            border-left-color: var(--secondary-color);
+            padding-left: 1.75rem;
+        }
+        
+        .sidebar-nav-link.active {
+            background-color: rgba(252, 175, 23, 0.1);
+            border-left-color: var(--secondary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .sidebar-nav-link i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content Area - Flexible space for different views */
+        .dashboard-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        /* Welcome Header - Personalized greeting */
+        .welcome-header {
+            background: linear-gradient(135deg, var(--primary-color), #2a3f6f);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        /* Stats Cards - Quick overview of user's schedules */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* Quick Actions Section - Primary CTAs */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .action-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+        
+        .action-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            color: var(--primary-color);
+        }
+        
+        .action-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        /* Recent Schedules List */
+        .schedule-list {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+        
+        .schedule-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .schedule-item:hover {
+            background-color: var(--light-bg);
+        }
+        
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+        
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .schedule-name {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        .schedule-meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* Mobile Responsive - Stack sidebar on small screens */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .dashboard-sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                top: 0;
+            }
+            
+            .dashboard-content {
+                padding: 1rem;
+            }
+            
+            .stats-grid,
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- NAVIGATION BAR - Consistent across all pages -->
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60"> &nbsp; Timetable Manager
+            </a>
+            
+            <button class="navbar-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="navbar-menu" id="navbarMenu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showNotifications()">
+                            <i class="fas fa-bell"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN DASHBOARD LAYOUT -->
+    <div class="dashboard-container">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="dashboard-sidebar">
+            <!-- User Profile Card -->
+            <div class="user-profile-card">
+                <div class="user-avatar">
+                    <!-- Display user initials - will be populated by JavaScript -->
+                    <span id="userInitials">ND</span>
+                </div>
+                <div class="text-center">
+                    <h5 class="mb-1" id="userName">Nathan Duarte</h5>
+                    <p class="text-muted mb-0" style="font-size: 0.875rem;" id="userProgram">
+                        Computer Science - Software Development
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <nav>
+                <div class="nav-section-title">Main</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="dashboard.html" class="sidebar-nav-link active">
+                            <i class="fas fa-home"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="my-schedules.html" class="sidebar-nav-link">
+                            <i class="fas fa-calendar-alt"></i>
+                            My Schedules
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="course-browser.html" class="sidebar-nav-link">
+                            <i class="fas fa-search"></i>
+                            Course Browser
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="nav-section-title">Account</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="profile-settings.html" class="sidebar-nav-link">
+                            <i class="fas fa-user-cog"></i>
+                            Profile Settings
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="share-export.html" class="sidebar-nav-link">
+                            <i class="fas fa-share-alt"></i>
+                            Share & Export
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="nav-section-title">Help</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="user-guide.html" class="sidebar-nav-link">
+                            <i class="fas fa-book"></i>
+                            User Guide
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="faq.html" class="sidebar-nav-link">
+                            <i class="fas fa-question-circle"></i>
+                            FAQ
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="contact.html" class="sidebar-nav-link">
+                            <i class="fas fa-headset"></i>
+                            Support
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- MAIN CONTENT AREA -->
+        <main class="dashboard-content">
+            
+            <!-- Welcome Header -->
+            <div class="welcome-header">
+                <h1 style="margin-bottom: 0.5rem;">
+                    Welcome back, <span id="welcomeName">Nathan</span>!
+                </h1>
+                <p style="margin: 0; opacity: 0.9;">
+                    <i class="fas fa-calendar-check"></i>
+                    Current Semester: Semester 2, 2025
+                </p>
+            </div>
+            
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-value" id="totalSchedules">3</div>
+                    <div class="stat-label">Total Schedules</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-value" id="activeSchedules">1</div>
+                    <div class="stat-label">Active Schedule</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-value" id="totalCourses">6</div>
+                    <div class="stat-label">Courses This Semester</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <div class="stat-value" id="sharedSchedules">1</div>
+                    <div class="stat-label">Shared Schedules</div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                <i class="fas fa-bolt"></i> Quick Actions
+            </h3>
+            <div class="quick-actions">
+                <a href="schedule-editor.html?action=create" class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h5>Create Schedule</h5>
+                    <p class="text-muted mb-0" style="font-size: 0.875rem;">
+                        Start building a new timetable
+                    </p>
+                </a>
+                
+                <a href="course-browser.html" class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h5>Browse Courses</h5>
+                    <p class="text-muted mb-0" style="font-size: 0.875rem;">
+                        Explore available courses
+                    </p>
+                </a>
+                
+                <a href="my-schedules.html" class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h5>Edit Schedule</h5>
+                    <p class="text-muted mb-0" style="font-size: 0.875rem;">
+                        Modify existing timetables
+                    </p>
+                </a>
+                
+                <a href="share-export.html" class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h5>Export Schedule</h5>
+                    <p class="text-muted mb-0" style="font-size: 0.875rem;">
+                        Save as PDF or image
+                    </p>
+                </a>
+            </div>
+            
+            <!-- Recent Schedules -->
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem; margin-top: 2rem;">
+                <i class="fas fa-history"></i> Recent Schedules
+            </h3>
+            <div class="schedule-list" id="recentSchedulesList">
+                <!-- Schedule items will be populated by JavaScript -->
+                <div class="schedule-item" onclick="openSchedule('schedule-1')">
+                    <div class="schedule-header">
+                        <div class="schedule-name">
+                            <i class="fas fa-calendar"></i> Semester 2 - Final Schedule
+                        </div>
+                        <span class="badge badge-primary">Active</span>
+                    </div>
+                    <div class="schedule-meta">
+                        <i class="fas fa-book"></i> 6 courses &nbsp;|&nbsp;
+                        <i class="fas fa-clock"></i> Last updated: 2 hours ago
+                    </div>
+                </div>
+                
+                <div class="schedule-item" onclick="openSchedule('schedule-2')">
+                    <div class="schedule-header">
+                        <div class="schedule-name">
+                            <i class="fas fa-calendar"></i> Semester 2 - Option B
+                        </div>
+                        <span class="badge badge-secondary">Draft</span>
+                    </div>
+                    <div class="schedule-meta">
+                        <i class="fas fa-book"></i> 5 courses &nbsp;|&nbsp;
+                        <i class="fas fa-clock"></i> Last updated: 1 day ago
+                    </div>
+                </div>
+                
+                <div class="schedule-item" onclick="openSchedule('schedule-3')">
+                    <div class="schedule-header">
+                        <div class="schedule-name">
+                            <i class="fas fa-calendar"></i> Semester 1 - Archived
+                        </div>
+                        <span class="badge" style="background-color: #6c757d; color: white;">Archived</span>
+                    </div>
+                    <div class="schedule-meta">
+                        <i class="fas fa-book"></i> 6 courses &nbsp;|&nbsp;
+                        <i class="fas fa-clock"></i> Last updated: 3 months ago
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        /**
+         * Dashboard JavaScript
+         * Handles user interface interactions and data management
+         */
+        
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserData();
+            loadDashboardStats();
+            loadRecentSchedules();
+        });
+        
+        /**
+         * Load user data from localStorage or session
+         * In a real application, this would fetch from your PHP backend
+         */
+        function loadUserData() {
+            // For demonstration, we'll use mock data
+            // Replace this with actual API call in production
+            const userData = {
+                name: 'Nathan Duarte',
+                studentNumber: '217090427',
+                program: 'Computer Science - Software Development',
+                email: 'nathan.duarte@nust.na'
+            };
+            
+            // Update UI with user data
+            const firstName = userData.name.split(' ')[0];
+            const initials = userData.name.split(' ').map(n => n[0]).join('');
+            
+            document.getElementById('userName').textContent = userData.name;
+            document.getElementById('welcomeName').textContent = firstName;
+            document.getElementById('userInitials').textContent = initials;
+            document.getElementById('userProgram').textContent = userData.program;
+        }
+        
+        /**
+         * Load dashboard statistics
+         * These numbers would come from your database via PHP API
+         */
+        function loadDashboardStats() {
+            // Mock data - replace with API call
+            const stats = {
+                totalSchedules: 3,
+                activeSchedules: 1,
+                totalCourses: 6,
+                sharedSchedules: 1
+            };
+            
+            document.getElementById('totalSchedules').textContent = stats.totalSchedules;
+            document.getElementById('activeSchedules').textContent = stats.activeSchedules;
+            document.getElementById('totalCourses').textContent = stats.totalCourses;
+            document.getElementById('sharedSchedules').textContent = stats.sharedSchedules;
+        }
+        
+        /**
+         * Load recent schedules from database
+         * This would query your MySQL database through PHP
+         */
+        function loadRecentSchedules() {
+            // Schedule data would come from your backend
+            // For now, it's hardcoded in the HTML
+            console.log('Recent schedules loaded');
+        }
+        
+        /**
+         * Open a specific schedule in the editor
+         * @param {string} scheduleId - The ID of the schedule to open
+         */
+        function openSchedule(scheduleId) {
+            window.location.href = `schedule-editor.html?id=${scheduleId}`;
+        }
+        
+        /**
+         * Toggle mobile menu visibility
+         */
+        function toggleMobileMenu() {
+            document.getElementById('navbarMenu').classList.toggle('active');
+        }
+        
+        /**
+         * Show notifications (placeholder for future feature)
+         */
+        function showNotifications() {
+            alert('Notifications feature coming soon!');
+        }
+        
+        /**
+         * Logout function
+         * Clears session data and redirects to login
+         */
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear any stored session data
+                localStorage.removeItem('userSession');
+                sessionStorage.clear();
+                
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+
+</body>
+</html>

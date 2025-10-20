@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings - NUST Timetable Manager</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Profile Settings Specific Styles */
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+            background-color: var(--light-bg);
+        }
+        
+        /* Reuse sidebar styles from dashboard */
+        .dashboard-sidebar {
+            width: 280px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-md);
+            padding: 2rem 0;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+        
+        .user-profile-card {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: var(--white);
+            font-weight: 700;
+        }
+        
+        .nav-section-title {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0 1.5rem;
+            margin: 1.5rem 0 0.5rem;
+        }
+        
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .sidebar-nav-item {
+            margin-bottom: 0.25rem;
+        }
+        
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-nav-link:hover {
+            background-color: var(--light-bg);
+            border-left-color: var(--secondary-color);
+            padding-left: 1.75rem;
+        }
+        
+        .sidebar-nav-link.active {
+            background-color: rgba(252, 175, 23, 0.1);
+            border-left-color: var(--secondary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .sidebar-nav-link i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content Area */
+        .dashboard-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), #2a3f6f);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        /* Settings Sections - Organized into cards */
+        .settings-section {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .settings-section-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        /* Profile Picture Upload */
+        .profile-picture-section {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-picture-preview {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--white);
+            font-weight: 700;
+        }
+        
+        /* Two-column form layout for better organization */
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Read-only fields styling */
+        .form-control[readonly] {
+            background-color: var(--light-bg);
+            cursor: not-allowed;
+            color: var(--text-muted);
+        }
+        
+        /* Success message styling */
+        .success-message {
+            background-color: #d1e7dd;
+            border: 1px solid #badbcc;
+            color: #0f5132;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        .success-message i {
+            margin-right: 0.5rem;
+        }
+        
+        /* Danger zone styling for destructive actions */
+        .danger-zone {
+            background-color: #fff5f5;
+            border: 2px solid #fecaca;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .danger-zone h4 {
+            color: #dc2626;
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .dashboard-sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                top: 0;
+            }
+            
+            .dashboard-content {
+                padding: 1rem;
+            }
+            
+            .profile-picture-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <img src="logo.png" alt="NUST Logo" class="navbar-logo" width="140" height="60"> &nbsp; Timetable Manager
+            </a>
+            
+            <button class="navbar-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="navbar-menu" id="navbarMenu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showNotifications()">
+                            <i class="fas fa-bell"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN LAYOUT -->
+    <div class="dashboard-container">
+        
+        <!-- SIDEBAR -->
+        <aside class="dashboard-sidebar">
+            <div class="user-profile-card">
+                <div class="user-avatar">
+                    <span id="userInitials">ND</span>
+                </div>
+                <div class="text-center">
+                    <h5 class="mb-1" id="userName">Nathan Duarte</h5>
+                    <p class="text-muted mb-0" style="font-size: 0.875rem;" id="userProgram">
+                        Computer Science - Software Development
+                    </p>
+                </div>
+            </div>
+            
+            <nav>
+                <div class="nav-section-title">Main</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="dashboard.html" class="sidebar-nav-link">
+                            <i class="fas fa-home"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="my-schedules.html" class="sidebar-nav-link">
+                            <i class="fas fa-calendar-alt"></i>
+                            My Schedules
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="course-browser.html" class="sidebar-nav-link">
+                            <i class="fas fa-search"></i>
+                            Course Browser
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="nav-section-title">Account</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="profile-settings.html" class="sidebar-nav-link active">
+                            <i class="fas fa-user-cog"></i>
+                            Profile Settings
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="share-export.html" class="sidebar-nav-link">
+                            <i class="fas fa-share-alt"></i>
+                            Share & Export
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="nav-section-title">Help</div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a href="user-guide.html" class="sidebar-nav-link">
+                            <i class="fas fa-book"></i>
+                            User Guide
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="faq.html" class="sidebar-nav-link">
+                            <i class="fas fa-question-circle"></i>
+                            FAQ
+                        </a>
+                    </li>
+                    <li class="sidebar-nav-item">
+                        <a href="contact.html" class="sidebar-nav-link">
+                            <i class="fas fa-headset"></i>
+                            Support
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- MAIN CONTENT -->
+        <main class="dashboard-content">
+            
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 style="margin-bottom: 0.5rem;">
+                    <i class="fas fa-user-cog"></i> Profile Settings
+                </h1>
+                <p style="margin: 0; opacity: 0.9;">
+                    Manage your account information and preferences
+                </p>
+            </div>
+            
+            <!-- Success Message (hidden by default) -->
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <strong>Success!</strong> Your changes have been saved.
+            </div>
+            
+            <!-- PERSONAL INFORMATION SECTION -->
+            <section class="settings-section">
+                <h3 class="settings-section-title">
+                    <i class="fas fa-user"></i> Personal Information
+                </h3>
+                
+                <!-- Profile Picture -->
+                <div class="profile-picture-section">
+                    <div class="profile-picture-preview" id="profilePicturePreview">
+                        <span id="profileInitials">ND</span>
+                    </div>
+                    <div>
+                        <h5 style="color: var(--primary-color); margin-bottom: 0.5rem;">
+                            Profile Picture
+                        </h5>
+                        <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1rem;">
+                            Upload a photo or we'll use your initials
+                        </p>
+                        <input type="file" id="profilePictureUpload" accept="image/*" 
+                               style="display: none;" onchange="handleProfilePictureUpload(event)">
+                        <button class="btn btn-secondary" onclick="document.getElementById('profilePictureUpload').click()">
+                            <i class="fas fa-upload"></i> Upload Photo
+                        </button>
+                        <button class="btn btn-outline" onclick="removeProfilePicture()">
+                            <i class="fas fa-times"></i> Remove
+                        </button>
+                    </div>
+                </div>
+                
+                <form id="personalInfoForm" onsubmit="savePersonalInfo(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName" class="form-label">
+                                <i class="fas fa-user"></i> Full Name *
+                            </label>
+                            <input type="text" class="form-control" id="fullName" 
+                                   value="Nathan Duarte" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="studentNumber" class="form-label">
+                                <i class="fas fa-id-card"></i> Student Number
+                            </label>
+                            <input type="text" class="form-control" id="studentNumber" 
+                                   value="217090427" readonly>
+                            <small class="form-text">Student number cannot be changed</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email" class="form-label">
+                                <i class="fas fa-envelope"></i> Email Address *
+                            </label>
+                            <input type="email" class="form-control" id="email" 
+                                   value="nathan.duarte@nust.na" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone" class="form-label">
+                                <i class="fas fa-phone"></i> Phone Number
+                            </label>
+                            <input type="tel" class="form-control" id="phone" 
+                                   placeholder="+264 81 234 5678">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="program" class="form-label">
+                                <i class="fas fa-graduation-cap"></i> Program
+                            </label>
+                            <select class="form-control" id="program">
+                                <option value="07BCSS-SD" selected>Bachelor of Computer Science - Software Development</option>
+                                <option value="07BCSS">Bachelor of Computer Science - Systems Administration</option>
+                                <option value="07BCSS-CN">Bachelor of Computer Science - Communication Networks</option>
+                                <option value="07BCCY">Bachelor of Computer Science in Cyber Security</option>
+                                <option value="07BAIT">Bachelor of Informatics</option>
+                                <option value="07BJOU">Bachelor of Journalism and Media Technology</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="yearLevel" class="form-label">
+                                <i class="fas fa-calendar"></i> Year Level
+                            </label>
+                            <select class="form-control" id="yearLevel">
+                                <option value="1">1st Year</option>
+                                <option value="2" selected>2nd Year</option>
+                                <option value="3">3rd Year</option>
+                                <option value="4">4th Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </form>
+            </section>
+            
+            <!-- SECURITY SECTION -->
+            <section class="settings-section">
+                <h3 class="settings-section-title">
+                    <i class="fas fa-lock"></i> Security
+                </h3>
+                
+                <form id="passwordForm" onsubmit="changePassword(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="currentPassword" class="form-label">
+                                Current Password *
+                            </label>
+                            <input type="password" class="form-control" id="currentPassword" 
+                                   placeholder="Enter your current password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="newPassword" class="form-label">
+                                New Password *
+                            </label>
+                            <input type="password" class="form-control" id="newPassword" 
+                                   placeholder="Enter new password" minlength="8" required>
+                            <small class="form-text">Minimum 8 characters</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword" class="form-label">
+                                Confirm New Password *
+                            </label>
+                            <input type="password" class="form-control" id="confirmPassword" 
+                                   placeholder="Re-enter new password" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="fas fa-key"></i> Change Password
+                    </button>
+                </form>
+            </section>
+            
+            <!-- PREFERENCES SECTION -->
+            <section class="settings-section">
+                <h3 class="settings-section-title">
+                    <i class="fas fa-cog"></i> Preferences
+                </h3>
+                
+                <form id="preferencesForm" onsubmit="savePreferences(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="defaultSemester" class="form-label">
+                                Default Semester
+                            </label>
+                            <select class="form-control" id="defaultSemester">
+                                <option value="1">Semester 1</option>
+                                <option value="2" selected>Semester 2</option>
+                            </select>
+                            <small class="form-text">Used when creating new schedules</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="defaultYear" class="form-label">
+                                Default Year
+                            </label>
+                            <input type="number" class="form-control" id="defaultYear" 
+                                   value="2025" min="2024" max="2030">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Notifications</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="notifyConflicts" checked>
+                            <label class="form-check-label" for="notifyConflicts">
+                                Notify me about schedule conflicts
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="notifyUpdates" checked>
+                            <label class="form-check-label" for="notifyUpdates">
+                                Notify me about course updates
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Preferences
+                    </button>
+                </form>
+            </section>
+            
+            <!-- DANGER ZONE -->
+            <section class="settings-section">
+                <h3 class="settings-section-title">
+                    <i class="fas fa-exclamation-triangle"></i> Danger Zone
+                </h3>
+                
+                <div class="danger-zone">
+                    <h4><i class="fas fa-trash-alt"></i> Delete Account</h4>
+                    <p class="text-muted">
+                        Once you delete your account, there is no going back. This will permanently 
+                        delete all your schedules and data. Please be certain.
+                    </p>
+                    <button class="btn" style="background-color: #dc2626; color: white;" 
+                            onclick="confirmDeleteAccount()">
+                        <i class="fas fa-trash-alt"></i> Delete My Account
+                    </button>
+                </div>
+            </section>
+            
+        </main>
+        
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        /**
+         * Profile Settings JavaScript
+         * Handles form submissions and user preference management
+         */
+        
+        // Load user data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserProfile();
+        });
+        
+        /**
+         * Load user profile data from storage or backend
+         */
+        function loadUserProfile() {
+            // In production, this would fetch from your PHP API
+            const userData = {
+                name: 'Nathan Duarte',
+                studentNumber: '217090427',
+                email: 'nathan.duarte@nust.na',
+                phone: '',
+                program: '07BCSS-SD',
+                yearLevel: '2'
+            };
+            
+            // Update sidebar
+            const initials = userData.name.split(' ').map(n => n[0]).join('');
+            document.getElementById('userInitials').textContent = initials;
+            document.getElementById('profileInitials').textContent = initials;
+            document.getElementById('userName').textContent = userData.name;
+        }
+        
+        /**
+         * Handle profile picture upload
+         */
+        function handleProfilePictureUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // In production, upload to server
+                    const preview = document.getElementById('profilePicturePreview');
+                    preview.style.backgroundImage = `url(${e.target.result})`;
+                    preview.style.backgroundSize = 'cover';
+                    preview.innerHTML = '';
+                    showSuccess();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        /**
+         * Remove profile picture
+         */
+        function removeProfilePicture() {
+            const preview = document.getElementById('profilePicturePreview');
+            preview.style.backgroundImage = '';
+            preview.innerHTML = '<span id="profileInitials">ND</span>';
+            showSuccess();
+        }
+        
+        /**
+         * Save personal information
+         */
+        function savePersonalInfo(event) {
+            event.preventDefault();
+            
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                program: document.getElementById('program').value,
+                yearLevel: document.getElementById('yearLevel').value
+            };
+            
+            // In production, send to PHP backend
+            console.log('Saving personal info:', formData);
+            
+            // Update sidebar with new name
+            const initials = formData.fullName.split(' ').map(n => n[0]).join('');
+            document.getElementById('userInitials').textContent = initials;
+            document.getElementById('userName').textContent = formData.fullName;
+            
+            showSuccess();
+        }
+        
+        /**
+         * Change password
+         */
+        function changePassword(event) {
+            event.preventDefault();
+            
+            const current = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            
+            if (newPass !== confirm) {
+                alert('New passwords do not match!');
+                return;
+            }
+            
+            // In production, send to PHP backend for validation
+            console.log('Changing password...');
+            
+            // Clear form
+            document.getElementById('passwordForm').reset();
+            
+            showSuccess();
+            alert('Password changed successfully! You will need to log in again.');
+        }
+        
+        /**
+         * Save preferences
+         */
+        function savePreferences(event) {
+            event.preventDefault();
+            
+            const preferences = {
+                defaultSemester: document.getElementById('defaultSemester').value,
+                defaultYear: document.getElementById('defaultYear').value,
+                notifyConflicts: document.getElementById('notifyConflicts').checked,
+                notifyUpdates: document.getElementById('notifyUpdates').checked
+            };
+            
+            // Save to localStorage and backend
+            localStorage.setItem('userPreferences', JSON.stringify(preferences));
+            console.log('Saving preferences:', preferences);
+            
+            showSuccess();
+        }
+        
+        /**
+         * Show success message
+         */
+        function showSuccess() {
+            const message = document.getElementById('successMessage');
+            message.style.display = 'block';
+            
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
+        }
+        
+        /**
+         * Confirm account deletion
+         */
+        function confirmDeleteAccount() {
+            const confirmation = prompt(
+                'This action cannot be undone. Type "DELETE" to confirm:'
+            );
+            
+            if (confirmation === 'DELETE') {
+                // In production, call backend API to delete account
+                alert('Account deletion initiated. You will be logged out.');
+                logout();
+            }
+        }
+        
+        // Navigation functions
+        function toggleMobileMenu() {
+            document.getElementById('navbarMenu').classList.toggle('active');
+        }
+        
+        function showNotifications() {
+            alert('Notifications feature coming soon!');
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('userSession');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+
+</body>
+</html>
